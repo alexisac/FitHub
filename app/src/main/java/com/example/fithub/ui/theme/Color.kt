@@ -1,6 +1,7 @@
 package com.example.fithub.ui.theme
 
 import androidx.compose.ui.graphics.Color
+import com.example.fithub.models.AppThemeColors
 
 // General dark theme
 val DarkBackground = Color(0xFF0B0F17)
@@ -33,3 +34,29 @@ val MainYellow = Color(0xFFFFD167)
 val MainGreen = Color(0xFF06D7A0)
 val MainLightBlue = Color(0xFF108AB1)
 val MainDarkBlue = Color(0xFF073A4B)
+
+object AppColors {
+    fun colors(isDarkTheme: Boolean): AppThemeColors {
+        return if (isDarkTheme) {
+            AppThemeColors(
+                primaryText = TextPrimaryDark,
+                secondaryText = TextSecondaryDark,
+                primaryBorderColor = TextPrimaryDark,
+                secondaryBorderColor = MainRed,
+                informationColor = MainGreen,
+                icon = MainRed,
+                error = ErrorRed
+            )
+        } else {
+            AppThemeColors(
+                primaryText = TextPrimaryLight,
+                secondaryText = TextSecondaryLight,
+                primaryBorderColor = TextPrimaryLight,
+                secondaryBorderColor = MainRed,
+                informationColor = MainGreen,
+                icon = MainRed,
+                error = ErrorRed
+            )
+        }
+    }
+}

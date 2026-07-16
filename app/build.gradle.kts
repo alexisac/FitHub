@@ -65,5 +65,12 @@ dependencies {
     implementation(libs.navigation.navigation.compose)
     // Hilt navigation compose
     implementation(libs.androidx.hilt.navigation.compose)
-
+    // Room DB
+    implementation(libs.androidx.room.runtime)
+    implementation(libs.androidx.room.ktx)
+    ksp(libs.androidx.room.compiler)
+    // Datastore preferences
+    implementation(libs.datastore.datastore.preferences)
+    // Material icons extended
+    implementation(libs.androidx.compose.material.icons.extended)
 }

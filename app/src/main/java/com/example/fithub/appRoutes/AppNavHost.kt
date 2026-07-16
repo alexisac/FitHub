@@ -5,11 +5,15 @@ import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.fithub.screens.AddWeightScreen
 import com.example.fithub.screens.HomeScreen
 import com.example.fithub.viewModels.HomeViewModel
 
 @Composable
-fun AppNavHost() {
+fun AppNavHost(
+    isDarkTheme: Boolean,
+    onThemeChange: (Boolean) -> Unit
+) {
     val navController = rememberNavController()
 
     val homeViewModel: HomeViewModel = hiltViewModel()
@@ -20,7 +24,22 @@ fun AppNavHost() {
     ){
         composable(AppRoutes.HOME_ROUTE) {
             HomeScreen(
-                viewModel = homeViewModel
+                viewModel = homeViewModel,
+                isDarkTheme = isDarkTheme,
+                onThemeChange = onThemeChange,
+                goToAddWeightMenu = {
+                    navController.navigate(AppRoutes.ADD_WEIGHT_ROUTE)
+                }
+            )
+        }
+
+        composable(AppRoutes.ADD_WEIGHT_ROUTE) {
+            AddWeightScreen(
+                viewModel = homeViewModel,
+                isDarkTheme = isDarkTheme,
+                onBack = {
+                    navController.popBackStack()
+                }
             )
         }
     }
