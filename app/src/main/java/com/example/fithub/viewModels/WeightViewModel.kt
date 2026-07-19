@@ -3,6 +3,8 @@ package com.example.fithub.viewModels
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.fithub.common.exceptions.ValidationException
+import com.example.fithub.common.messages.ViewModelErrorMessages
+import com.example.fithub.common.messages.ViewModelSuccessMessages
 import com.example.fithub.models.uiStates.WeightUiState
 import com.example.fithub.services.WeightHistoryService
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -45,14 +47,14 @@ class WeightViewModel @Inject constructor(
                     it.copy(
                         isLoading = false,
                         errorMessage = null,
-                        successMessage = "Weight added successfully\n"
+                        successMessage = ViewModelSuccessMessages.WEIGHT_ADDED_SUCCESSFULLY
                     )
                 }
             } catch (ex: ValidationException){
                 _uiState.update {
                     it.copy(
                         isLoading = false,
-                        errorMessage = ex.message ?: "Invalid information\n",
+                        errorMessage = ex.message ?: ViewModelErrorMessages.INVALID_INFORMATION,
                         successMessage = null
                     )
                 }
@@ -60,7 +62,7 @@ class WeightViewModel @Inject constructor(
                 _uiState.update {
                     it.copy(
                         isLoading = false,
-                        errorMessage = ex.message ?: "Unknown error\n",
+                        errorMessage = ex.message ?: ViewModelErrorMessages.UNKNOWN_ERROR,
                         successMessage = null
                     )
                 }
@@ -106,7 +108,7 @@ class WeightViewModel @Inject constructor(
                 _uiState.update {
                     it.copy(
                         isLoading = false,
-                        errorMessage = ex.message ?: "Unknown error"
+                        errorMessage = ex.message ?: ViewModelErrorMessages.UNKNOWN_ERROR
                     )
                 }
             }

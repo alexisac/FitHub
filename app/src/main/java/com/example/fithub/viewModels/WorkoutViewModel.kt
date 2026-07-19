@@ -3,8 +3,9 @@ package com.example.fithub.viewModels
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.fithub.common.exceptions.ValidationException
+import com.example.fithub.common.messages.ViewModelErrorMessages
+import com.example.fithub.common.messages.ViewModelSuccessMessages
 import com.example.fithub.models.DayType
-import com.example.fithub.models.WorkoutSplitDay
 import com.example.fithub.models.uiStates.WorkoutUiState
 import com.example.fithub.services.WorkoutService
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -26,27 +27,38 @@ class WorkoutViewModel @Inject constructor(
         name: String,
         dayType: DayType
     ) {
-        if (name.isBlank()) {
-            _uiState.update {
-                it.copy(errorMessage = "Day name cannot be empty.")
-            }
-            return
-        }
+        try {
+            val currentState = uiState.value
 
-        _uiState.update { currentState ->
-            val newDay = WorkoutSplitDay(
-                // temporary ID. Needs in reordable list
-                id = System.currentTimeMillis(),
-                name = name.trim(),
-                day = dayType,
+            val newDay = workoutService.createWorkoutDay(
+                name = name,
+                dayType = dayType,
                 position = currentState.splitDaysList.size + 1
             )
 
-            currentState.copy(
-                splitDaysList = currentState.splitDaysList + newDay,
-                errorMessage = null,
-                successMessage = "Add successfully"
-            )
+            _uiState.update {
+                it.copy(
+                    splitDaysList = it.splitDaysList + newDay,
+                    errorMessage = null,
+                    successMessage = ViewModelSuccessMessages.DAY_WORKOUT_ADDED_SUCCESSFULLY
+                )
+            }
+        } catch (ex: ValidationException){
+            _uiState.update {
+                it.copy(
+                    isLoading = false,
+                    errorMessage = ex.message ?: ViewModelErrorMessages.INVALID_INFORMATION,
+                    successMessage = null
+                )
+            }
+        } catch (ex: Exception) {
+            _uiState.update {
+                it.copy(
+                    isLoading = false,
+                    errorMessage = ex.message ?: ViewModelErrorMessages.UNKNOWN_ERROR,
+                    successMessage = null
+                )
+            }
         }
     }
 
@@ -94,14 +106,14 @@ class WorkoutViewModel @Inject constructor(
                     it.copy(
                         isLoading = false,
                         errorMessage = null,
-                        successMessage = "Workout added successfully\n"
+                        successMessage = ViewModelSuccessMessages.WORKOUT_ADDED_SUCCESSFULLY
                     )
                 }
             } catch (ex: ValidationException) {
                 _uiState.update {
                     it.copy(
                         isLoading = false,
-                        errorMessage = ex.message ?: "Invalid information\n",
+                        errorMessage = ex.message ?: ViewModelErrorMessages.INVALID_INFORMATION,
                         successMessage = null
                     )
                 }
@@ -109,7 +121,7 @@ class WorkoutViewModel @Inject constructor(
                 _uiState.update {
                     it.copy(
                         isLoading = false,
-                        errorMessage = ex.message ?: "Unknown error\n",
+                        errorMessage = ex.message ?: ViewModelErrorMessages.UNKNOWN_ERROR,
                         successMessage = null
                     )
                 }

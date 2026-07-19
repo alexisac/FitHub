@@ -3,6 +3,7 @@ package com.example.fithub.services
 import com.example.fithub.common.Constants
 import com.example.fithub.common.exceptions.ValidationException
 import com.example.fithub.common.messages.ServiceMessages
+import com.example.fithub.models.DayType
 import com.example.fithub.models.WorkoutSplitDay
 import com.example.fithub.repositories.WorkoutRepository
 import com.example.fithub.roomDB.entities.WorkoutSplitDayEntity
@@ -62,4 +63,21 @@ class WorkoutService @Inject constructor(
         )
     }
 
+    fun createWorkoutDay(
+        name: String,
+        dayType: DayType,
+        position: Int
+    ): WorkoutSplitDay {
+        if (name.isBlank()) {
+           throw ValidationException(ServiceMessages.DAY_NAME_NOT_EMPTY)
+        }
+
+        return WorkoutSplitDay(
+            // Temporary ID used for reorderable list
+            id = System.currentTimeMillis(),
+            name = name.trim(),
+            day = dayType,
+            position = position
+        )
+    }
 }
