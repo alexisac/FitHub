@@ -3,6 +3,7 @@ package com.example.fithub.roomDB
 import android.content.Context
 import androidx.room.Room
 import com.example.fithub.roomDB.dao.WeightHistoryDao
+import com.example.fithub.roomDB.dao.WorkoutDao
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -20,11 +21,18 @@ object DatabaseModule {
             context,
             FitHubDatabase::class.java,
             "fithub_database"
-        ).build()
+        )
+            .fallbackToDestructiveMigration()
+            .build()
     }
 
     @Provides
     fun provideWeightHistoryDao(database: FitHubDatabase): WeightHistoryDao {
         return database.weightHistoryDao()
+    }
+
+    @Provides
+    fun provideWorkoutDao(database: FitHubDatabase): WorkoutDao {
+        return database.workoutDao()
     }
 }

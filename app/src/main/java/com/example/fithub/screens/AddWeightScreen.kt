@@ -48,13 +48,13 @@ import androidx.compose.ui.unit.sp
 import com.example.fithub.screens.reusableComponents.DatePicker
 import com.example.fithub.screens.reusableComponents.TimePicker
 import com.example.fithub.ui.theme.AppColors
-import com.example.fithub.viewModels.HomeViewModel
+import com.example.fithub.viewModels.WeightViewModel
 import java.time.LocalDate
 import java.time.LocalTime
 
 @Composable
 fun AddWeightScreen (
-    viewModel: HomeViewModel,
+    viewModel: WeightViewModel,
     isDarkTheme: Boolean,
     onBack: () -> Unit
 ){
@@ -157,7 +157,7 @@ fun AddWeightScreen (
 }
 
 @Composable
-fun Header(
+private fun Header(
     primaryTextColor: Color,
     secondaryTextColor: Color,
     borderColor: Color,
@@ -197,7 +197,7 @@ fun Header(
 }
 
 @Composable
-fun DateAndTimeSection(
+private fun DateAndTimeSection(
     primaryTextColor: Color,
     secondaryTextColor: Color,
     borderColor: Color,
@@ -355,7 +355,7 @@ fun DateAndTimeSection(
 }
 
 @Composable
-fun WeightSection(
+private fun WeightSection(
     primaryTextColor: Color,
     secondaryTextColor: Color,
     borderColor: Color,
@@ -439,7 +439,7 @@ fun WeightSection(
 }
 
 @Composable
-fun TipSection(
+private fun TipSection(
     informationColor: Color,
     borderColor: Color
 ) {
@@ -478,7 +478,7 @@ fun TipSection(
 }
 
 @Composable
-fun AddWeightButton(
+private fun AddWeightButton(
     primaryTextColor: Color,
     buttonColor: Color,
     iconColor: Color,

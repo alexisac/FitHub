@@ -14,4 +14,10 @@ abstract class RepositoryModule {
     abstract fun bindWeightHistoryRepository(
         implementation: WeightHistoryRepositoryImpl
     ): WeightHistoryRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindWorkoutRepository(
+        implementation: WorkoutRepositoryImpl
+    ): WorkoutRepository
 }

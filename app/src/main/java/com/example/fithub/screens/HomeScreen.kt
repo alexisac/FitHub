@@ -13,14 +13,15 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.example.fithub.screens.reusableComponents.ThemeToggle
-import com.example.fithub.viewModels.HomeViewModel
+import com.example.fithub.viewModels.WeightViewModel
 
 @Composable
 fun HomeScreen (
-    viewModel: HomeViewModel,
+    viewModel: WeightViewModel,
     isDarkTheme: Boolean,
     onThemeChange: (Boolean) -> Unit,
-    goToAddWeightMenu: () -> Unit
+    goToAddWeightMenu: () -> Unit,
+    goToManageWorkoutSplit: () -> Unit
 ){
     val uiState by viewModel.uiState.collectAsState()
     val isDark = isDarkTheme
@@ -46,7 +47,8 @@ fun HomeScreen (
         )
 
         Button(
-            onClick = goToAddWeightMenu,
+//            onClick = goToAddWeightMenu,
+            onClick = goToManageWorkoutSplit,
         ) {
             Text("Add Weight")
         }

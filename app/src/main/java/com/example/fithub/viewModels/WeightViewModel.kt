@@ -3,7 +3,7 @@ package com.example.fithub.viewModels
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.fithub.exceptions.ValidationException
-import com.example.fithub.models.uiStates.HomeUiState
+import com.example.fithub.models.uiStates.WeightUiState
 import com.example.fithub.services.WeightHistoryService
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -14,11 +14,11 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class HomeViewModel @Inject constructor(
+class WeightViewModel @Inject constructor(
     private val weightHistoryService: WeightHistoryService
 ): ViewModel(){
-    private val _uiState = MutableStateFlow(HomeUiState())
-    val uiState: StateFlow<HomeUiState> = _uiState.asStateFlow()
+    private val _uiState = MutableStateFlow(WeightUiState())
+    val uiState: StateFlow<WeightUiState> = _uiState.asStateFlow()
 
     fun addWeight(
         weight: String,
