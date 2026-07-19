@@ -2,7 +2,7 @@ package com.example.fithub.viewModels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.fithub.exceptions.ValidationException
+import com.example.fithub.common.exceptions.ValidationException
 import com.example.fithub.models.uiStates.WeightUiState
 import com.example.fithub.services.WeightHistoryService
 import dagger.hilt.android.lifecycle.HiltViewModel

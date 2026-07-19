@@ -1,7 +1,8 @@
 package com.example.fithub.services
 
-import com.example.fithub.exceptions.ValidationException
-import com.example.fithub.models.DayType
+import com.example.fithub.common.Constants
+import com.example.fithub.common.exceptions.ValidationException
+import com.example.fithub.common.messages.ServiceMessages
 import com.example.fithub.models.WorkoutSplitDay
 import com.example.fithub.repositories.WorkoutRepository
 import com.example.fithub.roomDB.entities.WorkoutSplitDayEntity
@@ -13,22 +14,22 @@ import javax.inject.Inject
 class WorkoutService @Inject constructor(
     private val workoutRepository: WorkoutRepository
 ) {
-    private val dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+    private val dateFormatter = DateTimeFormatter.ofPattern(Constants.DATE_FORMATTER)
     suspend fun createSplit(
         splitName: String,
         selectedDate: String,
         splitDaysList: List<WorkoutSplitDay>
     ): Long {
         if (splitName.isBlank()) {
-            throw ValidationException("Split name cannot be empty.")
+            throw ValidationException(ServiceMessages.SPLIT_NAME_NOT_EMPTY)
         }
 
         if (selectedDate.isBlank()) {
-            throw ValidationException("Start date cannot be empty.")
+            throw ValidationException(ServiceMessages.START_DATE_NOT_EMPTY)
         }
 
         if (splitDaysList.isEmpty()) {
-            throw ValidationException("Add at least one day to the split.")
+            throw ValidationException(ServiceMessages.ADD_DAY_TO_SPLIT)
         }
 
         val startDate = try {
@@ -37,7 +38,7 @@ class WorkoutService @Inject constructor(
                 dateFormatter
             )
         } catch (_: Exception) {
-            throw IllegalArgumentException("Invalid start date.")
+            throw IllegalArgumentException(ServiceMessages.INVALID_START_DATE)
         }
 
         val splitEntity = WorkoutSplitEntity(

@@ -2,7 +2,7 @@ package com.example.fithub.viewModels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.fithub.exceptions.ValidationException
+import com.example.fithub.common.exceptions.ValidationException
 import com.example.fithub.models.DayType
 import com.example.fithub.models.WorkoutSplitDay
 import com.example.fithub.models.uiStates.WorkoutUiState
@@ -13,7 +13,6 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import java.util.UUID
 import javax.inject.Inject
 
 @HiltViewModel

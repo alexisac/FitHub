@@ -1,6 +1,7 @@
 package com.example.fithub.services
 
-import com.example.fithub.exceptions.ValidationException
+import com.example.fithub.common.exceptions.ValidationException
+import com.example.fithub.common.messages.ServiceMessages
 import com.example.fithub.repositories.WeightHistoryRepository
 import com.example.fithub.roomDB.entities.WeightHistoryEntity
 import kotlinx.coroutines.flow.Flow
@@ -18,22 +19,22 @@ class WeightHistoryService @Inject constructor(
         time: String
     ): Long {
         val weightValue = weight.toDoubleOrNull()
-            ?: throw ValidationException("Weight must be a valid number\n")
+            ?: throw ValidationException(ServiceMessages.WEIGHT_VALID_NUMBER)
 
         if (weightValue <= 0) {
-            throw ValidationException("Weight must be greater than 0\n")
+            throw ValidationException(ServiceMessages.WEIGHT_POSITIVE_NUMBER)
         }
 
         val localDate = try {
             LocalDate.parse(date)
         } catch (_: Exception) {
-            throw ValidationException("Please select a valid time\n")
+            throw ValidationException(ServiceMessages.SELECT_VALID_DATE)
         }
 
         val localTime = try {
             LocalTime.parse(time)
         } catch (_: Exception) {
-            throw ValidationException("Please select a valid time\n")
+            throw ValidationException(ServiceMessages.SELECT_VALID_TIME)
         }
 
         val dateTime = LocalDateTime.of(localDate, localTime)
