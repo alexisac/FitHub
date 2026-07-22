@@ -1,6 +1,7 @@
 package com.example.fithub.screens
 
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -9,6 +10,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -23,6 +25,8 @@ import androidx.compose.material.icons.outlined.FitnessCenter
 import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material.icons.outlined.WatchLater
 import androidx.compose.material3.ButtonColors
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.LocalTextStyle
@@ -45,6 +49,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.fithub.common.Constants
 import com.example.fithub.common.messages.ScreenMessages
 import com.example.fithub.screens.reusableComponents.DatePicker
 import com.example.fithub.screens.reusableComponents.ErrorPopupMessage
@@ -53,6 +58,7 @@ import com.example.fithub.ui.theme.AppColors
 import com.example.fithub.viewModels.WeightViewModel
 import java.time.LocalDate
 import java.time.LocalTime
+import java.time.format.DateTimeFormatter
 
 @Composable
 fun AddWeightScreen (
@@ -77,13 +83,15 @@ fun AddWeightScreen (
     Column(
         modifier = Modifier
             .fillMaxSize()
+            .background(colors.background)
             .padding(horizontal = 20.dp, vertical = 40.dp)
     ) {
         Header(
             primaryTextColor = colors.primaryText,
             secondaryTextColor = colors.secondaryText,
-            borderColor = colors.secondaryBorderColor,
-            iconColor = colors.icon,
+            borderColor = colors.border,
+            containerColor = colors.card,
+            iconColor = colors.primary,
             onBack = {
                 onBack()
             }
@@ -94,12 +102,15 @@ fun AddWeightScreen (
         DateAndTimeSection(
             primaryTextColor = colors.primaryText,
             secondaryTextColor = colors.secondaryText,
-            borderColor = colors.primaryBorderColor,
-            iconColor = colors.icon,
+            borderColor = colors.border,
+            containerColor = colors.card,
+            iconColor = colors.primary,
             selectedDate = selectedDate,
             selectedTime = selectedTime,
             onDateSelected = { date ->
-                selectedDate = date.toString()
+                selectedDate = date.format(
+                    DateTimeFormatter.ofPattern(Constants.DATE_FORMATTER)
+                )
             },
             onTimeSelected = { time ->
                 selectedTime = time
@@ -114,8 +125,9 @@ fun AddWeightScreen (
         WeightSection(
             primaryTextColor = colors.primaryText,
             secondaryTextColor = colors.secondaryText,
-            borderColor = colors.primaryBorderColor,
-            iconColor = colors.icon,
+            borderColor = colors.border,
+            containerColor = colors.card,
+            iconColor = colors.primary,
             weight = weight,
             onWeightSelected = { selectedWeight ->
                 weight = selectedWeight
@@ -125,16 +137,17 @@ fun AddWeightScreen (
         Spacer(modifier = Modifier.height(24.dp))
 
         TipSection(
-            informationColor = colors.informationColor,
-            borderColor = colors.primaryBorderColor
+            informationColor = colors.secondary,
+            borderColor = colors.secondary,
+            containerColor = colors.infoContainer
         )
 
         Spacer(modifier = Modifier.height(24.dp))
 
         AddWeightButton(
-            primaryTextColor = colors.primaryText,
-            buttonColor = colors.icon,
-            iconColor = colors.primaryText,
+            primaryTextColor = colors.onPrimary,
+            buttonColor = colors.primary,
+            iconColor = colors.onPrimary,
             onClick = {
                 viewModel.addWeight(
                     weight = weight,
@@ -162,6 +175,7 @@ private fun Header(
     primaryTextColor: Color,
     secondaryTextColor: Color,
     borderColor: Color,
+    containerColor: Color,
     iconColor: Color,
     onBack: () -> Unit
 ) {
@@ -170,7 +184,10 @@ private fun Header(
             onClick = onBack,
             shape = RoundedCornerShape(10.dp),
             border = BorderStroke(1.dp, borderColor),
-            colors = IconButtonDefaults.outlinedIconButtonColors(contentColor = iconColor)
+            colors = IconButtonDefaults.outlinedIconButtonColors(
+                containerColor = containerColor,
+                contentColor = iconColor
+            )
         ) {
             Icon(
                 imageVector = Icons.Outlined.ArrowBack,
@@ -185,13 +202,13 @@ private fun Header(
             Text(
                 text = ScreenMessages.ADD_WEIGHT_TITLE,
                 color = primaryTextColor,
-                fontSize = 36.sp,
+                fontSize = 38.sp,
                 fontWeight = FontWeight.Bold
             )
             Text(
                 text = ScreenMessages.RECORD_WEIGHT_SUBTITLE,
                 color = secondaryTextColor,
-                fontSize = 16.sp
+                fontSize = 18.sp
             )
         }
     }
@@ -202,6 +219,7 @@ private fun DateAndTimeSection(
     primaryTextColor: Color,
     secondaryTextColor: Color,
     borderColor: Color,
+    containerColor: Color,
     iconColor: Color,
     selectedDate: String,
     selectedTime: String,
@@ -215,8 +233,8 @@ private fun DateAndTimeSection(
         Text(
             text = ScreenMessages.DATE_AND_TIME_TITLE,
             color = primaryTextColor,
-            fontSize = 24.sp,
-            fontWeight = FontWeight.Bold
+            fontSize = 22.sp,
+            fontWeight = FontWeight.SemiBold
         )
 
         Spacer(modifier = Modifier.height(16.dp))
@@ -224,7 +242,7 @@ private fun DateAndTimeSection(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(88.dp)
+                .height(76.dp)
         ) {
             OutlinedButton(
                 onClick = {
@@ -233,16 +251,15 @@ private fun DateAndTimeSection(
                 modifier = Modifier
                     .weight(1f)
                     .fillMaxSize(),
-                shape = RoundedCornerShape(
-                    topStart = 16.dp,
-                    topEnd = 0.dp,
-                    bottomStart = 16.dp,
-                    bottomEnd = 0.dp
-                ),
+                shape = RoundedCornerShape(20.dp),
                 contentPadding = PaddingValues(horizontal = 16.dp),
                 border = BorderStroke(
                     width = 1.dp,
                     color = borderColor
+                ),
+                colors = ButtonDefaults.outlinedButtonColors(
+                    containerColor = containerColor,
+                    contentColor = primaryTextColor
                 )
             ) {
                 Row(
@@ -256,7 +273,7 @@ private fun DateAndTimeSection(
                         modifier = Modifier.size(30.dp)
                     )
 
-                    Spacer(modifier = Modifier.width(12.dp))
+                    Spacer(modifier = Modifier.width(16.dp))
 
                     Column(
                         modifier = Modifier.weight(1f)
@@ -278,6 +295,8 @@ private fun DateAndTimeSection(
                 }
             }
 
+            Spacer(modifier = Modifier.width(8.dp))
+
             OutlinedButton(
                 onClick = {
                     showTimePicker = true
@@ -285,16 +304,15 @@ private fun DateAndTimeSection(
                 modifier = Modifier
                     .weight(1f)
                     .fillMaxSize(),
-                shape = RoundedCornerShape(
-                    topStart = 0.dp,
-                    topEnd = 16.dp,
-                    bottomStart = 0.dp,
-                    bottomEnd = 16.dp
-                ),
+                shape = RoundedCornerShape(20.dp),
                 contentPadding = PaddingValues(horizontal = 16.dp),
                 border = BorderStroke(
                     width = 1.dp,
                     color = borderColor
+                ),
+                colors = ButtonDefaults.outlinedButtonColors(
+                    containerColor = containerColor,
+                    contentColor = primaryTextColor
                 )
             ) {
                 Row(
@@ -308,7 +326,7 @@ private fun DateAndTimeSection(
                         modifier = Modifier.size(30.dp)
                     )
 
-                    Spacer(modifier = Modifier.width(12.dp))
+                    Spacer(modifier = Modifier.width(16.dp))
 
                     Column(
                         modifier = Modifier.weight(1f)
@@ -338,6 +356,7 @@ private fun DateAndTimeSection(
             showDatePicker = false
         },
         onDateSelected = { date ->
+
             onDateSelected(date)
             showDatePicker = false
         }
@@ -360,6 +379,7 @@ private fun WeightSection(
     primaryTextColor: Color,
     secondaryTextColor: Color,
     borderColor: Color,
+    containerColor: Color,
     iconColor: Color,
     weight: String,
     onWeightSelected: (String) -> Unit
@@ -368,8 +388,8 @@ private fun WeightSection(
         Text(
             text = ScreenMessages.WEIGHT_TITLE,
             color = primaryTextColor,
-            fontSize = 24.sp,
-            fontWeight = FontWeight.Bold
+            fontSize = 22.sp,
+            fontWeight = FontWeight.SemiBold
         )
 
         Spacer(modifier = Modifier.height(16.dp))
@@ -377,17 +397,21 @@ private fun WeightSection(
         OutlinedCard(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(88.dp),
-            shape = RoundedCornerShape(16.dp),
+                .height(76.dp),
+            shape = RoundedCornerShape(20.dp),
             border = BorderStroke(
                 width = 1.dp,
                 color = borderColor
+            ),
+            colors = CardDefaults.outlinedCardColors(
+                containerColor = containerColor,
+                contentColor = primaryTextColor
             )
         ) {
             Row(
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 16.dp, vertical = 16.dp),
+                    .fillMaxSize()
+                    .padding(horizontal = 16.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Icon(
@@ -413,15 +437,17 @@ private fun WeightSection(
 
                     BasicTextField(
                         value = weight,
-                        onValueChange = onWeightSelected,
+                        onValueChange = { value ->
+                            onWeightSelected(value.replace(',', '.'))
+                        },
                         singleLine = true,
                         keyboardOptions = KeyboardOptions(
                             keyboardType = KeyboardType.Number
                         ),
                         textStyle = LocalTextStyle.current.copy(
                             color = primaryTextColor,
-                            fontWeight = FontWeight.Bold,
-                            fontSize = 20.sp
+                            fontWeight = FontWeight.SemiBold,
+                            fontSize = 18.sp
                         ),
                         modifier = Modifier.fillMaxWidth(),
                         cursorBrush = SolidColor(iconColor)
@@ -431,8 +457,8 @@ private fun WeightSection(
                 Text(
                     text = ScreenMessages.KG,
                     color = secondaryTextColor,
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 16.sp
+                    fontWeight = FontWeight.SemiBold,
+                    fontSize = 14.sp
                 )
             }
         }
@@ -442,17 +468,22 @@ private fun WeightSection(
 @Composable
 private fun TipSection(
     informationColor: Color,
-    borderColor: Color
+    borderColor: Color,
+    containerColor: Color
 ) {
     OutlinedCard(
         modifier = Modifier
             .fillMaxWidth()
-            .height(88.dp),
+            .heightIn(min = 76.dp),
         border = BorderStroke(
             width = 1.dp,
             color = borderColor
         ),
-        shape = RoundedCornerShape(16.dp)
+        shape = RoundedCornerShape(20.dp),
+        colors = CardDefaults.outlinedCardColors(
+            containerColor = containerColor,
+            contentColor = informationColor
+        )
     ) {
         Row(
             modifier = Modifier
@@ -487,8 +518,11 @@ private fun AddWeightButton(
 ) {
     OutlinedButton(
         onClick = onClick,
-        modifier = Modifier.height(88.dp),
-        shape = RoundedCornerShape(16.dp),
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(76.dp),
+        shape = RoundedCornerShape(20.dp),
+        border = null,
         colors = ButtonColors(
             containerColor = buttonColor,
             contentColor = buttonColor,
@@ -512,8 +546,8 @@ private fun AddWeightButton(
             Text(
                 text = ScreenMessages.ADD_WEIGHT_BUTTON,
                 color = primaryTextColor,
-                fontSize = 24.sp,
-                fontWeight = FontWeight.Bold
+                fontSize = 22.sp,
+                fontWeight = FontWeight.SemiBold
             )
         }
     }

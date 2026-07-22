@@ -1,13 +1,18 @@
 package com.example.fithub.screens.reusableComponents
 
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Done
 import androidx.compose.material.icons.outlined.Error
 import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.example.fithub.common.messages.ScreenMessages
 import com.example.fithub.ui.theme.AppColors
 
@@ -21,6 +26,15 @@ fun ErrorPopupMessage(
     val colors = AppColors.colors(isDarkTheme)
 
     AlertDialog(
+        containerColor = colors.card,
+        shape = RoundedCornerShape(20.dp),
+        iconContentColor = if (isErrorMessage) {
+            colors.error
+        } else {
+            colors.success
+        },
+        titleContentColor = colors.primaryText,
+        textContentColor = colors.secondaryText,
         icon = {
             if (isErrorMessage) {
                 Icon(
@@ -40,19 +54,24 @@ fun ErrorPopupMessage(
             if (isErrorMessage) {
                 Text(
                     text = ScreenMessages.ERROR_TITLE,
-                    color = colors.error
+                    color = colors.primaryText,
+                    fontSize = 22.sp,
+                    fontWeight = FontWeight.SemiBold
                 )
             } else {
                 Text(
                     text = ScreenMessages.SUCCESS_TITLE,
-                    color = colors.success
+                    color = colors.primaryText,
+                    fontSize = 22.sp,
+                    fontWeight = FontWeight.SemiBold
                 )
             }
         },
         text = {
             Text(
                 text = message,
-                color = colors.primaryText
+                color = colors.primaryText,
+                fontSize = 16.sp
             )
         },
         onDismissRequest = {
@@ -62,11 +81,16 @@ fun ErrorPopupMessage(
             TextButton(
                 onClick = {
                     onDismiss()
-                }
+                },
+                colors = ButtonDefaults.textButtonColors(
+                    contentColor = colors.primary
+                )
             ) {
                 Text(
                     text = ScreenMessages.OK,
-                    color = colors.primaryText
+                    color = colors.primary,
+                    fontSize = 16.sp,
+                    fontWeight = FontWeight.SemiBold
                 )
             }
         }

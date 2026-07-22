@@ -30,43 +30,20 @@ fun ThemeToggle(
     onThemeChange: (Boolean) -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val colors = AppColors.colors(isDarkTheme)
     val thumbOffset by animateDpAsState(
         targetValue = if (isDarkTheme) 40.dp else 0.dp,
         label = ScreenMessages.THEME_TOGGLE_OFFSET_DESCRIPTION
     )
 
-    val trackColor = if (isDarkTheme) {
-        DarkSurface
-    } else {
-        LightCard
-    }
-
-    val borderColor = if (isDarkTheme) {
-        BorderDark
-    } else {
-        BorderLight
-    }
-
-    val selectedColor = if (isDarkTheme) {
-        PrimaryBlueDark
-    } else {
-        PrimaryBlueLight
-    }
-
-    val inactiveIconColor = if (isDarkTheme) {
-        TextSecondaryDark
-    } else {
-        TextSecondaryLight
-    }
-
     Box(
         modifier = modifier
             .size(width = 84.dp, height = 44.dp)
             .clip(RoundedCornerShape(50))
-            .background(trackColor)
+            .background(colors.track)
             .border(
                 width = 1.dp,
-                color = borderColor,
+                color = colors.border,
                 shape = RoundedCornerShape(50)
             )
             .padding(4.dp)
@@ -76,7 +53,7 @@ fun ThemeToggle(
                 .size(36.dp)
                 .offset(x = thumbOffset)
                 .clip(CircleShape)
-                .background(selectedColor)
+                .background(colors.thumb)
         )
 
         Row(
@@ -96,7 +73,7 @@ fun ThemeToggle(
                 Icon(
                     imageVector = Icons.Outlined.LightMode,
                     contentDescription = ScreenMessages.LIGHT_MODE_DESCRIPTION,
-                    tint = if (!isDarkTheme) TextPrimaryDark else inactiveIconColor,
+                    tint = if (!isDarkTheme) colors.onPrimary else colors.inactiveIcon,
                     modifier = Modifier.size(20.dp)
                 )
             }
@@ -114,7 +91,7 @@ fun ThemeToggle(
                 Icon(
                     imageVector = Icons.Outlined.DarkMode,
                     contentDescription = ScreenMessages.DARK_MODE_DESCRIPTION,
-                    tint = if (isDarkTheme) TextPrimaryDark else inactiveIconColor,
+                    tint = if (isDarkTheme) colors.onPrimary else colors.inactiveIcon,
                     modifier = Modifier.size(20.dp)
                 )
             }

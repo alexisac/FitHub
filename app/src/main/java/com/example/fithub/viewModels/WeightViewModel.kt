@@ -2,6 +2,7 @@ package com.example.fithub.viewModels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.fithub.common.Constants
 import com.example.fithub.common.exceptions.ValidationException
 import com.example.fithub.common.messages.ViewModelErrorMessages
 import com.example.fithub.common.messages.ViewModelSuccessMessages
@@ -13,6 +14,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import java.time.format.DateTimeFormatter
 import javax.inject.Inject
 
 @HiltViewModel
@@ -98,7 +100,9 @@ class WeightViewModel @Inject constructor(
                                 appendLine("Number of records: ${weightHistory.size}")
                                 appendLine()
                                 weightHistory.forEach { record ->
-                                    appendLine("${record.id} - ${record.weight} kg - ${record.dateTime}")
+                                    appendLine("${record.id} - ${record.weight} kg - ${record.dateTime.format(
+                                        DateTimeFormatter.ofPattern(Constants.DATE_TIME_FORMATTER)
+                                    )}")
                                 }
                             }
                         )

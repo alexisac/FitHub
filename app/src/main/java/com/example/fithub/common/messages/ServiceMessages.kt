@@ -8,6 +8,6 @@ object ServiceMessages {
     const val SELECT_VALID_TIME = "Please select a valid time\n"
     const val SPLIT_NAME_NOT_EMPTY = "Split name cannot be empty\n"
     const val START_DATE_NOT_EMPTY = "Start date cannot be empty\n"
-    const val WEIGHT_POSITIVE_NUMBER = "Weight must be greater than 0\n"
+    const val WEIGHT_LIMIT = "Weight must be between 0 and 150 kg\n"
     const val WEIGHT_VALID_NUMBER = "Weight must be a valid number\n"
 }

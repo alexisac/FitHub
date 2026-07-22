@@ -7,43 +7,43 @@ import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 
 private val DarkColorScheme = darkColorScheme(
-    primary = PrimaryBlueDark,
-    secondary = SoftBlueDark,
-    tertiary = PurpleAccent,
+    primary = FitPrimary,
+    secondary = FitSecondary,
+    tertiary = FitAccent,
 
     background = DarkBackground,
     surface = DarkSurface,
     surfaceVariant = DarkCard,
 
-    onPrimary = TextPrimaryDark,
-    onSecondary = TextPrimaryDark,
-    onTertiary = TextPrimaryDark,
-    onBackground = TextPrimaryDark,
-    onSurface = TextPrimaryDark,
-    onSurfaceVariant = TextSecondaryDark,
+    onPrimary = DarkPrimaryText,
+    onSecondary = DarkPrimaryText,
+    onTertiary = DarkPrimaryText,
+    onBackground = DarkPrimaryText,
+    onSurface = DarkPrimaryText,
+    onSurfaceVariant = DarkSecondaryText,
 
-    outline = BorderDark,
-    error = ErrorRed
+    outline = DarkBorder,
+    error = ErrorColor
 )
 
 private val LightColorScheme = lightColorScheme(
-    primary = PrimaryBlueLight,
-    secondary = SoftBlueLight,
-    tertiary = PurpleAccent,
+    primary = FitPrimary,
+    secondary = FitSecondary,
+    tertiary = FitAccent,
 
     background = LightBackground,
     surface = LightSurface,
     surfaceVariant = LightCard,
 
-    onPrimary = TextPrimaryDark,
-    onSecondary = TextPrimaryLight,
-    onTertiary = TextPrimaryDark,
-    onBackground = TextPrimaryLight,
-    onSurface = TextPrimaryLight,
-    onSurfaceVariant = TextSecondaryLight,
+    onPrimary = LightBorder,
+    onSecondary = LightPrimaryText,
+    onTertiary = LightPrimaryText,
+    onBackground = LightPrimaryText,
+    onSurface = LightPrimaryText,
+    onSurfaceVariant = LightSecondaryText,
 
-    outline = BorderLight,
-    error = ErrorRed
+    outline = LightBorder,
+    error = ErrorColor
 )
 
 @Composable

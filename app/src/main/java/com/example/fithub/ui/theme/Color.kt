@@ -3,62 +3,102 @@ package com.example.fithub.ui.theme
 import androidx.compose.ui.graphics.Color
 import com.example.fithub.models.AppThemeColors
 
-// General dark theme
-val DarkBackground = Color(0xFF0B0F17)
-val DarkSurface = Color(0xFF111827)
-val DarkCard = Color(0xFF151B26)
-val TextPrimaryDark = Color(0xFFF8FAFC)
-val TextSecondaryDark = Color(0xFFAAB2C0)
-val BorderDark = Color(0xFF313A49)
+//Brand colors
+val FitPrimary = Color(0xFF53A687)
+val FitSecondary = Color(0xFFB2C84F)
+val FitAccent = Color(0xFFD2E878)
 
-// General light theme
-val LightBackground = Color(0xFFF8FAFF)
+// Dark theme
+val DarkBackground = Color(0xFF0B1B17)
+val DarkSurface = Color(0xFF11261F)
+val DarkCard = Color(0xFF18342D)
+
+val DarkPrimaryText = Color(0xFFEAF2EE)
+val DarkSecondaryText = Color(0xFFA3B8AE)
+
+val DarkBorder = Color(0xFF27463D)
+
+val DarkSelectedContainer = Color(0xFF1F3D34)
+val DarkInfoContainer = Color(0xFF264A3F)
+
+// Light theme
+val LightBackground = Color(0xFFE8FAF4)
 val LightSurface = Color(0xFFFFFFFF)
-val LightCard = Color(0xFFF1F5FF)
-val TextPrimaryLight = Color(0xFF111827)
-val TextSecondaryLight = Color(0xFF667085)
-val BorderLight = Color(0xFFD7DEEA)
+val LightCard = Color(0xFFF2FAF7)
 
-// Common colors
-val PrimaryBlueDark = Color(0xFF3F6DFF)
-val PrimaryBlueLight = Color(0xFF2F63F6)
-val SoftBlueDark = Color(0xFFAFC6FF)
-val SoftBlueLight = Color(0xFFE8EEFF)
-val PurpleAccent = Color(0xFF6D4CFF)
-val ErrorRed = Color(0xFFFF4D4F)
-val SuccessGreen = Color(0xFF4BB543)
+val LightPrimaryText = Color(0xFF14323A)
+val LightSecondaryText = Color(0xFF6E8781)
 
-// Main colors
-val MainRed = Color(0xFFF04770)
-val MainOrange = Color(0xFFF78C6A)
-val MainYellow = Color(0xFFFFD167)
-val MainGreen = Color(0xFF06D7A0)
-val MainLightBlue = Color(0xFF108AB1)
-val MainDarkBlue = Color(0xFF073A4B)
+val LightBorder = Color(0xFFB9D8CD)
+
+val LightSelectedContainer = Color(0xFFEDF8F4)
+val LightInfoContainer = Color(0xFFF5F9E9)
+
+// Status colors
+val ErrorColor = Color(0xFFE66B6B)
+val SuccessColor = Color(0xFF53A687)
 
 object AppColors {
     fun colors(isDarkTheme: Boolean): AppThemeColors {
         return if (isDarkTheme) {
             AppThemeColors(
-                primaryText = TextPrimaryDark,
-                secondaryText = TextSecondaryDark,
-                primaryBorderColor = TextPrimaryDark,
-                secondaryBorderColor = MainRed,
-                informationColor = MainGreen,
-                icon = MainRed,
-                error = ErrorRed,
-                success = SuccessGreen
+                background = DarkBackground,
+                surface = DarkSurface,
+                card = DarkCard,
+                selectedContainer = DarkSelectedContainer,
+                infoContainer = DarkInfoContainer,
+                onPrimary = DarkPrimaryText,
+
+                primaryText = DarkPrimaryText,
+                secondaryText = DarkSecondaryText,
+
+                primary = FitPrimary,
+                secondary = FitSecondary,
+                accent = FitAccent,
+
+                border = DarkBorder,
+                icon = FitPrimary,
+                information = FitSecondary,
+
+                track = DarkCard,
+                thumb = FitPrimary,
+                inactiveIcon = DarkSecondaryText,
+
+                error = ErrorColor,
+                success = SuccessColor,
+
+                primaryBorderColor = ErrorColor,
+                secondaryBorderColor = ErrorColor
             )
         } else {
             AppThemeColors(
-                primaryText = TextPrimaryLight,
-                secondaryText = TextSecondaryLight,
-                primaryBorderColor = TextPrimaryLight,
-                secondaryBorderColor = MainRed,
-                informationColor = MainGreen,
-                icon = MainRed,
-                error = ErrorRed,
-                success = SuccessGreen
+                background = LightBackground,
+                surface = LightSurface,
+                card = LightCard,
+                selectedContainer = LightSelectedContainer,
+                infoContainer = LightInfoContainer,
+                onPrimary = Color.White,
+
+                primaryText = LightPrimaryText,
+                secondaryText = LightSecondaryText,
+
+                primary = FitPrimary,
+                secondary = FitSecondary,
+                accent = FitAccent,
+
+                border = LightBorder,
+                icon = FitPrimary,
+                information = FitSecondary,
+
+                track = LightCard,
+                thumb = FitPrimary,
+                inactiveIcon = LightSecondaryText,
+
+                error = ErrorColor,
+                success = SuccessColor,
+
+                primaryBorderColor = ErrorColor,
+                secondaryBorderColor = ErrorColor
             )
         }
     }
