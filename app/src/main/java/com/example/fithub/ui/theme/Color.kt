@@ -26,6 +26,7 @@ val SoftBlueDark = Color(0xFFAFC6FF)
 val SoftBlueLight = Color(0xFFE8EEFF)
 val PurpleAccent = Color(0xFF6D4CFF)
 val ErrorRed = Color(0xFFFF4D4F)
+val SuccessGreen = Color(0xFF4BB543)
 
 // Main colors
 val MainRed = Color(0xFFF04770)
@@ -45,7 +46,8 @@ object AppColors {
                 secondaryBorderColor = MainRed,
                 informationColor = MainGreen,
                 icon = MainRed,
-                error = ErrorRed
+                error = ErrorRed,
+                success = SuccessGreen
             )
         } else {
             AppThemeColors(
@@ -55,7 +57,8 @@ object AppColors {
                 secondaryBorderColor = MainRed,
                 informationColor = MainGreen,
                 icon = MainRed,
-                error = ErrorRed
+                error = ErrorRed,
+                success = SuccessGreen
             )
         }
     }

@@ -47,6 +47,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.fithub.common.messages.ScreenMessages
 import com.example.fithub.screens.reusableComponents.DatePicker
+import com.example.fithub.screens.reusableComponents.ErrorPopupMessage
 import com.example.fithub.screens.reusableComponents.TimePicker
 import com.example.fithub.ui.theme.AppColors
 import com.example.fithub.viewModels.WeightViewModel
@@ -144,14 +145,13 @@ fun AddWeightScreen (
         )
 
         uiState.errorMessage?.let { error ->
-
-            Spacer(modifier = Modifier.height(16.dp))
-
-            Text(
-                text = error,
-                color = colors.error,
-                fontSize = 16.sp,
-                fontWeight = FontWeight.Medium
+            ErrorPopupMessage(
+                message = error,
+                isErrorMessage = true,
+                isDarkTheme = isDarkTheme,
+                onDismiss = {
+                    viewModel.clearMessage()
+                }
             )
         }
     }

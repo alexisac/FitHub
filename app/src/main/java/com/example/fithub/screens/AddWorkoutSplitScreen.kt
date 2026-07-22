@@ -3,7 +3,6 @@ package com.example.fithub.screens
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.gestures.detectDragGesturesAfterLongPress
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -18,7 +17,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -27,7 +25,6 @@ import androidx.compose.material.icons.outlined.Add
 import androidx.compose.material.icons.outlined.ArrowBack
 import androidx.compose.material.icons.outlined.ArrowForwardIos
 import androidx.compose.material.icons.outlined.CalendarToday
-import androidx.compose.material.icons.outlined.DragHandle
 import androidx.compose.material.icons.outlined.DragIndicator
 import androidx.compose.material.icons.outlined.FitnessCenter
 import androidx.compose.material3.ButtonColors
@@ -43,25 +40,20 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.ColorMatrix
-import androidx.compose.ui.graphics.Shape
-import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.fithub.common.messages.ScreenMessages
 import com.example.fithub.models.DayType
 import com.example.fithub.models.WorkoutSplitDay
 import com.example.fithub.screens.reusableComponents.DatePicker
+import com.example.fithub.screens.reusableComponents.ErrorPopupMessage
 import com.example.fithub.ui.theme.AppColors
 import com.example.fithub.viewModels.WorkoutViewModel
 import sh.calvin.reorderable.ReorderableItem
@@ -164,14 +156,13 @@ fun AddWorkoutSplitScreen(
         )
 
         uiState.errorMessage?.let { error ->
-
-            Spacer(modifier = Modifier.height(16.dp))
-
-            Text(
-                text = error,
-                color = colors.error,
-                fontSize = 16.sp,
-                fontWeight = FontWeight.Medium
+            ErrorPopupMessage(
+                message = error,
+                isErrorMessage = true,
+                isDarkTheme = isDarkTheme,
+                onDismiss = {
+                    workoutViewModel.clearMessages()
+                }
             )
         }
     }
@@ -233,7 +224,7 @@ private fun SplitName(
 ) {
     Column {
         Text(
-            text = ScreenMessages.SPLIT_NAME,
+            text = ScreenMessages.SPLIT_NAME_TITLE,
             color = primaryTextColor,
             fontSize = 16.sp,
             fontWeight = FontWeight.SemiBold
@@ -284,7 +275,7 @@ private fun StartDate(
 
     Column {
         Text(
-            text = ScreenMessages.START_DATE,
+            text = ScreenMessages.START_DATE_TITLE,
             color = primaryTextColor,
             fontSize = 16.sp,
             fontWeight = FontWeight.SemiBold

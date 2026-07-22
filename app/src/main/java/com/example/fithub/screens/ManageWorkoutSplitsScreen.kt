@@ -1,7 +1,6 @@
 package com.example.fithub.screens
 
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -24,7 +23,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.fithub.common.messages.ScreenMessages
 import com.example.fithub.ui.theme.AppColors
 import com.example.fithub.viewModels.WorkoutViewModel
@@ -95,7 +93,7 @@ private fun Header(
                 .weight(1f)
         ) {
             Text(
-                text = ScreenMessages.MANAGE_WORKOUT_SPLIT,
+                text = ScreenMessages.MANAGE_WORKOUT_SPLIT_TITLE,
                 color = primaryTextColor,
                 fontSize = 24.sp,
                 fontWeight = FontWeight.Bold

@@ -9,5 +9,6 @@ data class AppThemeColors(
     val secondaryBorderColor: Color,
     val informationColor: Color,
     val icon: Color,
-    val error: Color
+    val error: Color,
+    val success: Color
 )
