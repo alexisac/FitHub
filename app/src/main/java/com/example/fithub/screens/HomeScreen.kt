@@ -12,6 +12,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.example.fithub.common.messages.ScreenMessages
 import com.example.fithub.screens.reusableComponents.ThemeToggle
 import com.example.fithub.viewModels.WeightViewModel
 
@@ -50,7 +51,7 @@ fun HomeScreen (
 //            onClick = goToAddWeightMenu,
             onClick = goToManageWorkoutSplit,
         ) {
-            Text("Add Weight")
+            Text(ScreenMessages.ADD_WEIGHT_BUTTON)
         }
 
         Text(

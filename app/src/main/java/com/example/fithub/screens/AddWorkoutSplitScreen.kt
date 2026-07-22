@@ -58,6 +58,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.fithub.common.messages.ScreenMessages
 import com.example.fithub.models.DayType
 import com.example.fithub.models.WorkoutSplitDay
 import com.example.fithub.screens.reusableComponents.DatePicker
@@ -196,7 +197,7 @@ private fun Header(
         ) {
             Icon(
                 imageVector = Icons.Outlined.ArrowBack,
-                contentDescription = "Back"
+                contentDescription = ScreenMessages.BACK_DESCRIPTION
             )
         }
 
@@ -207,13 +208,13 @@ private fun Header(
                 .weight(1f)
         ) {
             Text(
-                text = "Add workout split",
+                text = ScreenMessages.ADD_WORKOUT_SPLIT_TITLE,
                 color = primaryTextColor,
                 fontSize = 24.sp,
                 fontWeight = FontWeight.Bold
             )
             Text(
-                text = "Create a new split and define your training days.",
+                text = ScreenMessages.ADD_WORKOUT_SPLIT_SUBTITLE,
                 color = secondaryTextColor,
                 fontSize = 12.sp
             )
@@ -232,7 +233,7 @@ private fun SplitName(
 ) {
     Column {
         Text(
-            text = "SPLIT NAME",
+            text = ScreenMessages.SPLIT_NAME,
             color = primaryTextColor,
             fontSize = 16.sp,
             fontWeight = FontWeight.SemiBold
@@ -249,14 +250,14 @@ private fun SplitName(
             ),
             placeholder = {
                 Text(
-                    text = "e.g. Push Pull Legs",
+                    text = ScreenMessages.SPLIT_NAME_PLACEHOLDER,
                     color = secondaryTextColor,
                 )
             },
             trailingIcon = {
                 Icon(
                     imageVector = Icons.Outlined.FitnessCenter,
-                    contentDescription = "Weight",
+                    contentDescription = ScreenMessages.WEIGHT_DESCRIPTION,
                     tint = iconColor,
 
                 )
@@ -283,7 +284,7 @@ private fun StartDate(
 
     Column {
         Text(
-            text = "START DATE",
+            text = ScreenMessages.START_DATE,
             color = primaryTextColor,
             fontSize = 16.sp,
             fontWeight = FontWeight.SemiBold
@@ -312,7 +313,7 @@ private fun StartDate(
             ) {
                 Icon(
                     imageVector = Icons.Outlined.CalendarToday,
-                    contentDescription = "Calendar",
+                    contentDescription = ScreenMessages.CALENDAR_DESCRIPTION,
                     tint = primaryIconColor
                 )
 
@@ -322,7 +323,7 @@ private fun StartDate(
                     modifier = Modifier.weight(1f)
                 ) {
                     Text(
-                        text = selectedDate.ifBlank { "Select date" },
+                        text = selectedDate.ifBlank { ScreenMessages.SELECT_DATE_PLACEHOLDER },
                         color = secondaryTextColor,
                         fontSize = 16.sp
                     )
@@ -330,7 +331,7 @@ private fun StartDate(
 
                 Icon(
                     imageVector = Icons.Outlined.ArrowForwardIos,
-                    contentDescription = "Arrow",
+                    contentDescription = ScreenMessages.ARROW_DESCRIPTION,
                     tint = secondaryIconColor
                 )
             }
@@ -369,14 +370,14 @@ private fun AddDayButton(
         ) {
             Icon(
                 imageVector = Icons.Outlined.Add,
-                contentDescription = "Add",
+                contentDescription = ScreenMessages.ADD_DESCRIPTION,
                 tint = buttonContentColor
             )
 
             Spacer(modifier = Modifier.width(16.dp))
 
             Text(
-                text = "Add day",
+                text = ScreenMessages.ADD_DAY_TITLE,
                 color = buttonContentColor,
                 fontSize = 16.sp,
                 fontWeight = FontWeight.SemiBold
@@ -407,12 +408,12 @@ private fun ReorderableWorkoutDaysList(
 
     Column {
         Text(
-            text = "DAYS IN SPLIT",
+            text = ScreenMessages.DAYS_IN_SPLIT_TITLE,
             color = textColor
         )
 
         Text(
-            text = "Add the days that make up this split.",
+            text = ScreenMessages.DAYS_IN_SPLIT_SUBTITLE,
             color = textColor
         )
 
@@ -427,7 +428,7 @@ private fun ReorderableWorkoutDaysList(
                         day = WorkoutSplitDay(
                             id = -1,
                             position = 1,
-                            name = "e.g. workout day",
+                            name = ScreenMessages.WORKOUT_DAY_PLACEHOLDER,
                             day = DayType.WORKOUT
                         ),
                         textColor = textColor,
@@ -486,7 +487,7 @@ private fun WorkoutDayItem(
     ) {
         Icon(
             imageVector = Icons.Outlined.DragIndicator,
-            contentDescription = "Reorder",
+            contentDescription = ScreenMessages.REORDER_DESCRIPTION,
             tint = textColor,
             modifier = dragModifier
         )
@@ -549,7 +550,7 @@ private fun CreateSplitButton(
             .height(60.dp)
     ) {
         Text(
-            text = "Create split",
+            text = ScreenMessages.CREATE_SPLIT_BUTTON,
             fontSize = 16.sp,
             fontWeight = FontWeight.SemiBold
         )

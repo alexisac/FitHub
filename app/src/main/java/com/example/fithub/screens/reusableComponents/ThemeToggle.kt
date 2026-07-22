@@ -21,6 +21,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
+import com.example.fithub.common.messages.ScreenMessages
 import com.example.fithub.ui.theme.*
 
 @Composable
@@ -31,7 +32,7 @@ fun ThemeToggle(
 ) {
     val thumbOffset by animateDpAsState(
         targetValue = if (isDarkTheme) 40.dp else 0.dp,
-        label = "ThemeToggleOffset"
+        label = ScreenMessages.THEME_TOGGLE_OFFSET_DESCRIPTION
     )
 
     val trackColor = if (isDarkTheme) {
@@ -94,7 +95,7 @@ fun ThemeToggle(
             ) {
                 Icon(
                     imageVector = Icons.Outlined.LightMode,
-                    contentDescription = "LightMode",
+                    contentDescription = ScreenMessages.LIGHT_MODE_DESCRIPTION,
                     tint = if (!isDarkTheme) TextPrimaryDark else inactiveIconColor,
                     modifier = Modifier.size(20.dp)
                 )
@@ -112,7 +113,7 @@ fun ThemeToggle(
             ) {
                 Icon(
                     imageVector = Icons.Outlined.DarkMode,
-                    contentDescription = "DarkMode",
+                    contentDescription = ScreenMessages.DARK_MODE_DESCRIPTION,
                     tint = if (isDarkTheme) TextPrimaryDark else inactiveIconColor,
                     modifier = Modifier.size(20.dp)
                 )

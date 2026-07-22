@@ -7,6 +7,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
+import com.example.fithub.common.messages.ScreenMessages
 import java.time.Instant
 import java.time.LocalDate
 import java.time.ZoneOffset
@@ -41,14 +42,14 @@ fun DatePicker(
                     onDismiss()
                 }
             ) {
-                Text("OK")
+                Text(ScreenMessages.OK)
             }
         },
         dismissButton = {
             TextButton(
                 onClick = onDismiss
             ) {
-                Text("Cancel")
+                Text(ScreenMessages.CANCEL)
             }
         }
     ) {

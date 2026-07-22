@@ -25,6 +25,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.fithub.common.messages.ScreenMessages
 import com.example.fithub.ui.theme.AppColors
 import com.example.fithub.viewModels.WorkoutViewModel
 
@@ -83,7 +84,7 @@ private fun Header(
         ) {
             Icon(
                 imageVector = Icons.Outlined.ArrowBack,
-                contentDescription = "Back"
+                contentDescription = ScreenMessages.BACK_DESCRIPTION
             )
         }
 
@@ -94,14 +95,14 @@ private fun Header(
                 .weight(1f)
         ) {
             Text(
-                text = "Manage workout split",
+                text = ScreenMessages.MANAGE_WORKOUT_SPLIT,
                 color = primaryTextColor,
                 fontSize = 24.sp,
                 fontWeight = FontWeight.Bold
             )
 
             Text(
-                text = "View, update or delete your workout splits.",
+                text = ScreenMessages.WORKOUT_SPLIT_SUBTITLE,
                 color = secondaryTextColor,
                 fontSize = 12.sp
             )
@@ -120,7 +121,7 @@ private fun Header(
         ) {
             Icon(
                 imageVector = Icons.Outlined.Add,
-                contentDescription = "Add"
+                contentDescription = ScreenMessages.ADD_DESCRIPTION
             )
         }
     }

@@ -45,6 +45,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.fithub.common.messages.ScreenMessages
 import com.example.fithub.screens.reusableComponents.DatePicker
 import com.example.fithub.screens.reusableComponents.TimePicker
 import com.example.fithub.ui.theme.AppColors
@@ -173,7 +174,7 @@ private fun Header(
         ) {
             Icon(
                 imageVector = Icons.Outlined.ArrowBack,
-                contentDescription = "Back"
+                contentDescription = ScreenMessages.BACK_DESCRIPTION
             )
         }
 
@@ -182,13 +183,13 @@ private fun Header(
 
         Column {
             Text(
-                text = "Add Weight",
+                text = ScreenMessages.ADD_WEIGHT_TITLE,
                 color = primaryTextColor,
                 fontSize = 36.sp,
                 fontWeight = FontWeight.Bold
             )
             Text(
-                text = "Record your weight to track your progress.",
+                text = ScreenMessages.RECORD_WEIGHT_SUBTITLE,
                 color = secondaryTextColor,
                 fontSize = 16.sp
             )
@@ -212,7 +213,7 @@ private fun DateAndTimeSection(
 
     Column {
         Text(
-            text = "Date & Time",
+            text = ScreenMessages.DATE_AND_TIME_TITLE,
             color = primaryTextColor,
             fontSize = 24.sp,
             fontWeight = FontWeight.Bold
@@ -250,7 +251,7 @@ private fun DateAndTimeSection(
                 ) {
                     Icon(
                         imageVector = Icons.Outlined.CalendarToday,
-                        contentDescription = "Calendar",
+                        contentDescription = ScreenMessages.CALENDAR_DESCRIPTION,
                         tint = iconColor,
                         modifier = Modifier.size(30.dp)
                     )
@@ -261,7 +262,7 @@ private fun DateAndTimeSection(
                         modifier = Modifier.weight(1f)
                     ) {
                         Text(
-                            text = "Date",
+                            text = ScreenMessages.DATE_TITLE,
                             color = secondaryTextColor,
                             fontSize = 16.sp
                         )
@@ -269,7 +270,7 @@ private fun DateAndTimeSection(
                         Spacer(modifier = Modifier.height(6.dp))
 
                         Text(
-                            text = selectedDate.ifBlank { "Select date" },
+                            text = selectedDate.ifBlank { ScreenMessages.SELECT_DATE_PLACEHOLDER },
                             color = primaryTextColor,
                             fontSize = 16.sp
                         )
@@ -302,7 +303,7 @@ private fun DateAndTimeSection(
                 ) {
                     Icon(
                         imageVector = Icons.Outlined.WatchLater,
-                        contentDescription = "Watch",
+                        contentDescription = ScreenMessages.WATCH_DESCRIPTION,
                         tint = iconColor,
                         modifier = Modifier.size(30.dp)
                     )
@@ -313,7 +314,7 @@ private fun DateAndTimeSection(
                         modifier = Modifier.weight(1f)
                     ) {
                         Text(
-                            text = "Time",
+                            text = ScreenMessages.TIME_TITLE,
                             color = secondaryTextColor,
                             fontSize = 16.sp
                         )
@@ -321,7 +322,7 @@ private fun DateAndTimeSection(
                         Spacer(modifier = Modifier.height(6.dp))
 
                         Text(
-                            text = selectedTime.ifBlank { "Select time" },
+                            text = selectedTime.ifBlank { ScreenMessages.SELECT_TIME_PLACEHOLDER },
                             color = primaryTextColor,
                             fontSize = 16.sp
                         )
@@ -365,7 +366,7 @@ private fun WeightSection(
 ) {
     Column {
         Text(
-            text = "Weight",
+            text = ScreenMessages.WEIGHT_TITLE,
             color = primaryTextColor,
             fontSize = 24.sp,
             fontWeight = FontWeight.Bold
@@ -391,7 +392,7 @@ private fun WeightSection(
             ) {
                 Icon(
                     imageVector = Icons.Outlined.FitnessCenter,
-                    contentDescription = "Weight",
+                    contentDescription = ScreenMessages.WEIGHT_DESCRIPTION,
                     tint = iconColor,
                     modifier = Modifier.size(30.dp)
                 )
@@ -402,7 +403,7 @@ private fun WeightSection(
                     modifier = Modifier.weight(1f)
                 ) {
                     Text(
-                        text = "Weight",
+                        text = ScreenMessages.WEIGHT_TITLE,
                         color = secondaryTextColor,
                         fontWeight = FontWeight.Bold,
                         fontSize = 16.sp
@@ -428,7 +429,7 @@ private fun WeightSection(
                 }
 
                 Text(
-                    text = "KG",
+                    text = ScreenMessages.KG,
                     color = secondaryTextColor,
                     fontWeight = FontWeight.Bold,
                     fontSize = 16.sp
@@ -461,7 +462,7 @@ private fun TipSection(
         ) {
             Icon(
                 imageVector = Icons.Outlined.Info,
-                contentDescription = "info",
+                contentDescription = ScreenMessages.INFO_DESCRIPTION,
                 tint = informationColor,
                 modifier = Modifier.size(30.dp)
             )
@@ -469,7 +470,7 @@ private fun TipSection(
             Spacer(modifier = Modifier.width(12.dp))
 
             Text(
-                text = "Tip: Weigh yourself at the same time each day for more accurate tracking.",
+                text = ScreenMessages.WEIGHT_TIP,
                 color = informationColor,
                 fontSize = 16.sp
             )
@@ -501,7 +502,7 @@ private fun AddWeightButton(
         ){
             Icon(
                 imageVector = Icons.Outlined.Add,
-                contentDescription = "Add",
+                contentDescription = ScreenMessages.ADD_DESCRIPTION,
                 modifier = Modifier.size(30.dp),
                 tint = iconColor
             )
@@ -509,7 +510,7 @@ private fun AddWeightButton(
             Spacer(modifier = Modifier.width(12.dp))
 
             Text(
-                text = "Add weight",
+                text = ScreenMessages.ADD_WEIGHT_BUTTON,
                 color = primaryTextColor,
                 fontSize = 24.sp,
                 fontWeight = FontWeight.Bold

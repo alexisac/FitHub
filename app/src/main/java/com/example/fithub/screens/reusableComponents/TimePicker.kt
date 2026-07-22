@@ -7,6 +7,7 @@ import androidx.compose.material3.TextButton
 import androidx.compose.material3.TimePicker
 import androidx.compose.material3.rememberTimePickerState
 import androidx.compose.runtime.Composable
+import com.example.fithub.common.messages.ScreenMessages
 import java.time.LocalTime
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -40,14 +41,14 @@ fun TimePicker(
                     onDismiss()
                 }
             ) {
-                Text("OK")
+                Text(ScreenMessages.OK)
             }
         },
         dismissButton = {
             TextButton(
                 onClick = onDismiss
             ) {
-                Text("Cancel")
+                Text(ScreenMessages.CANCEL)
             }
         },
         text = {

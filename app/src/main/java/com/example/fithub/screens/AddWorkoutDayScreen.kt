@@ -40,6 +40,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.fithub.common.messages.ScreenMessages
 import com.example.fithub.models.DayType
 import com.example.fithub.ui.theme.AppColors
 import com.example.fithub.viewModels.WorkoutViewModel
@@ -157,7 +158,7 @@ private fun Header(
         ) {
             Icon(
                 imageVector = Icons.Outlined.ArrowBack,
-                contentDescription = "Back"
+                contentDescription = ScreenMessages.BACK_DESCRIPTION
             )
         }
 
@@ -165,14 +166,14 @@ private fun Header(
 
         Column{
             Text(
-                text = "Add day",
+                text = ScreenMessages.ADD_DAY_TITLE,
                 color = primaryTextColor,
                 fontSize = 24.sp,
                 fontWeight = FontWeight.Bold
             )
 
             Text(
-                text = "Add a workout or rest day to your split.",
+                text = ScreenMessages.ADD_DAY_SUBTITLE,
                 color = secondaryTextColor,
                 fontSize = 12.sp
             )
@@ -190,7 +191,7 @@ private fun DayTypeToggle(
 ) {
     Column {
         Text(
-            text = "DAY TYPE",
+            text = ScreenMessages.DAY_TYPE_TITLE,
             color = primaryTextColor,
             fontSize = 16.sp,
             fontWeight = FontWeight.SemiBold
@@ -228,7 +229,7 @@ private fun DayTypeToggle(
                 ) {
                     Icon(
                         imageVector = Icons.Outlined.FitnessCenter,
-                        contentDescription = "WorkoutDay",
+                        contentDescription = ScreenMessages.WORKOUT_DAY_DESCRIPTION,
                         tint = if (selectedDay == DayType.WORKOUT) {
                             selectedItemColor
                         } else {
@@ -237,7 +238,7 @@ private fun DayTypeToggle(
                     )
 
                     Text(
-                        text = "WORKOUT",
+                        text = ScreenMessages.WORKOUT_TITLE,
                         color = if (selectedDay == DayType.WORKOUT) {
                             selectedItemColor
                         } else {
@@ -276,7 +277,7 @@ private fun DayTypeToggle(
                 ) {
                     Icon(
                         imageVector = Icons.Outlined.Bed,
-                        contentDescription = "RestDay",
+                        contentDescription = ScreenMessages.REST_DAY_DESCRIPTION,
                         tint = if (selectedDay == DayType.REST_DAY) {
                             selectedItemColor
                         } else {
@@ -285,7 +286,7 @@ private fun DayTypeToggle(
                     )
 
                     Text(
-                        text = "REST",
+                        text = ScreenMessages.REST_TITLE,
                         color = if (selectedDay == DayType.REST_DAY) {
                             selectedItemColor
                         } else {
@@ -310,7 +311,7 @@ private fun DayNameField(
 ) {
     Column {
         Text(
-            text = "DAY NAME",
+            text = ScreenMessages.DAY_NAME_TITLE,
             color = primaryTextColor,
             fontSize = 16.sp,
             fontWeight = FontWeight.SemiBold
@@ -323,7 +324,7 @@ private fun DayNameField(
             modifier = Modifier.fillMaxWidth(),
             placeholder = {
                 Text(
-                    text = "e.g. Chest",
+                    text = ScreenMessages.CHEST_PLACEHOLDER,
                     color = secondaryTextColor
                 )
             },
@@ -334,7 +335,7 @@ private fun DayNameField(
             trailingIcon = {
                 Icon(
                     imageVector = Icons.Outlined.List,
-                    contentDescription = "List"
+                    contentDescription = ScreenMessages.LIST_DESCRIPTION
                 )
             },
             colors = OutlinedTextFieldDefaults.colors(
@@ -369,14 +370,14 @@ private fun TipSection(
         ) {
             Icon(
                 imageVector = Icons.Outlined.Info,
-                contentDescription = "Info",
+                contentDescription = ScreenMessages.INFO_DESCRIPTION,
                 tint = iconColor
             )
 
             Spacer(modifier = Modifier.width(16.dp))
 
             Text(
-                text = "You can reorder days later by dragging them.",
+                text = ScreenMessages.REORDER_DAYS_TIP,
                 color = textColor,
                 fontSize = 16.sp,
                 modifier = Modifier
@@ -406,7 +407,7 @@ private fun AddDayButton(
             .height(60.dp)
     ) {
         Text(
-            text = "Add day",
+            text = ScreenMessages.ADD_DAY_BUTTON,
             fontSize = 16.sp,
             fontWeight = FontWeight.SemiBold
         )
