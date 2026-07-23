@@ -145,6 +145,16 @@ class WorkoutViewModel @Inject constructor(
         }
     }
 
+    fun deleteSplitDay(index: Int) {
+        _uiState.update {
+            it.copy(
+                splitDaysList = it.splitDaysList.toMutableList()
+                    .apply { removeAt(index) }
+                    .mapIndexed { i, day -> day.copy(position = i + 1) }
+            )
+        }
+    }
+
     fun clearMessages() {
         _uiState.update {
             it.copy(

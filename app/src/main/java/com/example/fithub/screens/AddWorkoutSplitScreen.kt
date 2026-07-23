@@ -19,7 +19,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
@@ -30,10 +30,12 @@ import androidx.compose.material.icons.outlined.Add
 import androidx.compose.material.icons.outlined.ArrowBack
 import androidx.compose.material.icons.outlined.ArrowForwardIos
 import androidx.compose.material.icons.outlined.CalendarToday
+import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material.icons.outlined.DragIndicator
 import androidx.compose.material.icons.outlined.FitnessCenter
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.OutlinedButton
@@ -148,7 +150,11 @@ fun AddWorkoutSplitScreen(
             workoutColor = colors.primary,
             restDayColor = colors.secondaryText,
             circleTextColor = colors.onPrimary,
-            onMove = workoutViewModel::moveWorkoutDay
+            deleteIconColor = colors.primary,
+            onMove = workoutViewModel::moveWorkoutDay,
+            onDeleteItem = { index ->
+                workoutViewModel.deleteSplitDay(index)
+            }
         )
 
         Spacer(modifier = Modifier.height(24.dp))
@@ -388,7 +394,9 @@ private fun ReorderableWorkoutDaysList(
     workoutColor: Color,
     restDayColor: Color,
     circleTextColor: Color,
-    onMove: (fromIndex: Int, toIndex: Int) -> Unit
+    deleteIconColor: Color,
+    onMove: (fromIndex: Int, toIndex: Int) -> Unit,
+    onDeleteItem: (Int) -> Unit
 ) {
     val lazyListState = rememberLazyListState()
 
@@ -440,15 +448,17 @@ private fun ReorderableWorkoutDaysList(
                         workoutColor = workoutColor,
                         restDayColor = restDayColor,
                         circleTextColor = circleTextColor,
+                        deleteIconColor = deleteIconColor,
                         isDragging = false,
-                        dragModifier = Modifier
+                        dragModifier = Modifier,
+                        onDeleteItem = {}
                     )
                 }
             } else {
-                items(
+                itemsIndexed(
                     items = days,
-                    key = { day -> day.id }
-                ) { day ->
+                    key = { _, day -> day.id }
+                ) { index, day ->
                     ReorderableItem(
                         state = reorderableState,
                         key = day.id
@@ -463,8 +473,12 @@ private fun ReorderableWorkoutDaysList(
                             workoutColor = workoutColor,
                             restDayColor = restDayColor,
                             circleTextColor = circleTextColor,
+                            deleteIconColor = deleteIconColor,
                             isDragging = isDragging,
-                            dragModifier = Modifier.longPressDraggableHandle()
+                            dragModifier = Modifier.longPressDraggableHandle(),
+                            onDeleteItem = {
+                                onDeleteItem(index)
+                            }
                         )
                     }
                 }
@@ -484,8 +498,10 @@ private fun WorkoutDayItem(
     workoutColor: Color,
     restDayColor: Color,
     circleTextColor: Color,
+    deleteIconColor: Color,
     isDragging: Boolean,
-    dragModifier: Modifier
+    dragModifier: Modifier,
+    onDeleteItem: () -> Unit
 ) {
     val scale by animateFloatAsState(
         targetValue = if (isDragging) 1.04f else 1f
@@ -577,6 +593,22 @@ private fun WorkoutDayItem(
                 text = day.day.toString(),
                 color = secondaryTextColor,
                 fontSize = 14.sp
+            )
+        }
+
+        IconButton(
+            onClick = onDeleteItem,
+            modifier = Modifier
+                .size(42.dp),
+            colors = IconButtonDefaults.iconButtonColors(
+                contentColor = deleteIconColor
+            )
+        ) {
+            Icon(
+                imageVector = Icons.Outlined.Delete,
+                contentDescription = ScreenMessages.DELETE_DESCRIPTION,
+                modifier = Modifier
+                    .size(22.dp)
             )
         }
     }

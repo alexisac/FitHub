@@ -14,6 +14,7 @@ object ScreenMessages {
     const val BACK_DESCRIPTION = "Back"
     const val CALENDAR_DESCRIPTION = "Calendar"
     const val DARK_MODE_DESCRIPTION = "DarkMode"
+    const val DELETE_DESCRIPTION = "Delete"
     const val ERROR_DESCRIPTION = "Error"
     const val INFO_DESCRIPTION = "Info"
     const val LIGHT_MODE_DESCRIPTION = "LightMode"
@@ -25,7 +26,6 @@ object ScreenMessages {
     const val WATCH_DESCRIPTION = "Watch"
     const val WEIGHT_DESCRIPTION = "Weight"
     const val WORKOUT_DAY_DESCRIPTION = "WorkoutDay"
-    const val WORKOUT_DAY_SCALE_DESCRIPTION = "WorkoutDayScale"
 
 
     // Titles
