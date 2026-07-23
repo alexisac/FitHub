@@ -1,5 +1,7 @@
 package com.example.fithub.screens
 
+import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -12,14 +14,17 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Add
 import androidx.compose.material.icons.outlined.ArrowBack
@@ -27,7 +32,7 @@ import androidx.compose.material.icons.outlined.ArrowForwardIos
 import androidx.compose.material.icons.outlined.CalendarToday
 import androidx.compose.material.icons.outlined.DragIndicator
 import androidx.compose.material.icons.outlined.FitnessCenter
-import androidx.compose.material3.ButtonColors
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.LocalTextStyle
@@ -46,9 +51,11 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.fithub.common.Constants
 import com.example.fithub.common.messages.ScreenMessages
 import com.example.fithub.models.DayType
 import com.example.fithub.models.WorkoutSplitDay
@@ -59,6 +66,7 @@ import com.example.fithub.viewModels.WorkoutViewModel
 import sh.calvin.reorderable.ReorderableItem
 import sh.calvin.reorderable.rememberReorderableLazyListState
 import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
 @Composable
 fun AddWorkoutSplitScreen(
@@ -70,12 +78,10 @@ fun AddWorkoutSplitScreen(
     val uiState by workoutViewModel.uiState.collectAsState()
     val colors = AppColors.colors(isDarkTheme)
 
-    var splitName by remember { mutableStateOf("") }
-    var selectedDate by remember { mutableStateOf("") }
-
     LaunchedEffect(uiState.successMessage) {
         if (uiState.successMessage != null) {
             workoutViewModel.clearMessages()
+            workoutViewModel.clearSplitDraft()
             onBack()
         }
     }
@@ -83,74 +89,88 @@ fun AddWorkoutSplitScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(horizontal = 16.dp, vertical = 40.dp)
+            .background(colors.background)
+            .padding(horizontal = 20.dp, vertical = 40.dp)
+            .verticalScroll(rememberScrollState())
     ) {
         Header(
             primaryTextColor = colors.primaryText,
             secondaryTextColor = colors.secondaryText,
-            borderColor = colors.secondaryBorderColor,
-            iconColor = colors.icon,
+            borderColor = colors.border,
+            containerColor = colors.card,
+            iconColor = colors.primary,
             onBack = {
+                workoutViewModel.clearSplitDraft()
                 onBack()
             }
         )
 
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(24.dp))
 
         SplitName(
             primaryTextColor = colors.primaryText,
             secondaryTextColor = colors.secondaryText,
-            iconColor = colors.secondaryText,
-            borderColor = colors.secondaryText,
-            name = splitName,
-            splitName = { selectedSplitName ->
-                splitName = selectedSplitName
+            iconColor = colors.primary,
+            borderColor = colors.border,
+            containerColor = colors.card,
+            name = uiState.splitName,
+            splitName = { name ->
+                workoutViewModel.updateSplitName(name)
             }
         )
 
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(24.dp))
 
         StartDate(
             primaryTextColor = colors.primaryText,
             secondaryTextColor = colors.secondaryText,
-            primaryIconColor = colors.icon,
+            primaryIconColor = colors.primary,
             secondaryIconColor = colors.secondaryText,
-            borderColor = colors.secondaryText,
-            selectedDate = selectedDate,
+            borderColor = colors.border,
+            containerColor = colors.card,
+            selectedDate = uiState.selectedSplitDate,
             onDateSelected = { date ->
-                selectedDate = date.toString()
+                workoutViewModel.updateSelectedSplitDate(
+                    date.format(DateTimeFormatter.ofPattern(Constants.DATE_FORMATTER))
+                )
             }
         )
 
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(24.dp))
 
         ReorderableWorkoutDaysList(
             days = uiState.splitDaysList,
-            textColor = colors.primaryText,
-            borderColor = colors.primaryBorderColor,
-            workoutColor = colors.icon,
+            primaryTextColor = colors.primaryText,
+            secondaryTextColor = colors.secondaryText,
+            borderColor = colors.border,
+            containerColor = colors.card,
+            draggingContainerColor = colors.selectedContainer,
+            workoutColor = colors.primary,
             restDayColor = colors.secondaryText,
+            circleTextColor = colors.onPrimary,
             onMove = workoutViewModel::moveWorkoutDay
         )
 
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(24.dp))
 
         AddDayButton(
-            buttonContentColor = colors.icon,
+            textColor = colors.primary,
+            borderColor = colors.primary,
+            containerColor = colors.card,
             onClick = {
                 goToAddWorkoutDay()
             }
         )
 
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(24.dp))
 
         CreateSplitButton(
-            textColor = colors.primaryText,
-            buttonColor = colors.icon,
+            textColor = colors.onPrimary,
+            buttonColor = colors.primary,
             onClick = {
                 workoutViewModel.createSplit(
-                    splitName = splitName,
-                    selectedDate = selectedDate
+                    splitName = uiState.splitName,
+                    selectedDate = uiState.selectedSplitDate
                 )
             }
         )
@@ -173,10 +193,11 @@ private fun Header(
     primaryTextColor: Color,
     secondaryTextColor: Color,
     borderColor: Color,
+    containerColor: Color,
     iconColor: Color,
     onBack: () -> Unit
 ) {
-    Row {
+    Column {
         OutlinedIconButton(
             onClick = onBack,
             shape = RoundedCornerShape(10.dp),
@@ -184,7 +205,10 @@ private fun Header(
                 width = 1.dp,
                 color = borderColor
             ),
-            colors = IconButtonDefaults.outlinedIconButtonColors(contentColor = iconColor)
+            colors = IconButtonDefaults.outlinedIconButtonColors(
+                containerColor = containerColor,
+                contentColor = iconColor
+            )
         ) {
             Icon(
                 imageVector = Icons.Outlined.ArrowBack,
@@ -192,24 +216,19 @@ private fun Header(
             )
         }
 
-        Spacer(modifier = Modifier.width(6.dp))
+        Spacer(modifier = Modifier.width(16.dp))
 
-        Column(
-            modifier = Modifier
-                .weight(1f)
-        ) {
-            Text(
-                text = ScreenMessages.ADD_WORKOUT_SPLIT_TITLE,
-                color = primaryTextColor,
-                fontSize = 24.sp,
-                fontWeight = FontWeight.Bold
-            )
-            Text(
-                text = ScreenMessages.ADD_WORKOUT_SPLIT_SUBTITLE,
-                color = secondaryTextColor,
-                fontSize = 12.sp
-            )
-        }
+        Text(
+            text = ScreenMessages.ADD_WORKOUT_SPLIT_TITLE,
+            color = primaryTextColor,
+            fontSize = 38.sp,
+            fontWeight = FontWeight.Bold
+        )
+        Text(
+            text = ScreenMessages.ADD_WORKOUT_SPLIT_SUBTITLE,
+            color = secondaryTextColor,
+            fontSize = 18.sp
+        )
     }
 }
 
@@ -219,6 +238,7 @@ private fun SplitName(
     secondaryTextColor: Color,
     iconColor: Color,
     borderColor: Color,
+    containerColor: Color,
     name: String,
     splitName: (String) -> Unit
 ) {
@@ -226,18 +246,24 @@ private fun SplitName(
         Text(
             text = ScreenMessages.SPLIT_NAME_TITLE,
             color = primaryTextColor,
-            fontSize = 16.sp,
+            fontSize = 22.sp,
             fontWeight = FontWeight.SemiBold
         )
+
+        Spacer(modifier = Modifier.height(16.dp))
 
         OutlinedTextField(
             value = name,
             onValueChange = splitName,
             singleLine = true,
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(76.dp),
+            shape = RoundedCornerShape(20.dp),
             textStyle = LocalTextStyle.current.copy(
                 color = primaryTextColor,
-                fontSize = 16.sp
+                fontSize = 18.sp,
+                fontWeight = FontWeight.SemiBold
             ),
             placeholder = {
                 Text(
@@ -254,8 +280,13 @@ private fun SplitName(
                 )
             },
             colors = OutlinedTextFieldDefaults.colors(
-                focusedBorderColor = borderColor,
-                unfocusedBorderColor = borderColor
+                focusedBorderColor = iconColor,
+                unfocusedBorderColor = borderColor,
+                focusedContainerColor = containerColor,
+                unfocusedContainerColor = containerColor,
+                focusedTextColor = primaryTextColor,
+                unfocusedTextColor = primaryTextColor,
+                cursorColor = iconColor
             )
         )
     }
@@ -268,6 +299,7 @@ private fun StartDate(
     primaryIconColor: Color,
     secondaryIconColor: Color,
     borderColor: Color,
+    containerColor: Color,
     selectedDate: String,
     onDateSelected: (LocalDate) -> Unit
 ) {
@@ -277,9 +309,11 @@ private fun StartDate(
         Text(
             text = ScreenMessages.START_DATE_TITLE,
             color = primaryTextColor,
-            fontSize = 16.sp,
+            fontSize = 22.sp,
             fontWeight = FontWeight.SemiBold
         )
+
+        Spacer(modifier = Modifier.height(16.dp))
 
         OutlinedButton(
             onClick = {
@@ -287,16 +321,17 @@ private fun StartDate(
             },
             modifier = Modifier
                 .fillMaxWidth()
-                .height(60.dp),
-            shape = RoundedCornerShape(4.dp),
+                .height(76.dp),
+            shape = RoundedCornerShape(20.dp),
+            colors = ButtonDefaults.outlinedButtonColors(
+                containerColor = containerColor,
+                contentColor = primaryTextColor
+            ),
             border = BorderStroke(
                 width = 1.dp,
                 color = borderColor
             ),
-            contentPadding = PaddingValues(
-                horizontal = 12.dp,
-                vertical = 0.dp
-            )
+            contentPadding = PaddingValues(horizontal = 16.dp)
         ) {
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -310,15 +345,16 @@ private fun StartDate(
 
                 Spacer(modifier = Modifier.width(16.dp))
 
-                Box(
+                Text(
+                    text = selectedDate.ifBlank { ScreenMessages.SELECT_DATE_PLACEHOLDER },
+                    color = if (selectedDate.isBlank()) {
+                        secondaryTextColor
+                    } else {
+                        primaryTextColor
+                    },
+                    fontSize = 16.sp,
                     modifier = Modifier.weight(1f)
-                ) {
-                    Text(
-                        text = selectedDate.ifBlank { ScreenMessages.SELECT_DATE_PLACEHOLDER },
-                        color = secondaryTextColor,
-                        fontSize = 16.sp
-                    )
-                }
+                )
 
                 Icon(
                     imageVector = Icons.Outlined.ArrowForwardIos,
@@ -342,48 +378,16 @@ private fun StartDate(
 }
 
 @Composable
-private fun AddDayButton(
-    buttonContentColor: Color,
-    onClick: () -> Unit
-) {
-    OutlinedButton(
-        onClick = onClick,
-        modifier = Modifier.height(60.dp),
-        shape = RoundedCornerShape(4.dp),
-        border = BorderStroke(
-            width = 1.dp,
-            color = buttonContentColor
-        )
-    ) {
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.Center
-        ) {
-            Icon(
-                imageVector = Icons.Outlined.Add,
-                contentDescription = ScreenMessages.ADD_DESCRIPTION,
-                tint = buttonContentColor
-            )
-
-            Spacer(modifier = Modifier.width(16.dp))
-
-            Text(
-                text = ScreenMessages.ADD_DAY_TITLE,
-                color = buttonContentColor,
-                fontSize = 16.sp,
-                fontWeight = FontWeight.SemiBold
-            )
-        }
-    }
-}
-
-@Composable
 private fun ReorderableWorkoutDaysList(
     days: List<WorkoutSplitDay>,
-    textColor: Color,
+    primaryTextColor: Color,
+    secondaryTextColor: Color,
     borderColor: Color,
+    containerColor: Color,
+    draggingContainerColor: Color,
     workoutColor: Color,
     restDayColor: Color,
+    circleTextColor: Color,
     onMove: (fromIndex: Int, toIndex: Int) -> Unit
 ) {
     val lazyListState = rememberLazyListState()
@@ -400,17 +404,23 @@ private fun ReorderableWorkoutDaysList(
     Column {
         Text(
             text = ScreenMessages.DAYS_IN_SPLIT_TITLE,
-            color = textColor
+            color = primaryTextColor,
+            fontSize = 22.sp,
+            fontWeight = FontWeight.SemiBold
         )
 
         Text(
             text = ScreenMessages.DAYS_IN_SPLIT_SUBTITLE,
-            color = textColor
+            color = secondaryTextColor,
+            fontSize = 14.sp
         )
 
         LazyColumn(
             state = lazyListState,
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier
+                .fillMaxWidth()
+                .heightIn(max = 240.dp),
+            contentPadding = PaddingValues(vertical = 4.dp),
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             if (days.isEmpty()) {
@@ -422,11 +432,15 @@ private fun ReorderableWorkoutDaysList(
                             name = ScreenMessages.WORKOUT_DAY_PLACEHOLDER,
                             day = DayType.WORKOUT
                         ),
-                        textColor = textColor,
+                        primaryTextColor = primaryTextColor,
+                        secondaryTextColor = secondaryTextColor,
                         borderColor = borderColor,
-                        isDragging = false,
+                        containerColor = containerColor,
+                        draggingContainerColor = draggingContainerColor,
                         workoutColor = workoutColor,
                         restDayColor = restDayColor,
+                        circleTextColor = circleTextColor,
+                        isDragging = false,
                         dragModifier = Modifier
                     )
                 }
@@ -441,11 +455,15 @@ private fun ReorderableWorkoutDaysList(
                     ) { isDragging ->
                         WorkoutDayItem(
                             day = day,
-                            textColor = textColor,
+                            primaryTextColor = primaryTextColor,
+                            secondaryTextColor = secondaryTextColor,
                             borderColor = borderColor,
-                            isDragging = isDragging,
+                            containerColor = containerColor,
+                            draggingContainerColor = draggingContainerColor,
                             workoutColor = workoutColor,
                             restDayColor = restDayColor,
+                            circleTextColor = circleTextColor,
+                            isDragging = isDragging,
                             dragModifier = Modifier.longPressDraggableHandle()
                         )
                     }
@@ -458,36 +476,72 @@ private fun ReorderableWorkoutDaysList(
 @Composable
 private fun WorkoutDayItem(
     day: WorkoutSplitDay,
-    textColor: Color,
+    primaryTextColor: Color,
+    secondaryTextColor: Color,
     borderColor: Color,
+    containerColor: Color,
+    draggingContainerColor: Color,
     workoutColor: Color,
     restDayColor: Color,
+    circleTextColor: Color,
     isDragging: Boolean,
     dragModifier: Modifier
 ) {
+    val scale by animateFloatAsState(
+        targetValue = if (isDragging) 1.04f else 1f
+    )
+    val animatedContainerColor by animateColorAsState(
+        targetValue = if (isDragging) {
+            draggingContainerColor
+        } else {
+            containerColor
+        }
+    )
+
     Row(
         modifier = Modifier
             .fillMaxWidth()
+            .graphicsLayer(
+                scaleX = scale,
+                scaleY = scale
+            )
             .border(
                 width = 1.dp,
                 color = borderColor,
-                shape = RoundedCornerShape(4.dp)
+                shape = RoundedCornerShape(20.dp)
             )
-            .padding(6.dp),
+            .background(
+                color = animatedContainerColor,
+                shape = RoundedCornerShape(20.dp)
+            )
+            .border(
+                width = 1.dp,
+                color = if (isDragging) {
+                    workoutColor
+                } else {
+                    borderColor
+                },
+                shape = RoundedCornerShape(20.dp)
+            )
+            .padding(horizontal = 16.dp, vertical = 12.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Icon(
             imageVector = Icons.Outlined.DragIndicator,
             contentDescription = ScreenMessages.REORDER_DESCRIPTION,
-            tint = textColor,
-            modifier = dragModifier
+            tint = if (isDragging) {
+                workoutColor
+            } else {
+                secondaryTextColor
+            },
+            modifier = dragModifier.size(28.dp)
         )
 
         Spacer(modifier = Modifier.width(16.dp))
 
         Box(
             modifier = Modifier
-                .size(32.dp)
+                .size(42.dp)
                 .background(
                     color = if (day.day == DayType.WORKOUT) {
                         workoutColor
@@ -500,24 +554,68 @@ private fun WorkoutDayItem(
         ) {
             Text(
                 text = day.position.toString(),
-                color = textColor,
+                color = circleTextColor,
+                fontSize = 16.sp,
                 fontWeight = FontWeight.Bold
             )
         }
 
         Spacer(modifier = Modifier.width(16.dp))
 
-        Column {
+        Column(
+            modifier = Modifier
+                .weight(1f)
+        ) {
             Text(
                 text = day.name,
-                color = textColor
+                color = primaryTextColor,
+                fontSize = 16.sp,
+                fontWeight = FontWeight.SemiBold
             )
 
             Text(
                 text = day.day.toString(),
-                color = textColor
+                color = secondaryTextColor,
+                fontSize = 14.sp
             )
         }
+    }
+}
+
+@Composable
+private fun AddDayButton(
+    textColor: Color,
+    borderColor: Color,
+    containerColor: Color,
+    onClick: () -> Unit
+) {
+    OutlinedButton(
+        onClick = onClick,
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(76.dp),
+        shape = RoundedCornerShape(20.dp),
+        border = BorderStroke(
+            width = 1.dp,
+            color = borderColor
+        ),
+        colors = ButtonDefaults.outlinedButtonColors(
+            containerColor = containerColor,
+            contentColor = textColor
+        )
+    ) {
+        Icon(
+            imageVector = Icons.Outlined.Add,
+            contentDescription = ScreenMessages.ADD_DESCRIPTION,
+        )
+
+        Spacer(modifier = Modifier.width(12.dp))
+
+        Text(
+            text = ScreenMessages.ADD_DAY_TITLE,
+            fontSize = 18.sp,
+            fontWeight = FontWeight.SemiBold
+        )
     }
 }
 
@@ -529,8 +627,9 @@ private fun CreateSplitButton(
 ) {
     OutlinedButton(
         onClick = onClick,
-        shape = RoundedCornerShape(16.dp),
-        colors = ButtonColors(
+        shape = RoundedCornerShape(20.dp),
+        border = null,
+        colors = ButtonDefaults.outlinedButtonColors(
             containerColor = buttonColor,
             contentColor = textColor,
             disabledContainerColor = buttonColor,
@@ -538,11 +637,11 @@ private fun CreateSplitButton(
         ),
         modifier = Modifier
             .fillMaxWidth()
-            .height(60.dp)
+            .height(76.dp)
     ) {
         Text(
             text = ScreenMessages.CREATE_SPLIT_BUTTON,
-            fontSize = 16.sp,
+            fontSize = 22.sp,
             fontWeight = FontWeight.SemiBold
         )
     }

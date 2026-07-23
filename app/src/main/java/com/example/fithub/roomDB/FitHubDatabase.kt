@@ -18,7 +18,7 @@ import com.example.fithub.roomDB.entities.WorkoutSplitEntity
         WorkoutSplitEntity::class,
         WorkoutSplitDayEntity::class
     ],
-    version = 2,
+    version = 1,
     exportSchema = false
 )
 @TypeConverters(

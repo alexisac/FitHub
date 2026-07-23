@@ -1,24 +1,21 @@
 package com.example.fithub.roomDB.converters
 
 import androidx.room.TypeConverter
-import java.time.Instant
+import com.example.fithub.common.Constants
 import java.time.LocalDateTime
-import java.time.ZoneId
+import java.time.format.DateTimeFormatter
 
 class LocalDateTimeConverter {
     @TypeConverter
-    fun fromLocalDateTime(dateTime: LocalDateTime?): Long? {
-        return dateTime
-            ?.atZone(ZoneId.systemDefault())
-            ?.toInstant()
-            ?.toEpochMilli()
-    }
+    fun fromLocalDateTime(value: LocalDateTime?): String? = value?.format(
+        DateTimeFormatter.ofPattern(Constants.DATE_TIME_FORMATTER)
+    )
 
     @TypeConverter
-    fun toLocalDateTime(timestamp: Long?): LocalDateTime? {
-        return timestamp
-            ?.let(Instant::ofEpochMilli)
-            ?.atZone(ZoneId.systemDefault())
-            ?.toLocalDateTime()
+    fun toLocalDateTime(value: String?): LocalDateTime? = value?.let{
+        LocalDateTime.parse(
+            it,
+            DateTimeFormatter.ofPattern(Constants.DATE_TIME_FORMATTER)
+        )
     }
 }

@@ -6,5 +6,7 @@ data class WorkoutUiState(
     val isLoading: Boolean = false,
     val errorMessage: String? = null,
     val successMessage: String? = null,
+    val splitName: String = "",
+    val selectedSplitDate: String = "",
     val splitDaysList: List<WorkoutSplitDay> = emptyList()
 )

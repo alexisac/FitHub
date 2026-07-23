@@ -129,11 +129,37 @@ class WorkoutViewModel @Inject constructor(
         }
     }
 
+    fun updateSplitName(name: String) {
+        _uiState.update {
+            it.copy(
+                splitName = name
+            )
+        }
+    }
+
+    fun updateSelectedSplitDate(date: String) {
+        _uiState.update {
+            it.copy(
+                selectedSplitDate = date
+            )
+        }
+    }
+
     fun clearMessages() {
         _uiState.update {
             it.copy(
                 errorMessage = null,
                 successMessage = null
+            )
+        }
+    }
+
+    fun clearSplitDraft() {
+        _uiState.update {
+            it.copy(
+                splitName = "",
+                selectedSplitDate = "",
+                splitDaysList = emptyList()
             )
         }
     }

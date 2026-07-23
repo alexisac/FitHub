@@ -10,7 +10,7 @@ import com.example.fithub.models.DayType
     tableName = "workout_split_days",
     foreignKeys = [
         ForeignKey(
-            entity = WorkoutSplitDayEntity::class,
+            entity = WorkoutSplitEntity::class,
             parentColumns = ["id"],
             childColumns = ["workoutSplitId"],
             onDelete = ForeignKey.CASCADE

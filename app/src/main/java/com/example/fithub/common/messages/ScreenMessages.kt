@@ -25,6 +25,7 @@ object ScreenMessages {
     const val WATCH_DESCRIPTION = "Watch"
     const val WEIGHT_DESCRIPTION = "Weight"
     const val WORKOUT_DAY_DESCRIPTION = "WorkoutDay"
+    const val WORKOUT_DAY_SCALE_DESCRIPTION = "WorkoutDayScale"
 
 
     // Titles

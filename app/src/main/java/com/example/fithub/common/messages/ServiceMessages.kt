@@ -7,6 +7,7 @@ object ServiceMessages {
     const val INVALID_START_DATE = "Invalid start date\n"
     const val SELECT_VALID_DATE = "Please select a valid date\n"
     const val SELECT_VALID_TIME = "Please select a valid time\n"
+    const val SPLIT_NAME_LIMIT = "Split name must be between 1 and 50 letters\n"
     const val SPLIT_NAME_NOT_EMPTY = "Split name cannot be empty\n"
     const val START_DATE_NOT_EMPTY = "Start date cannot be empty\n"
     const val WEIGHT_LIMIT = "Weight must be between 0 and 150 kg\n"

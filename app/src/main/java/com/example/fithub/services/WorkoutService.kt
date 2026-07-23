@@ -15,7 +15,6 @@ import javax.inject.Inject
 class WorkoutService @Inject constructor(
     private val workoutRepository: WorkoutRepository
 ) {
-    private val dateFormatter = DateTimeFormatter.ofPattern(Constants.DATE_FORMATTER)
     suspend fun createSplit(
         splitName: String,
         selectedDate: String,
@@ -23,6 +22,10 @@ class WorkoutService @Inject constructor(
     ): Long {
         if (splitName.isBlank()) {
             throw ValidationException(ServiceMessages.SPLIT_NAME_NOT_EMPTY)
+        }
+
+        if (splitName.trim().length !in 1..50) {
+            throw ValidationException(ServiceMessages.SPLIT_NAME_LIMIT)
         }
 
         if (selectedDate.isBlank()) {
@@ -36,7 +39,7 @@ class WorkoutService @Inject constructor(
         val startDate = try {
             LocalDate.parse(
                 selectedDate,
-                dateFormatter
+                DateTimeFormatter.ofPattern(Constants.DATE_FORMATTER)
             )
         } catch (_: Exception) {
             throw IllegalArgumentException(ServiceMessages.INVALID_START_DATE)

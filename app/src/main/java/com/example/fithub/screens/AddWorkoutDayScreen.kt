@@ -178,20 +178,18 @@ private fun Header(
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        Column{
-            Text(
-                text = ScreenMessages.ADD_DAY_TITLE,
-                color = primaryTextColor,
-                fontSize = 38.sp,
-                fontWeight = FontWeight.Bold
-            )
+        Text(
+            text = ScreenMessages.ADD_DAY_TITLE,
+            color = primaryTextColor,
+            fontSize = 38.sp,
+            fontWeight = FontWeight.Bold
+        )
 
-            Text(
-                text = ScreenMessages.ADD_DAY_SUBTITLE,
-                color = secondaryTextColor,
-                fontSize = 18.sp
-            )
-        }
+        Text(
+            text = ScreenMessages.ADD_DAY_SUBTITLE,
+            color = secondaryTextColor,
+            fontSize = 18.sp
+        )
     }
 }
 
