@@ -5,6 +5,7 @@ object ScreenMessages {
     const val ADD_WEIGHT_BUTTON = "Add weight"
     const val ADD_DAY_BUTTON = "Add day"
     const val CREATE_SPLIT_BUTTON = "Create split"
+    const val MANAGE_WORKOUT_BUTTON = "Manage workout"
 
 
     // Content descriptions

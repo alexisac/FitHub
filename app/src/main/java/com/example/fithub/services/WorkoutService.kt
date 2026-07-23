@@ -72,6 +72,10 @@ class WorkoutService @Inject constructor(
            throw ValidationException(ServiceMessages.DAY_NAME_NOT_EMPTY)
         }
 
+        if (name.trim().length !in 1..50) {
+            throw ValidationException(ServiceMessages.DAY_NAME_LIMIT)
+        }
+
         return WorkoutSplitDay(
             // Temporary ID used for reorderable list
             id = System.currentTimeMillis(),

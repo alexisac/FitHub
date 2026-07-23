@@ -2,6 +2,7 @@ package com.example.fithub.common.messages
 
 object ServiceMessages {
     const val ADD_DAY_TO_SPLIT = "Add at least one day to the split\n"
+    const val DAY_NAME_LIMIT = "Day name must be between 1 and 50 letters\n"
     const val DAY_NAME_NOT_EMPTY = "Day name cannot be empty\n"
     const val INVALID_START_DATE = "Invalid start date\n"
     const val SELECT_VALID_DATE = "Please select a valid date\n"

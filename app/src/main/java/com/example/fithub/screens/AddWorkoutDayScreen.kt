@@ -1,6 +1,7 @@
 package com.example.fithub.screens
 
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -8,6 +9,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -17,7 +19,8 @@ import androidx.compose.material.icons.outlined.Bed
 import androidx.compose.material.icons.outlined.FitnessCenter
 import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material.icons.outlined.List
-import androidx.compose.material3.ButtonColors
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.LocalTextStyle
@@ -68,55 +71,62 @@ fun AddWorkoutDayScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(horizontal = 16.dp, vertical = 40.dp)
+            .background(colors.background)
+            .padding(horizontal = 20.dp, vertical = 40.dp)
     ) {
         Header(
             primaryTextColor = colors.primaryText,
             secondaryTextColor = colors.secondaryText,
-            borderColor = colors.secondaryBorderColor,
-            iconColor = colors.icon,
+            borderColor = colors.border,
+            containerColor = colors.card,
+            iconColor = colors.primary,
             onBack = {
                 onBack()
             }
         )
 
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(24.dp))
 
         DayTypeToggle(
             primaryTextColor = colors.primaryText,
-            selectedItemColor = colors.icon,
-            unselectedItemColor = colors.secondaryText,
+            secondaryTextColor = colors.secondaryText,
+            borderColor = colors.border,
+            containerColor = colors.card,
+            selectedContainerColor = colors.selectedContainer,
+            selectedItemColor = colors.primary,
             selectedDay = selectedDay,
             onDaySelected = { dayType ->
                 selectedDay = dayType
             }
         )
 
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(24.dp))
 
         DayNameField(
             primaryTextColor = colors.primaryText,
             secondaryTextColor = colors.secondaryText,
-            borderColor = colors.primaryBorderColor,
+            borderColor = colors.border,
+            containerColor = colors.card,
+            iconColor = colors.primary,
             dayName = dayName,
             onDayName = { newName ->
                 dayName = newName
             }
         )
 
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(24.dp))
 
         TipSection(
-            textColor = colors.primaryText,
-            borderColor = colors.primaryBorderColor,
-            iconColor = colors.icon
+            informationColor = colors.secondary,
+            borderColor = colors.secondary,
+            containerColor = colors.infoContainer
         )
 
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(24.dp))
 
         AddDayButton(
-            textColor = colors.primaryText,
-            buttonColor = colors.icon,
+            textColor = colors.onPrimary,
+            buttonColor = colors.primary,
             onClick = {
                 workoutViewModel.addWorkoutDay(
                     name = dayName,
@@ -143,18 +153,22 @@ private fun Header(
     primaryTextColor: Color,
     secondaryTextColor: Color,
     borderColor: Color,
+    containerColor: Color,
     iconColor: Color,
     onBack: () -> Unit
 ) {
-    Row {
+    Column {
         OutlinedIconButton(
             onClick = onBack,
-            shape = RoundedCornerShape(16.dp),
+            shape = RoundedCornerShape(10.dp),
             border = BorderStroke(
                 width = 1.dp,
                 color = borderColor
             ),
-            colors = IconButtonDefaults.outlinedIconButtonColors(contentColor = iconColor)
+            colors = IconButtonDefaults.outlinedIconButtonColors(
+                containerColor = containerColor,
+                contentColor = iconColor
+            )
         ) {
             Icon(
                 imageVector = Icons.Outlined.ArrowBack,
@@ -162,20 +176,20 @@ private fun Header(
             )
         }
 
-        Spacer(modifier = Modifier.width(16.dp))
+        Spacer(modifier = Modifier.height(16.dp))
 
         Column{
             Text(
                 text = ScreenMessages.ADD_DAY_TITLE,
                 color = primaryTextColor,
-                fontSize = 24.sp,
+                fontSize = 38.sp,
                 fontWeight = FontWeight.Bold
             )
 
             Text(
                 text = ScreenMessages.ADD_DAY_SUBTITLE,
                 color = secondaryTextColor,
-                fontSize = 12.sp
+                fontSize = 18.sp
             )
         }
     }
@@ -184,8 +198,11 @@ private fun Header(
 @Composable
 private fun DayTypeToggle(
     primaryTextColor: Color,
+    secondaryTextColor: Color,
+    borderColor: Color,
+    containerColor: Color,
+    selectedContainerColor: Color,
     selectedItemColor: Color,
-    unselectedItemColor: Color,
     selectedDay: DayType,
     onDaySelected: (DayType) -> Unit
 ) {
@@ -193,62 +210,76 @@ private fun DayTypeToggle(
         Text(
             text = ScreenMessages.DAY_TYPE_TITLE,
             color = primaryTextColor,
-            fontSize = 16.sp,
+            fontSize = 22.sp,
             fontWeight = FontWeight.SemiBold
         )
+
+        Spacer(modifier = Modifier.height(16.dp))
 
         Row(
             modifier = Modifier
                 .fillMaxWidth(),
-            horizontalArrangement = Arrangement.Center
+            horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
+            val isWorkoutSelected = selectedDay == DayType.WORKOUT
+
             OutlinedButton(
                 onClick = {
                     onDaySelected(DayType.WORKOUT)
                 },
                 modifier = Modifier
                     .weight(1f)
-                    .height(120.dp),
-                shape = RoundedCornerShape(
-                    topStart = 16.dp,
-                    topEnd = 0.dp,
-                    bottomStart = 16.dp,
-                    bottomEnd = 0.dp
-                ),
+                    .height(100.dp),
+                shape = RoundedCornerShape(20.dp),
                 border = BorderStroke(
                     width = 1.dp,
-                    color = if (selectedDay == DayType.WORKOUT) {
+                    color = if (isWorkoutSelected) {
                         selectedItemColor
                     } else {
-                        unselectedItemColor
+                        borderColor
+                    }
+                ),
+                colors = ButtonDefaults.outlinedButtonColors(
+                    containerColor = if (isWorkoutSelected) {
+                        selectedContainerColor
+                    } else {
+                        containerColor
+                    },
+                    contentColor = if (isWorkoutSelected) {
+                        selectedItemColor
+                    } else {
+                        secondaryTextColor
                     }
                 )
             ) {
                 Column(
-                    horizontalAlignment = Alignment.CenterHorizontally
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     Icon(
                         imageVector = Icons.Outlined.FitnessCenter,
                         contentDescription = ScreenMessages.WORKOUT_DAY_DESCRIPTION,
-                        tint = if (selectedDay == DayType.WORKOUT) {
+                        tint = if (isWorkoutSelected) {
                             selectedItemColor
                         } else {
-                            unselectedItemColor
+                            secondaryTextColor
                         }
                     )
 
                     Text(
                         text = ScreenMessages.WORKOUT_TITLE,
-                        color = if (selectedDay == DayType.WORKOUT) {
+                        color = if (isWorkoutSelected) {
                             selectedItemColor
                         } else {
-                            unselectedItemColor
+                            secondaryTextColor
                         },
                         fontSize = 16.sp,
-                        fontWeight = FontWeight.Bold
+                        fontWeight = FontWeight.SemiBold
                     )
                 }
             }
+
+            val isRestSelected = selectedDay == DayType.REST_DAY
 
             OutlinedButton(
                 onClick = {
@@ -256,44 +287,52 @@ private fun DayTypeToggle(
                 },
                 modifier = Modifier
                     .weight(1f)
-                    .height(120.dp),
-                shape = RoundedCornerShape(
-                    topStart = 0.dp,
-                    topEnd = 16.dp,
-                    bottomStart = 0.dp,
-                    bottomEnd = 16.dp
-                ),
+                    .height(100.dp),
+                shape = RoundedCornerShape(20.dp),
                 border = BorderStroke(
                     width = 1.dp,
-                    color = if (selectedDay == DayType.REST_DAY) {
+                    color = if (isRestSelected) {
                         selectedItemColor
                     } else {
-                        unselectedItemColor
+                        borderColor
+                    }
+                ),
+                colors = ButtonDefaults.outlinedButtonColors(
+                    containerColor = if (isRestSelected) {
+                        selectedContainerColor
+                    } else {
+                        containerColor
+                    },
+                    contentColor = if (isRestSelected) {
+                        selectedItemColor
+                    } else {
+                        secondaryTextColor
                     }
                 )
             ) {
                 Column(
-                    horizontalAlignment = Alignment.CenterHorizontally
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     Icon(
                         imageVector = Icons.Outlined.Bed,
                         contentDescription = ScreenMessages.REST_DAY_DESCRIPTION,
-                        tint = if (selectedDay == DayType.REST_DAY) {
+                        tint = if (isRestSelected) {
                             selectedItemColor
                         } else {
-                            unselectedItemColor
+                            secondaryTextColor
                         }
                     )
 
                     Text(
                         text = ScreenMessages.REST_TITLE,
-                        color = if (selectedDay == DayType.REST_DAY) {
+                        color = if (isRestSelected) {
                             selectedItemColor
                         } else {
-                            unselectedItemColor
+                            secondaryTextColor
                         },
                         fontSize = 16.sp,
-                        fontWeight = FontWeight.Bold
+                        fontWeight = FontWeight.SemiBold
                     )
                 }
             }
@@ -306,6 +345,8 @@ private fun DayNameField(
     primaryTextColor: Color,
     secondaryTextColor: Color,
     borderColor: Color,
+    containerColor: Color,
+    iconColor: Color,
     dayName: String,
     onDayName: (String) -> Unit
 ) {
@@ -313,15 +354,20 @@ private fun DayNameField(
         Text(
             text = ScreenMessages.DAY_NAME_TITLE,
             color = primaryTextColor,
-            fontSize = 16.sp,
+            fontSize = 22.sp,
             fontWeight = FontWeight.SemiBold
         )
+
+        Spacer(modifier = Modifier.height(16.dp))
 
         OutlinedTextField(
             value = dayName,
             onValueChange = onDayName,
             singleLine = true,
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(76.dp),
+            shape = RoundedCornerShape(20.dp),
             placeholder = {
                 Text(
                     text = ScreenMessages.CHEST_PLACEHOLDER,
@@ -330,17 +376,24 @@ private fun DayNameField(
             },
             textStyle = LocalTextStyle.current.copy(
                 color = primaryTextColor,
-                fontSize = 16.sp
+                fontSize = 18.sp,
+                fontWeight = FontWeight.SemiBold
             ),
             trailingIcon = {
                 Icon(
                     imageVector = Icons.Outlined.List,
-                    contentDescription = ScreenMessages.LIST_DESCRIPTION
+                    contentDescription = ScreenMessages.LIST_DESCRIPTION,
+                    tint = iconColor
                 )
             },
             colors = OutlinedTextFieldDefaults.colors(
-                focusedBorderColor = borderColor,
-                unfocusedBorderColor = borderColor
+                focusedBorderColor = iconColor,
+                unfocusedBorderColor = borderColor,
+                focusedContainerColor = containerColor,
+                unfocusedContainerColor = containerColor,
+                focusedTextColor = primaryTextColor,
+                unfocusedTextColor = primaryTextColor,
+                cursorColor = iconColor
             )
         )
     }
@@ -348,37 +401,41 @@ private fun DayNameField(
 
 @Composable
 private fun TipSection(
-    textColor: Color,
+    informationColor: Color,
     borderColor: Color,
-    iconColor: Color
+    containerColor: Color
 ) {
     OutlinedCard(
-        shape = RoundedCornerShape(16.dp),
+        shape = RoundedCornerShape(20.dp),
         border = BorderStroke(
             width = 1.dp,
             color = borderColor
         ),
+        colors = CardDefaults.outlinedCardColors(
+            containerColor = containerColor,
+            contentColor = informationColor
+        ),
         modifier = Modifier
             .fillMaxWidth()
-            .height(80.dp)
+            .heightIn(min = 76.dp)
     ) {
         Row(
             modifier = Modifier
-                .fillMaxSize()
+                .fillMaxWidth()
                 .padding(16.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
             Icon(
                 imageVector = Icons.Outlined.Info,
                 contentDescription = ScreenMessages.INFO_DESCRIPTION,
-                tint = iconColor
+                tint = informationColor
             )
 
             Spacer(modifier = Modifier.width(16.dp))
 
             Text(
                 text = ScreenMessages.REORDER_DAYS_TIP,
-                color = textColor,
+                color = informationColor,
                 fontSize = 16.sp,
                 modifier = Modifier
                     .weight(1f)
@@ -395,8 +452,9 @@ private fun AddDayButton(
 ) {
     OutlinedButton(
         onClick = onClick,
-        shape = RoundedCornerShape(16.dp),
-        colors = ButtonColors(
+        shape = RoundedCornerShape(20.dp),
+        border = null,
+        colors = ButtonDefaults.outlinedButtonColors(
             containerColor = buttonColor,
             contentColor = textColor,
             disabledContainerColor = buttonColor,
@@ -404,11 +462,12 @@ private fun AddDayButton(
         ),
         modifier = Modifier
             .fillMaxWidth()
-            .height(60.dp)
+            .height(76.dp)
     ) {
         Text(
             text = ScreenMessages.ADD_DAY_BUTTON,
-            fontSize = 16.sp,
+            color = textColor,
+            fontSize = 22.sp,
             fontWeight = FontWeight.SemiBold
         )
     }

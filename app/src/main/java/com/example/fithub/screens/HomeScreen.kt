@@ -1,7 +1,10 @@
 package com.example.fithub.screens
 
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
@@ -47,20 +50,29 @@ fun HomeScreen (
                 )
         )
 
-        Button(
-//            onClick = goToAddWeightMenu,
-            onClick = goToManageWorkoutSplit,
-        ) {
-            Text(ScreenMessages.ADD_WEIGHT_BUTTON)
+        Column {
+            Button(
+                onClick = goToManageWorkoutSplit,
+            ) {
+                Text(ScreenMessages.MANAGE_WORKOUT_BUTTON)
+            }
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            Button(
+                onClick = goToAddWeightMenu,
+            ) {
+                Text(ScreenMessages.ADD_WEIGHT_BUTTON)
+            }
         }
 
-        Text(
-            text = when {
-                uiState.isLoading -> "Loading..."
-                uiState.errorMessage != null -> uiState.errorMessage
-                else -> uiState.message ?: "no data"
-            }.orEmpty()
-        )
+//        Text(
+//            text = when {
+//                uiState.isLoading -> "Loading..."
+//                uiState.errorMessage != null -> uiState.errorMessage
+//                else -> uiState.message ?: "no data"
+//            }.orEmpty()
+//        )
     }
 }
 
