@@ -436,6 +436,7 @@ private fun ReorderableWorkoutDaysList(
                     WorkoutDayItem(
                         day = WorkoutSplitDay(
                             id = -1,
+                            workoutSplitId = -1,
                             position = 1,
                             name = ScreenMessages.WORKOUT_DAY_PLACEHOLDER,
                             day = DayType.WORKOUT

@@ -1,11 +1,14 @@
 package com.example.fithub.repositories
 
 import androidx.room.withTransaction
+import com.example.fithub.models.WorkoutSplit
+import com.example.fithub.models.WorkoutSplitDay
+import com.example.fithub.models.mappers.toEntity
+import com.example.fithub.models.mappers.toModel
 import com.example.fithub.roomDB.FitHubDatabase
 import com.example.fithub.roomDB.dao.WorkoutDao
-import com.example.fithub.roomDB.entities.WorkoutSplitDayEntity
-import com.example.fithub.roomDB.entities.WorkoutSplitEntity
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 class WorkoutRepositoryImpl @Inject constructor(
@@ -14,16 +17,16 @@ class WorkoutRepositoryImpl @Inject constructor(
 ) : WorkoutRepository {
 
     override suspend fun createSplit(
-        split: WorkoutSplitEntity,
-        days: List<WorkoutSplitDayEntity>
+        split: WorkoutSplit,
+        days: List<WorkoutSplitDay>
     ): Long {
         return database.withTransaction {
-            val splitId = workoutDao.addSplit(split)
+            val splitId = workoutDao.addSplit(split.toEntity())
 
             val daysWithSplitId = days.map { day ->
                 day.copy(
                     workoutSplitId = splitId
-                )
+                ).toEntity()
             }
 
             workoutDao.addSplitDays(daysWithSplitId)
@@ -32,11 +35,23 @@ class WorkoutRepositoryImpl @Inject constructor(
         }
     }
 
-    override fun getAllSplits(): Flow<List<WorkoutSplitEntity>> =
-        workoutDao.getAllSplits()
+    override fun getAllSplits(): Flow<List<WorkoutSplit>> {
+        return workoutDao.getAllSplits()
+            .map { entities ->
+                entities.map { entity ->
+                    entity.toModel()
+                }
+            }
+    }
 
     override fun getDaysForSplit(
         splitId: Long
-    ): Flow<List<WorkoutSplitDayEntity>> =
-        workoutDao.getDaysForSplit(splitId)
+    ): Flow<List<WorkoutSplitDay>> {
+        return workoutDao.getDaysForSplit(splitId)
+            .map { entities ->
+                entities.map { entity ->
+                    entity.toModel()
+                }
+            }
+    }
 }

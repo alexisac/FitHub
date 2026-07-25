@@ -21,6 +21,7 @@ object ScreenMessages {
     const val LIST_DESCRIPTION = "List"
     const val REORDER_DESCRIPTION = "Reorder"
     const val REST_DAY_DESCRIPTION = "RestDay"
+    const val START_DATE_DESCRIPTION = "Starts: "
     const val SUCCESS_DESCRIPTION = "Success"
     const val THEME_TOGGLE_OFFSET_DESCRIPTION = "ThemeToggleOffset"
     const val WATCH_DESCRIPTION = "Watch"
@@ -65,7 +66,9 @@ object ScreenMessages {
 
 
     // Common
+    const val ACTIVE = "Active"
     const val CANCEL = "Cancel"
+    const val INACTIVE = "Inactive"
     const val OK = "OK"
     const val KG = "KG"
 

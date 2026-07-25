@@ -1,18 +1,18 @@
 package com.example.fithub.repositories
 
-import com.example.fithub.roomDB.entities.WorkoutSplitDayEntity
-import com.example.fithub.roomDB.entities.WorkoutSplitEntity
+import com.example.fithub.models.WorkoutSplit
+import com.example.fithub.models.WorkoutSplitDay
 import kotlinx.coroutines.flow.Flow
 
 interface WorkoutRepository {
     suspend fun createSplit(
-        split: WorkoutSplitEntity,
-        days: List<WorkoutSplitDayEntity>
+        split: WorkoutSplit,
+        days: List<WorkoutSplitDay>
     ): Long
 
-    fun getAllSplits(): Flow<List<WorkoutSplitEntity>>
+    fun getAllSplits(): Flow<List<WorkoutSplit>>
 
     fun getDaysForSplit(
         splitId: Long
-    ): Flow<List<WorkoutSplitDayEntity>>
+    ): Flow<List<WorkoutSplitDay>>
 }

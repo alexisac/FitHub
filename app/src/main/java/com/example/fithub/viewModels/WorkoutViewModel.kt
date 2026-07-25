@@ -23,6 +23,10 @@ class WorkoutViewModel @Inject constructor(
     private val _uiState = MutableStateFlow(WorkoutUiState())
     val uiState: StateFlow<WorkoutUiState> = _uiState.asStateFlow()
 
+    init {
+        getAllSplits()
+    }
+
     fun addWorkoutDay(
         name: String,
         dayType: DayType
@@ -152,6 +156,19 @@ class WorkoutViewModel @Inject constructor(
                     .apply { removeAt(index) }
                     .mapIndexed { i, day -> day.copy(position = i + 1) }
             )
+        }
+    }
+
+    fun getAllSplits() {
+        viewModelScope.launch {
+            workoutService.getAllSplits()
+                .collect { splits ->
+                    _uiState.update {
+                        it.copy(
+                            splits = splits
+                        )
+                    }
+                }
         }
     }
 
