@@ -6,7 +6,6 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.example.fithub.roomDB.entities.WorkoutSplitDayEntity
 import com.example.fithub.roomDB.entities.WorkoutSplitEntity
-import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface WorkoutDao {
@@ -27,7 +26,7 @@ interface WorkoutDao {
         ORDER BY startDate DESC
         """
     )
-    fun getAllSplits(): Flow<List<WorkoutSplitEntity>>
+    fun getAllSplits(): List<WorkoutSplitEntity>
 
     @Query(
         """
@@ -39,5 +38,5 @@ interface WorkoutDao {
     )
     fun getDaysForSplit(
         splitId: Long
-    ): Flow<List<WorkoutSplitDayEntity>>
+    ): List<WorkoutSplitDayEntity>
 }

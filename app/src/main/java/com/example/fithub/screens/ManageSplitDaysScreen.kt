@@ -2,8 +2,8 @@ package com.example.fithub.screens
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -11,11 +11,13 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Add
 import androidx.compose.material.icons.outlined.ArrowBack
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
@@ -24,6 +26,7 @@ import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.OutlinedIconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -32,23 +35,25 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.fithub.common.Constants
 import com.example.fithub.common.messages.ScreenMessages
-import com.example.fithub.models.WorkoutSplit
+import com.example.fithub.models.DayType
+import com.example.fithub.models.WorkoutSplitDay
 import com.example.fithub.ui.theme.AppColors
 import com.example.fithub.viewModels.WorkoutViewModel
-import java.time.format.DateTimeFormatter
 
 @Composable
-fun ManageWorkoutSplitsScreen(
+fun ManageSplitDaysScreen(
     workoutViewModel: WorkoutViewModel,
     isDarkTheme: Boolean,
-    goToAddWorkout: () -> Unit,
-    goToManageSplitDays: (Long) -> Unit,
+    splitId: Long,
     onBack: () -> Unit
 ) {
     val uiState by workoutViewModel.uiState.collectAsState()
     val colors = AppColors.colors(isDarkTheme)
+
+    LaunchedEffect(splitId) {
+        workoutViewModel.getAllSplitDays(splitId)
+    }
 
     Column(
         modifier = Modifier
@@ -62,9 +67,6 @@ fun ManageWorkoutSplitsScreen(
             borderColor = colors.border,
             containerColor = colors.card,
             iconColor = colors.primary,
-            goToAddWorkout = {
-                goToAddWorkout()
-            },
             onBack = {
                 onBack()
             }
@@ -72,17 +74,15 @@ fun ManageWorkoutSplitsScreen(
 
         Spacer(modifier = Modifier.height(24.dp))
 
-        SplitList(
-            splits = uiState.splits,
+        SplitDaysList(
+            splitDays = uiState.splitDaysList,
             primaryTextColor = colors.primaryText,
             secondaryTextColor = colors.secondaryText,
             borderColor = colors.border,
             containerColor = colors.card,
-            primaryColor = colors.primary,
-            successColor = colors.success,
-            onSplitClick = { split ->
-                goToManageSplitDays(split.id)
-            }
+            workoutColor = colors.primary,
+            restDayColor = colors.secondaryText,
+            circleTextColor = colors.onPrimary
         )
     }
 }
@@ -94,118 +94,87 @@ private fun Header(
     borderColor: Color,
     containerColor: Color,
     iconColor: Color,
-    goToAddWorkout: () -> Unit,
     onBack: () -> Unit
 ) {
-    Column{
-        Row(
-            modifier = Modifier
-                .fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceBetween
+    Column {
+        OutlinedIconButton(
+            onClick = onBack,
+            shape = RoundedCornerShape(10.dp),
+            border = BorderStroke(
+                width = 1.dp,
+                color = borderColor
+            ),
+            colors = IconButtonDefaults.outlinedIconButtonColors(
+                containerColor = containerColor,
+                contentColor = iconColor
+            )
         ) {
-            OutlinedIconButton(
-                onClick = onBack,
-                shape = RoundedCornerShape(10.dp),
-                border = BorderStroke(
-                    width = 1.dp,
-                    color = borderColor
-                ),
-                colors = IconButtonDefaults.outlinedIconButtonColors(
-                    containerColor = containerColor,
-                    contentColor = iconColor
-                )
-            ) {
-                Icon(
-                    imageVector = Icons.Outlined.ArrowBack,
-                    contentDescription = ScreenMessages.BACK_DESCRIPTION
-                )
-            }
-
-            OutlinedIconButton(
-                onClick = goToAddWorkout,
-                shape = RoundedCornerShape(10.dp),
-                border = BorderStroke(
-                    width = 1.dp,
-                    color = borderColor
-                ),
-                colors = IconButtonDefaults.outlinedIconButtonColors(
-                    containerColor = containerColor,
-                    contentColor = iconColor
-                ),
-            ) {
-                Icon(
-                    imageVector = Icons.Outlined.Add,
-                    contentDescription = ScreenMessages.ADD_DESCRIPTION
-                )
-            }
+            Icon(
+                imageVector = Icons.Outlined.ArrowBack,
+                contentDescription = ScreenMessages.BACK_DESCRIPTION
+            )
         }
 
         Spacer(modifier = Modifier.height(16.dp))
 
         Text(
-            text = ScreenMessages.MANAGE_WORKOUT_SPLIT_TITLE,
+            text = ScreenMessages.MANAGE_SPLIT_DETAILS_TITLE,
             color = primaryTextColor,
-            fontSize = 24.sp,
+            fontSize = 38.sp,
             fontWeight = FontWeight.Bold
         )
 
         Text(
-            text = ScreenMessages.WORKOUT_SPLIT_SUBTITLE,
+            text = ScreenMessages.MANAGE_SPLIT_DETAILS_SUBTITLE,
             color = secondaryTextColor,
-            fontSize = 12.sp
+            fontSize = 18.sp
         )
     }
 }
 
 @Composable
-private fun SplitList(
-    splits: List<WorkoutSplit>,
+private fun SplitDaysList(
+    splitDays: List<WorkoutSplitDay>,
     primaryTextColor: Color,
     secondaryTextColor: Color,
     borderColor: Color,
     containerColor: Color,
-    primaryColor: Color,
-    successColor: Color,
-    onSplitClick: (WorkoutSplit) -> Unit
+    workoutColor: Color,
+    restDayColor: Color,
+    circleTextColor: Color
 ) {
     LazyColumn(
+        modifier = Modifier.fillMaxWidth(),
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
-        items(splits) { split ->
-            SplitCard(
-                split = split,
+        items(splitDays) {splitDay ->
+            SplitDayCard(
+                splitDay = splitDay,
                 primaryTextColor = primaryTextColor,
                 secondaryTextColor = secondaryTextColor,
                 borderColor = borderColor,
                 containerColor = containerColor,
-                primaryColor = primaryColor,
-                successColor = successColor,
-                onClick = {
-                    onSplitClick(split)
-                }
+                workoutColor = workoutColor,
+                restDayColor = restDayColor,
+                circleTextColor = circleTextColor
             )
         }
     }
 }
 
 @Composable
-private fun SplitCard(
-    split: WorkoutSplit,
+private fun SplitDayCard(
+    splitDay: WorkoutSplitDay,
     primaryTextColor: Color,
     secondaryTextColor: Color,
     borderColor: Color,
     containerColor: Color,
-    primaryColor: Color,
-    successColor: Color,
-    onClick: () -> Unit
+    workoutColor: Color,
+    restDayColor: Color,
+    circleTextColor: Color
 ) {
     OutlinedCard(
-        modifier = Modifier
-            .fillMaxWidth()
-            .clickable{
-                onClick()
-            },
+        modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(20.dp),
         border = BorderStroke(
             width = 1.dp,
@@ -218,41 +187,50 @@ private fun SplitCard(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(20.dp),
+                .padding(horizontal = 16.dp, vertical = 14.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
+            Box(
+                modifier = Modifier
+                    .size(44.dp)
+                    .background(
+                        color = if (splitDay.day == DayType.WORKOUT) {
+                            workoutColor
+                        } else {
+                            restDayColor
+                        },
+                        shape = CircleShape
+                    ),
+                contentAlignment = Alignment.Center
+            ) {
+                Text(
+                    text = splitDay.position.toString(),
+                    color = circleTextColor,
+                    fontSize = 16.sp,
+                    fontWeight = FontWeight.Bold
+                )
+            }
+
+            Spacer(modifier = Modifier.width(16.dp))
+
             Column(
                 modifier = Modifier.weight(1f)
             ) {
                 Text(
-                    text = split.name,
+                    text = splitDay.name,
                     color = primaryTextColor,
-                    fontSize = 20.sp,
-                    fontWeight = FontWeight.Bold
+                    fontSize = 18.sp,
+                    fontWeight = FontWeight.SemiBold
                 )
 
-                Spacer(modifier = Modifier.height(6.dp))
+                Spacer(modifier = Modifier.height(4.dp))
 
                 Text(
-                    text = "${ScreenMessages.START_DATE_DESCRIPTION} ${split.startDate.format(
-                        DateTimeFormatter.ofPattern(Constants.DATE_FORMATTER)
-                    )}",
+                    text = splitDay.day.toString(),
                     color = secondaryTextColor,
-                    fontSize = 15.sp
+                    fontSize = 14.sp
                 )
             }
-
-            Text(
-                text = if (split.active)
-                    ScreenMessages.ACTIVE
-                else
-                    ScreenMessages.INACTIVE,
-                color = if (split.active)
-                    successColor
-                else
-                    primaryColor,
-                fontWeight = FontWeight.SemiBold
-            )
         }
     }
 }

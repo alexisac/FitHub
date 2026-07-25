@@ -39,6 +39,7 @@ object ScreenMessages {
     const val DAY_TYPE_TITLE = "Day type"
     const val DAYS_IN_SPLIT_TITLE = "Days in split"
     const val ERROR_TITLE = "Error"
+    const val MANAGE_SPLIT_DETAILS_TITLE = "Manage split details"
     const val MANAGE_WORKOUT_SPLIT_TITLE = "Manage workout split"
     const val REST_TITLE = "Rest"
     const val SPLIT_NAME_TITLE = "Split name"
@@ -53,6 +54,7 @@ object ScreenMessages {
     const val ADD_DAY_SUBTITLE = "Add a workout or rest day to your split."
     const val ADD_WORKOUT_SPLIT_SUBTITLE = "Create a new split and define your training days."
     const val DAYS_IN_SPLIT_SUBTITLE = "Add the days that make up this split."
+    const val MANAGE_SPLIT_DETAILS_SUBTITLE = "Manage days and split settings."
     const val RECORD_WEIGHT_SUBTITLE = "Record your weight to track your progress."
     const val WORKOUT_SPLIT_SUBTITLE = "View, update or delete your workout splits."
 

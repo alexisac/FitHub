@@ -7,8 +7,6 @@ import com.example.fithub.models.mappers.toEntity
 import com.example.fithub.models.mappers.toModel
 import com.example.fithub.roomDB.FitHubDatabase
 import com.example.fithub.roomDB.dao.WorkoutDao
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 class WorkoutRepositoryImpl @Inject constructor(
@@ -35,23 +33,19 @@ class WorkoutRepositoryImpl @Inject constructor(
         }
     }
 
-    override fun getAllSplits(): Flow<List<WorkoutSplit>> {
+    override fun getAllSplits(): List<WorkoutSplit> {
         return workoutDao.getAllSplits()
-            .map { entities ->
-                entities.map { entity ->
-                    entity.toModel()
-                }
+            .map { entity ->
+                entity.toModel()
             }
     }
 
     override fun getDaysForSplit(
         splitId: Long
-    ): Flow<List<WorkoutSplitDay>> {
+    ): List<WorkoutSplitDay> {
         return workoutDao.getDaysForSplit(splitId)
-            .map { entities ->
-                entities.map { entity ->
-                    entity.toModel()
-                }
+            .map { entity ->
+                entity.toModel()
             }
     }
 }

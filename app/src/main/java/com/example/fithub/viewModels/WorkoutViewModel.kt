@@ -161,14 +161,23 @@ class WorkoutViewModel @Inject constructor(
 
     fun getAllSplits() {
         viewModelScope.launch {
-            workoutService.getAllSplits()
-                .collect { splits ->
-                    _uiState.update {
-                        it.copy(
-                            splits = splits
-                        )
-                    }
-                }
+            val splits = workoutService.getAllSplits()
+            _uiState.update {
+                it.copy(
+                    splits = splits
+                )
+            }
+        }
+    }
+
+    fun getAllSplitDays(splitId: Long) {
+        viewModelScope.launch {
+            val days = workoutService.getDaysForSplit(splitId)
+            _uiState.update {
+                it.copy(
+                    splitDaysList = days
+                )
+            }
         }
     }
 

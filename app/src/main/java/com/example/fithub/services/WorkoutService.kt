@@ -7,7 +7,6 @@ import com.example.fithub.models.DayType
 import com.example.fithub.models.WorkoutSplit
 import com.example.fithub.models.WorkoutSplitDay
 import com.example.fithub.repositories.WorkoutRepository
-import kotlinx.coroutines.flow.Flow
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import javax.inject.Inject
@@ -88,6 +87,11 @@ class WorkoutService @Inject constructor(
         )
     }
 
-    fun getAllSplits(): Flow<List<WorkoutSplit>> =
+    fun getAllSplits(): List<WorkoutSplit> =
         workoutRepository.getAllSplits()
+
+    fun getDaysForSplit(
+        splitId: Long
+    ): List<WorkoutSplitDay> =
+        workoutRepository.getDaysForSplit(splitId)
 }

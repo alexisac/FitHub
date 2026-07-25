@@ -2,13 +2,16 @@ package com.example.fithub.appRoutes
 
 import androidx.compose.runtime.Composable
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.example.fithub.screens.AddWeightScreen
 import com.example.fithub.screens.AddWorkoutDayScreen
 import com.example.fithub.screens.AddWorkoutSplitScreen
 import com.example.fithub.screens.HomeScreen
+import com.example.fithub.screens.ManageSplitDaysScreen
 import com.example.fithub.screens.ManageWorkoutSplitsScreen
 import com.example.fithub.viewModels.WeightViewModel
 import com.example.fithub.viewModels.WorkoutViewModel
@@ -58,6 +61,11 @@ fun AppNavHost(
                 goToAddWorkout = {
                     navController.navigate(AppRoutes.ADD_WORKOUT_SPLIT_ROUTE)
                 },
+                goToManageSplitDays = { splitId ->
+                    navController.navigate(
+                        AppRoutes.manageSplitDaysRoute(splitId)
+                    )
+                },
                 onBack = {
                     navController.popBackStack()
                 }
@@ -81,6 +89,28 @@ fun AppNavHost(
             AddWorkoutDayScreen(
                 workoutViewModel = workoutViewModel,
                 isDarkTheme = isDarkTheme,
+                onBack = {
+                    navController.popBackStack()
+                }
+            )
+        }
+
+        composable(
+            route = AppRoutes.MANAGE_SPLIT_DAYS_WITH_ARGUMENT_ROUTE,
+            arguments = listOf(
+                navArgument(AppRoutes.SPLIT_ID_ARGUMENT) {
+                    type = NavType.LongType
+                }
+            )
+        ) { backStackEntry ->
+            val splitId = backStackEntry.arguments
+                ?.getLong(AppRoutes.SPLIT_ID_ARGUMENT)
+                ?: return@composable
+
+            ManageSplitDaysScreen(
+                workoutViewModel = workoutViewModel,
+                isDarkTheme = isDarkTheme,
+                splitId = splitId,
                 onBack = {
                     navController.popBackStack()
                 }
