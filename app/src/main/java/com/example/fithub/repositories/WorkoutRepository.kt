@@ -28,4 +28,8 @@ interface WorkoutRepository {
         splitId: Long,
         startDate: LocalDate
     )
+
+    suspend fun deleteSplit(
+        splitId: Long
+    )
 }

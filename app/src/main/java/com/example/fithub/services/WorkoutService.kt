@@ -87,4 +87,7 @@ class WorkoutService @Inject constructor(
 
     suspend fun updateStartDate(splitId: Long, startDate: LocalDate) =
         workoutRepository.updateStartDate(splitId, startDate)
+
+    suspend fun deleteSplit(splitId: Long) =
+        workoutRepository.deleteSplit(splitId)
 }

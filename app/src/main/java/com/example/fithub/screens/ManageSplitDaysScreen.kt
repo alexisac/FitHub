@@ -19,6 +19,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.ArrowBack
+import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
@@ -64,6 +65,14 @@ fun ManageSplitDaysScreen(
         workoutViewModel.getSplitById(splitId)
     }
 
+    LaunchedEffect(uiState.successMessage) {
+        if(uiState.successMessage != null) {
+            workoutViewModel.clearSplitDetails()
+            workoutViewModel.clearMessages()
+            onBack()
+        }
+    }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -79,6 +88,9 @@ fun ManageSplitDaysScreen(
             onBack = {
                 workoutViewModel.clearSplitDetails()
                 onBack()
+            },
+            onDelete = {
+                workoutViewModel.deleteSplit(splitId)
             }
         )
 
@@ -119,25 +131,51 @@ private fun Header(
     borderColor: Color,
     containerColor: Color,
     iconColor: Color,
-    onBack: () -> Unit
+    onBack: () -> Unit,
+    onDelete: () -> Unit
 ) {
     Column {
-        OutlinedIconButton(
-            onClick = onBack,
-            shape = RoundedCornerShape(10.dp),
-            border = BorderStroke(
-                width = 1.dp,
-                color = borderColor
-            ),
-            colors = IconButtonDefaults.outlinedIconButtonColors(
-                containerColor = containerColor,
-                contentColor = iconColor
-            )
+        Row(
+            modifier = Modifier
+                .fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            Icon(
-                imageVector = Icons.Outlined.ArrowBack,
-                contentDescription = ScreenMessages.BACK_DESCRIPTION
-            )
+            OutlinedIconButton(
+                onClick = onBack,
+                shape = RoundedCornerShape(10.dp),
+                border = BorderStroke(
+                    width = 1.dp,
+                    color = borderColor
+                ),
+                colors = IconButtonDefaults.outlinedIconButtonColors(
+                    containerColor = containerColor,
+                    contentColor = iconColor
+                )
+            ) {
+                Icon(
+                    imageVector = Icons.Outlined.ArrowBack,
+                    contentDescription = ScreenMessages.BACK_DESCRIPTION
+                )
+            }
+
+            OutlinedIconButton(
+                onClick = onDelete,
+                shape = RoundedCornerShape(10.dp),
+                border = BorderStroke(
+                    width = 1.dp,
+                    color = borderColor
+                ),
+                colors = IconButtonDefaults.outlinedIconButtonColors(
+                    containerColor = containerColor,
+                    contentColor = iconColor
+                )
+            ) {
+                Icon(
+                    imageVector = Icons.Outlined.Delete,
+                    contentDescription = ScreenMessages.DELETE_DESCRIPTION
+                )
+            }
         }
 
         Spacer(modifier = Modifier.height(16.dp))

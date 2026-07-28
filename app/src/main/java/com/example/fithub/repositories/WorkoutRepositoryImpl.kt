@@ -60,4 +60,7 @@ class WorkoutRepositoryImpl @Inject constructor(
         splitId: Long,
         startDate: LocalDate
     ) = workoutDao.updateStartDate(splitId, startDate)
+
+    override suspend fun deleteSplit(splitId: Long) =
+        workoutDao.deleteSplit(splitId)
 }

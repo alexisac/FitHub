@@ -199,6 +199,38 @@ class WorkoutViewModel @Inject constructor(
         }
     }
 
+    fun deleteSplit(splitId: Long) {
+        viewModelScope.launch {
+            _uiState.update {
+                it.copy(
+                    isLoading = true,
+                    errorMessage = null,
+                    successMessage = null
+                )
+            }
+
+            try {
+                workoutService.deleteSplit(splitId)
+
+                _uiState.update {
+                    it.copy(
+                        isLoading = false,
+                        errorMessage = null,
+                        successMessage = ViewModelSuccessMessages.SPLIT_DELETED_SUCCESSFULLY
+                    )
+                }
+            } catch (ex: Exception) {
+                _uiState.update {
+                    it.copy(
+                        isLoading = false,
+                        errorMessage = ex.message ?: ViewModelErrorMessages.UNKNOWN_ERROR,
+                        successMessage = null
+                    )
+                }
+            }
+        }
+    }
+
     fun clearMessages() {
         _uiState.update {
             it.copy(

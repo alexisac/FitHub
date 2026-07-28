@@ -70,4 +70,12 @@ interface WorkoutDao {
         splitId: Long,
         startDate: LocalDate
     )
+
+    @Query("""
+        DELETE FROM workout_splits
+        WHERE id = :splitId
+    """)
+    suspend fun deleteSplit(
+        splitId: Long
+    )
 }
