@@ -84,9 +84,10 @@ class WorkoutViewModel @Inject constructor(
     }
 
     fun createSplit(
-        splitName: String,
-        selectedDate: String
+        splitName: String
     ) {
+        val selectedDate = LocalDate.now()
+
         viewModelScope.launch {
             _uiState.update {
                 it.copy(
@@ -134,14 +135,6 @@ class WorkoutViewModel @Inject constructor(
         _uiState.update {
             it.copy(
                 splitName = name
-            )
-        }
-    }
-
-    fun updateSelectedSplitDate(date: String) {
-        _uiState.update {
-            it.copy(
-                selectedSplitDate = date
             )
         }
     }

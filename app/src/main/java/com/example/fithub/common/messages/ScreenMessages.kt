@@ -10,7 +10,6 @@ object ScreenMessages {
 
     // Content descriptions
     const val ADD_DESCRIPTION = "Add"
-    const val ARROW_DESCRIPTION = "Arrow"
     const val BACK_DESCRIPTION = "Back"
     const val CALENDAR_DESCRIPTION = "Calendar"
     const val DARK_MODE_DESCRIPTION = "DarkMode"

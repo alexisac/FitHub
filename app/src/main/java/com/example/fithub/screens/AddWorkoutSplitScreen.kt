@@ -28,8 +28,6 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Add
 import androidx.compose.material.icons.outlined.ArrowBack
-import androidx.compose.material.icons.outlined.ArrowForwardIos
-import androidx.compose.material.icons.outlined.CalendarToday
 import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material.icons.outlined.DragIndicator
 import androidx.compose.material.icons.outlined.FitnessCenter
@@ -47,9 +45,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -57,18 +52,14 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.fithub.common.Constants
 import com.example.fithub.common.messages.ScreenMessages
 import com.example.fithub.models.DayType
 import com.example.fithub.models.WorkoutSplitDay
-import com.example.fithub.screens.reusableComponents.DatePicker
 import com.example.fithub.screens.reusableComponents.ErrorPopupMessage
 import com.example.fithub.ui.theme.AppColors
 import com.example.fithub.viewModels.WorkoutViewModel
 import sh.calvin.reorderable.ReorderableItem
 import sh.calvin.reorderable.rememberReorderableLazyListState
-import java.time.LocalDate
-import java.time.format.DateTimeFormatter
 
 @Composable
 fun AddWorkoutSplitScreen(
@@ -123,23 +114,6 @@ fun AddWorkoutSplitScreen(
 
         Spacer(modifier = Modifier.height(24.dp))
 
-        StartDate(
-            primaryTextColor = colors.primaryText,
-            secondaryTextColor = colors.secondaryText,
-            primaryIconColor = colors.primary,
-            secondaryIconColor = colors.secondaryText,
-            borderColor = colors.border,
-            containerColor = colors.card,
-            selectedDate = uiState.selectedSplitDate,
-            onDateSelected = { date ->
-                workoutViewModel.updateSelectedSplitDate(
-                    date.format(DateTimeFormatter.ofPattern(Constants.DATE_FORMATTER))
-                )
-            }
-        )
-
-        Spacer(modifier = Modifier.height(24.dp))
-
         ReorderableWorkoutDaysList(
             days = uiState.splitDaysList,
             primaryTextColor = colors.primaryText,
@@ -175,8 +149,7 @@ fun AddWorkoutSplitScreen(
             buttonColor = colors.primary,
             onClick = {
                 workoutViewModel.createSplit(
-                    splitName = uiState.splitName,
-                    selectedDate = uiState.selectedSplitDate
+                    splitName = uiState.splitName
                 )
             }
         )
@@ -296,91 +269,6 @@ private fun SplitName(
             )
         )
     }
-}
-
-@Composable
-private fun StartDate(
-    primaryTextColor: Color,
-    secondaryTextColor: Color,
-    primaryIconColor: Color,
-    secondaryIconColor: Color,
-    borderColor: Color,
-    containerColor: Color,
-    selectedDate: String,
-    onDateSelected: (LocalDate) -> Unit
-) {
-    var showDatePicker by remember { mutableStateOf(false) }
-
-    Column {
-        Text(
-            text = ScreenMessages.START_DATE_TITLE,
-            color = primaryTextColor,
-            fontSize = 22.sp,
-            fontWeight = FontWeight.SemiBold
-        )
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        OutlinedButton(
-            onClick = {
-                showDatePicker = true
-            },
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(76.dp),
-            shape = RoundedCornerShape(20.dp),
-            colors = ButtonDefaults.outlinedButtonColors(
-                containerColor = containerColor,
-                contentColor = primaryTextColor
-            ),
-            border = BorderStroke(
-                width = 1.dp,
-                color = borderColor
-            ),
-            contentPadding = PaddingValues(horizontal = 16.dp)
-        ) {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Icon(
-                    imageVector = Icons.Outlined.CalendarToday,
-                    contentDescription = ScreenMessages.CALENDAR_DESCRIPTION,
-                    tint = primaryIconColor
-                )
-
-                Spacer(modifier = Modifier.width(16.dp))
-
-                Text(
-                    text = selectedDate.ifBlank { ScreenMessages.SELECT_DATE_PLACEHOLDER },
-                    color = if (selectedDate.isBlank()) {
-                        secondaryTextColor
-                    } else {
-                        primaryTextColor
-                    },
-                    fontSize = 16.sp,
-                    modifier = Modifier.weight(1f)
-                )
-
-                Icon(
-                    imageVector = Icons.Outlined.ArrowForwardIos,
-                    contentDescription = ScreenMessages.ARROW_DESCRIPTION,
-                    tint = secondaryIconColor
-                )
-            }
-        }
-    }
-
-    DatePicker (
-        showDialog = showDatePicker,
-        onDismiss = {
-            showDatePicker = false
-        },
-        onDateSelected = { date ->
-            onDateSelected(date)
-            showDatePicker = false
-        }
-    )
 }
 
 @Composable

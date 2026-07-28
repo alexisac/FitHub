@@ -1,6 +1,5 @@
 package com.example.fithub.services
 
-import com.example.fithub.common.Constants
 import com.example.fithub.common.exceptions.ValidationException
 import com.example.fithub.common.messages.ServiceMessages
 import com.example.fithub.models.DayType
@@ -8,7 +7,6 @@ import com.example.fithub.models.WorkoutSplit
 import com.example.fithub.models.WorkoutSplitDay
 import com.example.fithub.repositories.WorkoutRepository
 import java.time.LocalDate
-import java.time.format.DateTimeFormatter
 import javax.inject.Inject
 
 class WorkoutService @Inject constructor(
@@ -16,7 +14,7 @@ class WorkoutService @Inject constructor(
 ) {
     suspend fun createSplit(
         splitName: String,
-        selectedDate: String,
+        selectedDate: LocalDate,
         splitDaysList: List<WorkoutSplitDay>
     ): Long {
         if (splitName.isBlank()) {
@@ -27,27 +25,14 @@ class WorkoutService @Inject constructor(
             throw ValidationException(ServiceMessages.SPLIT_NAME_LIMIT)
         }
 
-        if (selectedDate.isBlank()) {
-            throw ValidationException(ServiceMessages.START_DATE_NOT_EMPTY)
-        }
-
         if (splitDaysList.isEmpty()) {
             throw ValidationException(ServiceMessages.ADD_DAY_TO_SPLIT)
-        }
-
-        val startDate = try {
-            LocalDate.parse(
-                selectedDate,
-                DateTimeFormatter.ofPattern(Constants.DATE_FORMATTER)
-            )
-        } catch (_: Exception) {
-            throw IllegalArgumentException(ServiceMessages.INVALID_START_DATE)
         }
 
         val split = WorkoutSplit(
             id = 0,
             name = splitName.trim(),
-            startDate = startDate,
+            startDate = selectedDate,
             active = false
         )
 
