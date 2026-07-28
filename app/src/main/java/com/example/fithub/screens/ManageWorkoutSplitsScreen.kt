@@ -24,6 +24,7 @@ import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.OutlinedIconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -49,6 +50,10 @@ fun ManageWorkoutSplitsScreen(
 ) {
     val uiState by workoutViewModel.uiState.collectAsState()
     val colors = AppColors.colors(isDarkTheme)
+
+    LaunchedEffect(Unit) {
+        workoutViewModel.getAllSplits()
+    }
 
     Column(
         modifier = Modifier

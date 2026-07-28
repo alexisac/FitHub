@@ -14,6 +14,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import java.time.LocalDate
 import javax.inject.Inject
 
 @HiltViewModel
@@ -22,10 +23,6 @@ class WorkoutViewModel @Inject constructor(
 ): ViewModel() {
     private val _uiState = MutableStateFlow(WorkoutUiState())
     val uiState: StateFlow<WorkoutUiState> = _uiState.asStateFlow()
-
-    init {
-        getAllSplits()
-    }
 
     fun addWorkoutDay(
         name: String,
@@ -176,6 +173,34 @@ class WorkoutViewModel @Inject constructor(
             _uiState.update {
                 it.copy(
                     splitDaysList = days
+                )
+            }
+        }
+    }
+
+    fun getSplitById(splitId: Long) {
+        viewModelScope.launch {
+            val split = workoutService.getSplitById(splitId)
+            _uiState.update {
+                it.copy(
+                    startDate = split.startDate,
+                    isActive = split.active
+                )
+            }
+        }
+    }
+
+    fun updateSplitDetails(splitId: Long) {
+        val startDate = LocalDate.now()
+
+        viewModelScope.launch {
+            workoutService.setActiveSplit(splitId)
+            workoutService.updateStartDate(splitId, startDate)
+
+            _uiState.update {
+                it.copy(
+                    startDate = startDate,
+                    isActive = true
                 )
             }
         }

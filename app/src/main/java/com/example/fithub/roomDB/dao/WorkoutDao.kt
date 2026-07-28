@@ -6,6 +6,7 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.example.fithub.roomDB.entities.WorkoutSplitDayEntity
 import com.example.fithub.roomDB.entities.WorkoutSplitEntity
+import java.time.LocalDate
 
 @Dao
 interface WorkoutDao {
@@ -26,7 +27,7 @@ interface WorkoutDao {
         ORDER BY startDate DESC
         """
     )
-    fun getAllSplits(): List<WorkoutSplitEntity>
+    suspend fun getAllSplits(): List<WorkoutSplitEntity>
 
     @Query(
         """
@@ -36,7 +37,37 @@ interface WorkoutDao {
         ORDER BY position ASC
         """
     )
-    fun getDaysForSplit(
+    suspend fun getDaysForSplit(
         splitId: Long
     ): List<WorkoutSplitDayEntity>
+
+    @Query("""
+        SELECT *
+        FROM workout_splits
+        WHERE id = :splitId
+    """)
+    suspend fun getSplitById(
+        splitId: Long
+    ): WorkoutSplitEntity
+
+    @Query("""
+        UPDATE workout_splits
+        SET active = CASE
+            WHEN id = :splitId THEN 1
+            ELSE 0
+        END
+    """)
+    suspend fun setActiveSplit(
+        splitId: Long
+    )
+
+    @Query("""
+        UPDATE workout_splits
+        SET startDate = :startDate
+        WHERE id = :splitId
+    """)
+    suspend fun updateStartDate(
+        splitId: Long,
+        startDate: LocalDate
+    )
 }

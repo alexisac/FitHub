@@ -2,6 +2,7 @@ package com.example.fithub.repositories
 
 import com.example.fithub.models.WorkoutSplit
 import com.example.fithub.models.WorkoutSplitDay
+import java.time.LocalDate
 
 interface WorkoutRepository {
     suspend fun createSplit(
@@ -9,9 +10,22 @@ interface WorkoutRepository {
         days: List<WorkoutSplitDay>
     ): Long
 
-    fun getAllSplits(): List<WorkoutSplit>
+    suspend fun getAllSplits(): List<WorkoutSplit>
 
-    fun getDaysForSplit(
+    suspend fun getDaysForSplit(
         splitId: Long
     ): List<WorkoutSplitDay>
+
+    suspend fun getSplitById(
+        splitId: Long
+    ): WorkoutSplit
+
+    suspend fun setActiveSplit(
+        splitId: Long
+    )
+
+    suspend fun updateStartDate(
+        splitId: Long,
+        startDate: LocalDate
+    )
 }

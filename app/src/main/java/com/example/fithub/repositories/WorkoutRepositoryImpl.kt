@@ -7,6 +7,7 @@ import com.example.fithub.models.mappers.toEntity
 import com.example.fithub.models.mappers.toModel
 import com.example.fithub.roomDB.FitHubDatabase
 import com.example.fithub.roomDB.dao.WorkoutDao
+import java.time.LocalDate
 import javax.inject.Inject
 
 class WorkoutRepositoryImpl @Inject constructor(
@@ -33,14 +34,14 @@ class WorkoutRepositoryImpl @Inject constructor(
         }
     }
 
-    override fun getAllSplits(): List<WorkoutSplit> {
+    override suspend fun getAllSplits(): List<WorkoutSplit> {
         return workoutDao.getAllSplits()
             .map { entity ->
                 entity.toModel()
             }
     }
 
-    override fun getDaysForSplit(
+    override suspend fun getDaysForSplit(
         splitId: Long
     ): List<WorkoutSplitDay> {
         return workoutDao.getDaysForSplit(splitId)
@@ -48,4 +49,15 @@ class WorkoutRepositoryImpl @Inject constructor(
                 entity.toModel()
             }
     }
+
+    override suspend fun getSplitById(splitId: Long): WorkoutSplit =
+        workoutDao.getSplitById(splitId).toModel()
+
+    override suspend fun setActiveSplit(splitId: Long) =
+        workoutDao.setActiveSplit(splitId)
+
+    override suspend fun updateStartDate(
+        splitId: Long,
+        startDate: LocalDate
+    ) = workoutDao.updateStartDate(splitId, startDate)
 }

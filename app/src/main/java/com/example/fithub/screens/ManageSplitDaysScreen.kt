@@ -19,27 +19,35 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.ArrowBack
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.OutlinedIconButton
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.fithub.common.Constants
 import com.example.fithub.common.messages.ScreenMessages
 import com.example.fithub.models.DayType
 import com.example.fithub.models.WorkoutSplitDay
 import com.example.fithub.ui.theme.AppColors
 import com.example.fithub.viewModels.WorkoutViewModel
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
 @Composable
 fun ManageSplitDaysScreen(
@@ -53,6 +61,7 @@ fun ManageSplitDaysScreen(
 
     LaunchedEffect(splitId) {
         workoutViewModel.getAllSplitDays(splitId)
+        workoutViewModel.getSplitById(splitId)
     }
 
     Column(
@@ -69,6 +78,21 @@ fun ManageSplitDaysScreen(
             iconColor = colors.primary,
             onBack = {
                 onBack()
+            }
+        )
+
+        Spacer(modifier = Modifier.height(24.dp))
+
+        SplitDetails(
+            primaryTextColor = colors.primaryText,
+            secondaryTextColor = colors.secondaryText,
+            borderColor = colors.border,
+            containerColor = colors.card,
+            iconColor = colors.primary,
+            startDate = uiState.startDate,
+            isActive = uiState.isActive,
+            onStatusClick = {
+                workoutViewModel.updateSplitDetails(splitId)
             }
         )
 
@@ -130,6 +154,217 @@ private fun Header(
             fontSize = 18.sp
         )
     }
+}
+
+@Composable
+private fun SplitDetails(
+    primaryTextColor: Color,
+    secondaryTextColor: Color,
+    borderColor: Color,
+    containerColor: Color,
+    iconColor: Color,
+    startDate: LocalDate,
+    isActive: Boolean,
+    onStatusClick: () -> Unit
+) {
+    var showStatusDialog by remember { mutableStateOf(false) }
+
+    Column {
+        Text(
+            text = ScreenMessages.SPLIT_DETAILS_TITLE,
+            color = primaryTextColor,
+            fontSize = 22.sp,
+            fontWeight = FontWeight.SemiBold
+        )
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.spacedBy(12.dp)
+        ) {
+            SplitDetailCard(
+                modifier = Modifier
+                    .weight(1f),
+                title = ScreenMessages.START_DATE_TITLE,
+                value = if (isActive) {
+                    startDate.format(
+                        DateTimeFormatter.ofPattern(Constants.DATE_FORMATTER)
+                    )
+                } else {
+                    ScreenMessages.EMPTY_DATE
+                },
+                primaryTextColor = primaryTextColor,
+                secondaryTextColor = secondaryTextColor,
+                borderColor = borderColor,
+                containerColor = containerColor,
+                accentColor = iconColor
+            )
+
+            SplitDetailCard(
+                modifier = Modifier
+                    .weight(1f),
+                title = ScreenMessages.STATUS_TITLE,
+                value = if (isActive) {
+                    ScreenMessages.ACTIVE
+                } else {
+                    ScreenMessages.INACTIVE
+                },
+                primaryTextColor = if (isActive) {
+                    iconColor
+                } else {
+                    secondaryTextColor
+                },
+                secondaryTextColor = secondaryTextColor,
+                borderColor = borderColor,
+                containerColor = containerColor,
+                accentColor = if (isActive) {
+                    iconColor
+                } else {
+                    secondaryTextColor
+                },
+                onClick = if (!isActive) {
+                    {
+                    showStatusDialog = true
+                    }
+                } else {
+                    null
+                }
+            )
+        }
+    }
+
+    if (showStatusDialog) {
+        ActivateSplitDialog(
+            primaryTextColor = primaryTextColor,
+            secondaryTextColor = secondaryTextColor,
+            containerColor = containerColor,
+            confirmColor = iconColor,
+            onConfirm = {
+                onStatusClick()
+                showStatusDialog = false
+            },
+            onDismiss = {
+                showStatusDialog = false
+            }
+        )
+    }
+}
+
+@Composable
+private fun SplitDetailCard(
+    modifier: Modifier = Modifier,
+    title: String,
+    value: String,
+    primaryTextColor: Color,
+    secondaryTextColor: Color,
+    borderColor: Color,
+    containerColor: Color,
+    accentColor: Color,
+    onClick: (() -> Unit)? = null
+) {
+    OutlinedCard(
+        onClick = {
+            onClick?.invoke()
+        },
+        enabled = onClick != null,
+        modifier = modifier,
+        shape = RoundedCornerShape(20.dp),
+        border = BorderStroke(
+            width = 1.dp,
+            color = borderColor
+        ),
+        colors = CardDefaults.outlinedCardColors(
+            containerColor = containerColor
+        )
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp)
+        ) {
+            Text(
+                text = title,
+                color = secondaryTextColor,
+                fontSize = 13.sp,
+                fontWeight = FontWeight.Medium
+            )
+
+            Spacer(modifier = Modifier.height(8.dp))
+
+            Text(
+                text = value,
+                color = primaryTextColor,
+                fontSize = 17.sp,
+                fontWeight = FontWeight.SemiBold
+            )
+
+            Spacer(modifier = Modifier.height(10.dp))
+
+            Box(
+                modifier = Modifier
+                    .width(36.dp)
+                    .height(3.dp)
+                    .background(
+                        color = accentColor,
+                        shape = RoundedCornerShape(50)
+                    )
+            )
+        }
+    }
+}
+
+@Composable
+private fun ActivateSplitDialog(
+    primaryTextColor: Color,
+    secondaryTextColor: Color,
+    containerColor: Color,
+    confirmColor: Color,
+    onConfirm: () -> Unit,
+    onDismiss: () -> Unit
+) {
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        containerColor = containerColor,
+        shape = RoundedCornerShape(20.dp),
+        title = {
+            Text(
+                text = ScreenMessages.ACTIVATE_WORKOUT,
+                color = primaryTextColor,
+                fontSize = 20.sp,
+                fontWeight = FontWeight.Bold
+            )
+        },
+        text = {
+            Text(
+                text = ScreenMessages.ACTIVATE_SPLIT_CONFIRMATION_MESSAGE,
+                color = secondaryTextColor,
+                fontSize = 16.sp
+            )
+        },
+        confirmButton = {
+            TextButton(
+                onClick = onConfirm
+            ) {
+                Text(
+                    text = ScreenMessages.YES,
+                    color = confirmColor,
+                    fontWeight = FontWeight.SemiBold
+                )
+            }
+        },
+        dismissButton = {
+            TextButton(
+                onClick = onDismiss
+            ) {
+                Text(
+                    text = ScreenMessages.NO,
+                    color = secondaryTextColor,
+                    fontWeight = FontWeight.SemiBold
+                )
+            }
+        }
+    )
 }
 
 @Composable

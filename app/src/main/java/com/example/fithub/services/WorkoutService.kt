@@ -87,11 +87,19 @@ class WorkoutService @Inject constructor(
         )
     }
 
-    fun getAllSplits(): List<WorkoutSplit> =
-        workoutRepository.getAllSplits()
+    suspend fun getAllSplits(): List<WorkoutSplit> {
+        return workoutRepository.getAllSplits()
+    }
 
-    fun getDaysForSplit(
-        splitId: Long
-    ): List<WorkoutSplitDay> =
+    suspend fun getDaysForSplit(splitId: Long): List<WorkoutSplitDay> =
         workoutRepository.getDaysForSplit(splitId)
+
+    suspend fun getSplitById(splitId: Long): WorkoutSplit =
+        workoutRepository.getSplitById(splitId)
+
+    suspend fun setActiveSplit(splitId: Long) =
+        workoutRepository.setActiveSplit(splitId)
+
+    suspend fun updateStartDate(splitId: Long, startDate: LocalDate) =
+        workoutRepository.updateStartDate(splitId, startDate)
 }

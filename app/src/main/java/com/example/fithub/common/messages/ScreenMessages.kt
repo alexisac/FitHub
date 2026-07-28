@@ -42,8 +42,10 @@ object ScreenMessages {
     const val MANAGE_SPLIT_DETAILS_TITLE = "Manage split details"
     const val MANAGE_WORKOUT_SPLIT_TITLE = "Manage workout split"
     const val REST_TITLE = "Rest"
+    const val SPLIT_DETAILS_TITLE = "Split details"
     const val SPLIT_NAME_TITLE = "Split name"
     const val START_DATE_TITLE = "Start date"
+    const val STATUS_TITLE = "Status"
     const val SUCCESS_TITLE = "Success"
     const val TIME_TITLE = "Time"
     const val WEIGHT_TITLE = "Weight"
@@ -70,12 +72,17 @@ object ScreenMessages {
     // Common
     const val ACTIVE = "Active"
     const val CANCEL = "Cancel"
+    const val EMPTY_DATE = "-"
     const val INACTIVE = "Inactive"
     const val OK = "OK"
     const val KG = "KG"
+    const val NO = "No"
+    const val YES = "Yes"
 
 
     // Others
+    const val ACTIVATE_SPLIT_CONFIRMATION_MESSAGE = "Are you sure you want to make this workout split active?"
+    const val ACTIVATE_WORKOUT = "Activate workout split?"
     const val WEIGHT_TIP = "Tip: Weigh yourself at the same time each day for more accurate tracking."
     const val REORDER_DAYS_TIP = "Tip: You can reorder days later by dragging them."
 
