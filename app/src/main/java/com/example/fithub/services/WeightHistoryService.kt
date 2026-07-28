@@ -3,8 +3,8 @@ package com.example.fithub.services
 import com.example.fithub.common.Constants
 import com.example.fithub.common.exceptions.ValidationException
 import com.example.fithub.common.messages.ServiceMessages
+import com.example.fithub.models.WeightHistory
 import com.example.fithub.repositories.WeightHistoryRepository
-import com.example.fithub.roomDB.entities.WeightHistoryEntity
 import kotlinx.coroutines.flow.Flow
 import java.time.LocalDate
 import java.time.LocalDateTime
@@ -44,7 +44,8 @@ class WeightHistoryService @Inject constructor(
 
         val dateTime = LocalDateTime.of(localDate, localTime)
 
-        val weightHistory = WeightHistoryEntity(
+        val weightHistory = WeightHistory(
+            id = 0,
             dateTime = dateTime,
             weight = weightValue
         )
@@ -52,7 +53,7 @@ class WeightHistoryService @Inject constructor(
         return weightHistoryRepository.addWeight(weightHistory)
     }
 
-    fun getWeightHistory(): Flow<List<WeightHistoryEntity>> {
+    fun getWeightHistory(): Flow<List<WeightHistory>> {
         return weightHistoryRepository.getWeightsHistory()
     }
 }
