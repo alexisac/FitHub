@@ -77,6 +77,7 @@ fun ManageSplitDaysScreen(
             containerColor = colors.card,
             iconColor = colors.primary,
             onBack = {
+                workoutViewModel.clearSplitDetails()
                 onBack()
             }
         )

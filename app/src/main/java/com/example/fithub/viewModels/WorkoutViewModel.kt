@@ -217,4 +217,14 @@ class WorkoutViewModel @Inject constructor(
             )
         }
     }
+
+    fun clearSplitDetails(){
+        _uiState.update {
+            it.copy(
+                splitDaysList = emptyList(),
+                startDate = LocalDate.now(),
+                isActive = false
+            )
+        }
+    }
 }

@@ -26,8 +26,5 @@ data class AppThemeColors(
     val inactiveIcon: Color,
 
     val error: Color,
-    val success: Color,
-
-    val primaryBorderColor: Color,
-    val secondaryBorderColor: Color
+    val success: Color
 )

@@ -83,7 +83,7 @@ fun ManageWorkoutSplitsScreen(
             secondaryTextColor = colors.secondaryText,
             borderColor = colors.border,
             containerColor = colors.card,
-            primaryColor = colors.primary,
+            primaryColor = colors.secondary,
             successColor = colors.success,
             onSplitClick = { split ->
                 goToManageSplitDays(split.id)
@@ -238,13 +238,17 @@ private fun SplitCard(
 
                 Spacer(modifier = Modifier.height(6.dp))
 
-                Text(
-                    text = "${ScreenMessages.START_DATE_DESCRIPTION} ${split.startDate.format(
-                        DateTimeFormatter.ofPattern(Constants.DATE_FORMATTER)
-                    )}",
-                    color = secondaryTextColor,
-                    fontSize = 15.sp
-                )
+                if(split.active) {
+                    Text(
+                        text = "${ScreenMessages.START_DATE_DESCRIPTION} ${
+                            split.startDate.format(
+                                DateTimeFormatter.ofPattern(Constants.DATE_FORMATTER)
+                            )
+                        }",
+                        color = secondaryTextColor,
+                        fontSize = 15.sp
+                    )
+                }
             }
 
             Text(

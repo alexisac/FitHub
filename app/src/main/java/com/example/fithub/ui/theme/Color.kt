@@ -65,10 +65,7 @@ object AppColors {
                 inactiveIcon = DarkSecondaryText,
 
                 error = ErrorColor,
-                success = SuccessColor,
-
-                primaryBorderColor = ErrorColor,
-                secondaryBorderColor = ErrorColor
+                success = SuccessColor
             )
         } else {
             AppThemeColors(
@@ -95,10 +92,7 @@ object AppColors {
                 inactiveIcon = LightSecondaryText,
 
                 error = ErrorColor,
-                success = SuccessColor,
-
-                primaryBorderColor = ErrorColor,
-                secondaryBorderColor = ErrorColor
+                success = SuccessColor
             )
         }
     }
