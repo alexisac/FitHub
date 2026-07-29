@@ -20,4 +20,10 @@ abstract class RepositoryModule {
     abstract fun bindWorkoutRepository(
         implementation: WorkoutRepositoryImpl
     ): WorkoutRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindExerciseRepository(
+        implementation: ExerciseRepositoryImpl
+    ): ExerciseRepository
 }

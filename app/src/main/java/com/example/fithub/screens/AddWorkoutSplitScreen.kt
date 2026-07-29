@@ -194,7 +194,7 @@ private fun Header(
             )
         }
 
-        Spacer(modifier = Modifier.width(16.dp))
+        Spacer(modifier = Modifier.height(16.dp))
 
         Text(
             text = ScreenMessages.ADD_WORKOUT_SPLIT_TITLE,

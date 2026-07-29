@@ -7,12 +7,15 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.example.fithub.screens.AddExerciseScreen
 import com.example.fithub.screens.AddWeightScreen
 import com.example.fithub.screens.AddWorkoutDayScreen
 import com.example.fithub.screens.AddWorkoutSplitScreen
 import com.example.fithub.screens.HomeScreen
+import com.example.fithub.screens.ManageExerciseScreen
 import com.example.fithub.screens.ManageSplitDaysScreen
 import com.example.fithub.screens.ManageWorkoutSplitsScreen
+import com.example.fithub.viewModels.ExerciseViewModel
 import com.example.fithub.viewModels.WeightViewModel
 import com.example.fithub.viewModels.WorkoutViewModel
 
@@ -25,6 +28,7 @@ fun AppNavHost(
 
     val weightViewModel: WeightViewModel = hiltViewModel()
     val workoutViewModel: WorkoutViewModel = hiltViewModel()
+    val exerciseViewModel: ExerciseViewModel = hiltViewModel()
 
     NavHost(
         navController = navController,
@@ -40,6 +44,9 @@ fun AppNavHost(
                 },
                 goToManageWorkoutSplit = {
                     navController.navigate(AppRoutes.MANAGE_WORKOUT_SPLIT_ROUTE)
+                },
+                goToManageExercises = {
+                    navController.navigate(AppRoutes.MANAGE_EXERCISES_ROUTE)
                 }
             )
         }
@@ -111,6 +118,29 @@ fun AppNavHost(
                 workoutViewModel = workoutViewModel,
                 isDarkTheme = isDarkTheme,
                 splitId = splitId,
+                onBack = {
+                    navController.popBackStack()
+                }
+            )
+        }
+
+        composable(AppRoutes.MANAGE_EXERCISES_ROUTE) {
+            ManageExerciseScreen(
+                exerciseViewModel = exerciseViewModel,
+                isDarkTheme = isDarkTheme,
+                goToAddExercise = {
+                    navController.navigate(AppRoutes.ADD_EXERCISE_ROUTE)
+                },
+                onBack = {
+                    navController.popBackStack()
+                }
+            )
+        }
+
+        composable(AppRoutes.ADD_EXERCISE_ROUTE) {
+            AddExerciseScreen(
+                exerciseViewModel = exerciseViewModel,
+                isDarkTheme = isDarkTheme,
                 onBack = {
                     navController.popBackStack()
                 }

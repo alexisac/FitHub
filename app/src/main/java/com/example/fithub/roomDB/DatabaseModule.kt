@@ -2,6 +2,7 @@ package com.example.fithub.roomDB
 
 import android.content.Context
 import androidx.room.Room
+import com.example.fithub.roomDB.dao.ExerciseDao
 import com.example.fithub.roomDB.dao.WeightHistoryDao
 import com.example.fithub.roomDB.dao.WorkoutDao
 import dagger.Module
@@ -34,5 +35,10 @@ object DatabaseModule {
     @Provides
     fun provideWorkoutDao(database: FitHubDatabase): WorkoutDao {
         return database.workoutDao()
+    }
+
+    @Provides
+    fun provideExerciseDao(database: FitHubDatabase): ExerciseDao {
+        return database.exerciseDao()
     }
 }

@@ -6,8 +6,11 @@ import androidx.room.TypeConverters
 import com.example.fithub.roomDB.converters.DayTypeConverter
 import com.example.fithub.roomDB.converters.LocalDateConverter
 import com.example.fithub.roomDB.converters.LocalDateTimeConverter
+import com.example.fithub.roomDB.converters.MuscleGroupConverter
+import com.example.fithub.roomDB.dao.ExerciseDao
 import com.example.fithub.roomDB.dao.WeightHistoryDao
 import com.example.fithub.roomDB.dao.WorkoutDao
+import com.example.fithub.roomDB.entities.ExerciseEntity
 import com.example.fithub.roomDB.entities.WeightHistoryEntity
 import com.example.fithub.roomDB.entities.WorkoutSplitDayEntity
 import com.example.fithub.roomDB.entities.WorkoutSplitEntity
@@ -16,7 +19,8 @@ import com.example.fithub.roomDB.entities.WorkoutSplitEntity
     entities = [
         WeightHistoryEntity::class,
         WorkoutSplitEntity::class,
-        WorkoutSplitDayEntity::class
+        WorkoutSplitDayEntity::class,
+        ExerciseEntity::class
     ],
     version = 1,
     exportSchema = false
@@ -24,10 +28,13 @@ import com.example.fithub.roomDB.entities.WorkoutSplitEntity
 @TypeConverters(
     LocalDateTimeConverter::class,
     LocalDateConverter::class,
-    DayTypeConverter::class
+    DayTypeConverter::class,
+    MuscleGroupConverter::class
 )
 abstract class FitHubDatabase : RoomDatabase() {
     abstract fun weightHistoryDao(): WeightHistoryDao
 
     abstract fun workoutDao(): WorkoutDao
+
+    abstract fun exerciseDao(): ExerciseDao
 }

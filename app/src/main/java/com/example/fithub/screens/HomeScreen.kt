@@ -25,7 +25,8 @@ fun HomeScreen (
     isDarkTheme: Boolean,
     onThemeChange: (Boolean) -> Unit,
     goToAddWeightMenu: () -> Unit,
-    goToManageWorkoutSplit: () -> Unit
+    goToManageWorkoutSplit: () -> Unit,
+    goToManageExercises: () -> Unit
 ){
     val uiState by viewModel.uiState.collectAsState()
     val isDark = isDarkTheme
@@ -63,6 +64,14 @@ fun HomeScreen (
                 onClick = goToAddWeightMenu,
             ) {
                 Text(ScreenMessages.ADD_WEIGHT_BUTTON)
+            }
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            Button(
+                onClick = goToManageExercises,
+            ) {
+                Text(ScreenMessages.MANAGE_EXERCISES_BUTTON)
             }
         }
 
