@@ -13,4 +13,7 @@ class WorkoutSplitDayExercisesImpl @Inject constructor(
 
     override suspend fun insertSplitDayExercise(entity: WorkoutSplitDayExercises) =
         workoutSplitDayExerciseDao.insertSplitDayExercise(entity.toEntity())
+
+    override suspend fun getExerciseIdsForSplitDay(workoutSplitDayId: Long): List<Long> =
+        workoutSplitDayExerciseDao.getExerciseIdsForSplitDay(workoutSplitDayId)
 }

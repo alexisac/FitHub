@@ -22,4 +22,7 @@ class WorkoutSplitDayExercisesService @Inject constructor(
             workoutSplitDayExercisesRepository.insertSplitDayExercise(workoutSplitDayExercises)
         }
     }
+
+    suspend fun getExerciseIdsForSplitDay(workoutSplitDayId: Long): List<Long> =
+        workoutSplitDayExercisesRepository.getExerciseIdsForSplitDay(workoutSplitDayId)
 }

@@ -59,12 +59,61 @@ class WorkoutSplitDayExercisesViewModel @Inject constructor(
         }
     }
 
+    fun getSelectedExercises(
+        workoutSplitDayId: Long
+    ) {
+        viewModelScope.launch {
+            _uiState.update {
+                it.copy(
+                    isLoading = true,
+                    errorMessage = null
+                )
+            }
+
+            try {
+                val selectedIds = workoutSplitDayExercisesService.getExerciseIdsForSplitDay(workoutSplitDayId)
+
+                _uiState.update {
+                    it.copy(
+                        isLoading = false,
+                        selectedExerciseIds = selectedIds.toSet()
+                    )
+                }
+            } catch (ex: Exception) {
+                _uiState.update {
+                    it.copy(
+                        isLoading = false,
+                        errorMessage = ex.message ?: ViewModelErrorMessages.UNKNOWN_ERROR
+                    )
+                }
+            }
+        }
+    }
+
+    fun toggleExerciseSelection(
+        exerciseId: Long
+    ) {
+        _uiState.update { currentState ->
+            val updatedIds =
+                if (exerciseId in currentState.selectedExerciseIds) {
+                    currentState.selectedExerciseIds - exerciseId
+                } else {
+                    currentState.selectedExerciseIds + exerciseId
+                }
+
+            currentState.copy(
+                selectedExerciseIds = updatedIds
+            )
+        }
+    }
+
     fun clearMessages() {
         _uiState.update {
             it.copy(
                 isLoading = false,
                 errorMessage = null,
-                successMessage = null
+                successMessage = null,
+                selectedExerciseIds = emptySet()
             )
         }
     }

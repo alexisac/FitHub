@@ -62,7 +62,6 @@ fun ManageSplitDayExercisesScreen(
     val splitDayExercisesUiState by workoutSplitDayExercisesViewModel.uiState.collectAsState()
     val colors = AppColors.colors(isDarkTheme)
 
-    var selectedExerciseIds by remember { mutableStateOf<Set<Long>>(emptySet()) }
     var searchQuery by remember { mutableStateOf("") }
 
     val filteredExercises = exerciseUiState.exercisesList.filter { exercise ->
@@ -75,6 +74,7 @@ fun ManageSplitDayExercisesScreen(
     LaunchedEffect(workoutSplitDayId) {
         workoutViewModel.getSplitDayById(workoutSplitDayId)
         exerciseViewModel.getAllExercises()
+        workoutSplitDayExercisesViewModel.getSelectedExercises(workoutSplitDayId)
     }
 
     LaunchedEffect(splitDayExercisesUiState.successMessage) {
@@ -122,7 +122,7 @@ fun ManageSplitDayExercisesScreen(
 
         ExercisesList(
             exercisesList = filteredExercises,
-            selectedExerciseIds = selectedExerciseIds,
+            selectedExerciseIds = splitDayExercisesUiState.selectedExerciseIds,
             primaryTextColor = colors.primaryText,
             secondaryTextColor = colors.secondaryText,
             borderColor = colors.border,
@@ -131,12 +131,9 @@ fun ManageSplitDayExercisesScreen(
             selectedContainerColor = colors.selectedContainer,
             selectedIconColor = colors.primary,
             onSelectExercise = { exerciseId ->
-                selectedExerciseIds =
-                    if (exerciseId in selectedExerciseIds) {
-                        selectedExerciseIds - exerciseId
-                    } else {
-                        selectedExerciseIds + exerciseId
-                    }
+                workoutSplitDayExercisesViewModel.toggleExerciseSelection(
+                    exerciseId
+                )
             }
         )
 
@@ -149,7 +146,9 @@ fun ManageSplitDayExercisesScreen(
             onClick = {
                 workoutSplitDayExercisesViewModel.saveExercisesForSplitDay(
                     workoutSplitDayId = workoutSplitDayId,
-                    exerciseIds = selectedExerciseIds.toList()
+                    exerciseIds = splitDayExercisesUiState
+                        .selectedExerciseIds
+                        .toList()
                 )
             }
         )

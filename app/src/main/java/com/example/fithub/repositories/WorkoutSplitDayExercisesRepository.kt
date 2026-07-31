@@ -10,4 +10,8 @@ interface WorkoutSplitDayExercisesRepository {
     suspend fun insertSplitDayExercise(
         entity: WorkoutSplitDayExercises
     )
+
+    suspend fun getExerciseIdsForSplitDay(
+        workoutSplitDayId: Long
+    ): List<Long>
 }

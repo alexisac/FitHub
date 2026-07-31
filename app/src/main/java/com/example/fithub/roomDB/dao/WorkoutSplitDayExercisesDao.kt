@@ -19,4 +19,13 @@ interface WorkoutSplitDayExercisesDao {
     suspend fun insertSplitDayExercise(
         entity: WorkoutSplitDayExercisesEntity
     )
+
+    @Query("""
+    SELECT exerciseId
+    FROM workout_split_day_exercises
+    WHERE workoutSplitDayId = :workoutSplitDayId
+""")
+    suspend fun getExerciseIdsForSplitDay(
+        workoutSplitDayId: Long
+    ): List<Long>
 }
