@@ -183,6 +183,17 @@ class WorkoutViewModel @Inject constructor(
         }
     }
 
+    fun getSplitDayById(splitDayId: Long) {
+        viewModelScope.launch {
+            val splitDay = workoutService.getSplitDayById(splitDayId)
+            _uiState.update {
+                it.copy(
+                    splitDay = splitDay
+                )
+            }
+        }
+    }
+
     fun updateSplitDetails(splitId: Long) {
         val startDate = LocalDate.now()
 
@@ -255,7 +266,8 @@ class WorkoutViewModel @Inject constructor(
             it.copy(
                 splitDaysList = emptyList(),
                 startDate = LocalDate.now(),
-                isActive = false
+                isActive = false,
+                splitDay = null
             )
         }
     }

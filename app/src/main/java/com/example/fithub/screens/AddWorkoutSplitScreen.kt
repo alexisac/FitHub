@@ -74,6 +74,7 @@ fun AddWorkoutSplitScreen(
     LaunchedEffect(uiState.successMessage) {
         if (uiState.successMessage != null) {
             workoutViewModel.clearMessages()
+            workoutViewModel.clearSplitDraft()
             onBack()
         }
     }

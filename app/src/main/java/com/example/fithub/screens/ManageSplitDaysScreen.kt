@@ -55,6 +55,7 @@ fun ManageSplitDaysScreen(
     workoutViewModel: WorkoutViewModel,
     isDarkTheme: Boolean,
     splitId: Long,
+    goToManageDayExercises: (Long) -> Unit,
     onBack: () -> Unit
 ) {
     val uiState by workoutViewModel.uiState.collectAsState()
@@ -119,7 +120,10 @@ fun ManageSplitDaysScreen(
             containerColor = colors.card,
             workoutColor = colors.primary,
             restDayColor = colors.secondaryText,
-            circleTextColor = colors.onPrimary
+            circleTextColor = colors.onPrimary,
+            onSplitDayClick = { splitDayId ->
+                goToManageDayExercises(splitDayId)
+            }
         )
     }
 }
@@ -415,7 +419,8 @@ private fun SplitDaysList(
     containerColor: Color,
     workoutColor: Color,
     restDayColor: Color,
-    circleTextColor: Color
+    circleTextColor: Color,
+    onSplitDayClick: (Long) -> Unit
 ) {
     LazyColumn(
         modifier = Modifier.fillMaxWidth(),
@@ -430,7 +435,10 @@ private fun SplitDaysList(
                 containerColor = containerColor,
                 workoutColor = workoutColor,
                 restDayColor = restDayColor,
-                circleTextColor = circleTextColor
+                circleTextColor = circleTextColor,
+                onClick = {
+                    onSplitDayClick(splitDay.id)
+                }
             )
         }
     }
@@ -445,9 +453,11 @@ private fun SplitDayCard(
     containerColor: Color,
     workoutColor: Color,
     restDayColor: Color,
-    circleTextColor: Color
+    circleTextColor: Color,
+    onClick: () -> Unit
 ) {
     OutlinedCard(
+        onClick = onClick,
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(20.dp),
         border = BorderStroke(

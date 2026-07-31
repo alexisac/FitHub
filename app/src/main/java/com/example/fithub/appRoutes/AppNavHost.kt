@@ -13,10 +13,12 @@ import com.example.fithub.screens.AddWorkoutDayScreen
 import com.example.fithub.screens.AddWorkoutSplitScreen
 import com.example.fithub.screens.HomeScreen
 import com.example.fithub.screens.ManageExerciseScreen
+import com.example.fithub.screens.ManageSplitDayExercisesScreen
 import com.example.fithub.screens.ManageSplitDaysScreen
 import com.example.fithub.screens.ManageWorkoutSplitsScreen
 import com.example.fithub.viewModels.ExerciseViewModel
 import com.example.fithub.viewModels.WeightViewModel
+import com.example.fithub.viewModels.WorkoutSplitDayExercisesViewModel
 import com.example.fithub.viewModels.WorkoutViewModel
 
 @Composable
@@ -29,6 +31,7 @@ fun AppNavHost(
     val weightViewModel: WeightViewModel = hiltViewModel()
     val workoutViewModel: WorkoutViewModel = hiltViewModel()
     val exerciseViewModel: ExerciseViewModel = hiltViewModel()
+    val workoutSplitDayExercisesViewModel: WorkoutSplitDayExercisesViewModel = hiltViewModel()
 
     NavHost(
         navController = navController,
@@ -69,9 +72,7 @@ fun AppNavHost(
                     navController.navigate(AppRoutes.ADD_WORKOUT_SPLIT_ROUTE)
                 },
                 goToManageSplitDays = { splitId ->
-                    navController.navigate(
-                        AppRoutes.manageSplitDaysRoute(splitId)
-                    )
+                    navController.navigate(AppRoutes.manageSplitDaysRoute(splitId))
                 },
                 onBack = {
                     navController.popBackStack()
@@ -117,6 +118,9 @@ fun AppNavHost(
                 workoutViewModel = workoutViewModel,
                 isDarkTheme = isDarkTheme,
                 splitId = splitId,
+                goToManageDayExercises = { splitDayId ->
+                    navController.navigate(AppRoutes.manageDayExercisesRoute(splitDayId))
+                },
                 onBack = {
                     navController.popBackStack()
                 }
@@ -131,9 +135,7 @@ fun AppNavHost(
                     navController.navigate(AppRoutes.ADD_EXERCISE_ROUTE)
                 },
                 goToEditExercise = { exerciseId ->
-                    navController.navigate(
-                        AppRoutes.editExerciseRoute(exerciseId)
-                    )
+                    navController.navigate(AppRoutes.editExerciseRoute(exerciseId))
                 },
                 onBack = {
                     navController.popBackStack()
@@ -167,6 +169,30 @@ fun AppNavHost(
                 exerciseViewModel = exerciseViewModel,
                 isDarkTheme = isDarkTheme,
                 exerciseId = exerciseId,
+                onBack = {
+                    navController.popBackStack()
+                }
+            )
+        }
+
+        composable(
+            route = AppRoutes.MANAGE_DAY_EXERCISES_WITH_ARGUMENT_ROUTE,
+            arguments = listOf(navArgument(AppRoutes.SPLIT_DAY_ID_ARGUMENT) {
+                    type = NavType.LongType
+                }
+            )
+        ) { backStackEntry ->
+
+            val splitDayId = backStackEntry.arguments
+                ?.getLong(AppRoutes.SPLIT_DAY_ID_ARGUMENT)
+                ?: return@composable
+
+            ManageSplitDayExercisesScreen(
+                exerciseViewModel = exerciseViewModel,
+                workoutViewModel = workoutViewModel,
+                workoutSplitDayExercisesViewModel = workoutSplitDayExercisesViewModel,
+                workoutSplitDayId = splitDayId,
+                isDarkTheme = isDarkTheme,
                 onBack = {
                     navController.popBackStack()
                 }

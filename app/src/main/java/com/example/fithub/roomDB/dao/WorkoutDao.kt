@@ -51,6 +51,15 @@ interface WorkoutDao {
     ): WorkoutSplitEntity
 
     @Query("""
+        SELECT *
+        FROM workout_split_days
+        WHERE id = :splitDayId
+    """)
+    suspend fun getSplitDayById(
+        splitDayId: Long
+    ): WorkoutSplitDayEntity
+
+    @Query("""
         UPDATE workout_splits
         SET active = CASE
             WHEN id = :splitId THEN 1

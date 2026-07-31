@@ -82,6 +82,9 @@ class WorkoutService @Inject constructor(
     suspend fun getSplitById(splitId: Long): WorkoutSplit =
         workoutRepository.getSplitById(splitId)
 
+    suspend fun getSplitDayById(splitDayId: Long): WorkoutSplitDay =
+        workoutRepository.getSplitDayById(splitDayId)
+
     suspend fun setActiveSplit(splitId: Long) =
         workoutRepository.setActiveSplit(splitId)
 

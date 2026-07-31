@@ -12,6 +12,7 @@ data class WorkoutUiState(
     val splitName: String = "",
     val selectedSplitDate: String = "",
     val splitDaysList: List<WorkoutSplitDay> = emptyList(),
+    val splitDay: WorkoutSplitDay? = null,
 
     val splits: List<WorkoutSplit> = emptyList(),
     val startDate: LocalDate = LocalDate.now(),

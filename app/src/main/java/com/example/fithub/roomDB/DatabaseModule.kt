@@ -5,6 +5,7 @@ import androidx.room.Room
 import com.example.fithub.roomDB.dao.ExerciseDao
 import com.example.fithub.roomDB.dao.WeightHistoryDao
 import com.example.fithub.roomDB.dao.WorkoutDao
+import com.example.fithub.roomDB.dao.WorkoutSplitDayExercisesDao
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -40,5 +41,10 @@ object DatabaseModule {
     @Provides
     fun provideExerciseDao(database: FitHubDatabase): ExerciseDao {
         return database.exerciseDao()
+    }
+
+    @Provides
+    fun provideWorkoutSplitDayExercisesDao(database: FitHubDatabase): WorkoutSplitDayExercisesDao {
+        return database.workoutSplitDayExercisesDao()
     }
 }

@@ -53,6 +53,9 @@ class WorkoutRepositoryImpl @Inject constructor(
     override suspend fun getSplitById(splitId: Long): WorkoutSplit =
         workoutDao.getSplitById(splitId).toModel()
 
+    override suspend fun getSplitDayById(splitDayId: Long): WorkoutSplitDay =
+        workoutDao.getSplitDayById(splitDayId).toModel()
+
     override suspend fun setActiveSplit(splitId: Long) =
         workoutDao.setActiveSplit(splitId)
 

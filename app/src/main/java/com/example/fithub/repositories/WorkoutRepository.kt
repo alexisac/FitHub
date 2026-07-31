@@ -20,6 +20,10 @@ interface WorkoutRepository {
         splitId: Long
     ): WorkoutSplit
 
+    suspend fun getSplitDayById(
+        splitDayId: Long
+    ): WorkoutSplitDay
+
     suspend fun setActiveSplit(
         splitId: Long
     )

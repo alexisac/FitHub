@@ -10,9 +10,11 @@ import com.example.fithub.roomDB.converters.MuscleGroupConverter
 import com.example.fithub.roomDB.dao.ExerciseDao
 import com.example.fithub.roomDB.dao.WeightHistoryDao
 import com.example.fithub.roomDB.dao.WorkoutDao
+import com.example.fithub.roomDB.dao.WorkoutSplitDayExercisesDao
 import com.example.fithub.roomDB.entities.ExerciseEntity
 import com.example.fithub.roomDB.entities.WeightHistoryEntity
 import com.example.fithub.roomDB.entities.WorkoutSplitDayEntity
+import com.example.fithub.roomDB.entities.WorkoutSplitDayExercisesEntity
 import com.example.fithub.roomDB.entities.WorkoutSplitEntity
 
 @Database(
@@ -20,7 +22,8 @@ import com.example.fithub.roomDB.entities.WorkoutSplitEntity
         WeightHistoryEntity::class,
         WorkoutSplitEntity::class,
         WorkoutSplitDayEntity::class,
-        ExerciseEntity::class
+        ExerciseEntity::class,
+        WorkoutSplitDayExercisesEntity::class
     ],
     version = 1,
     exportSchema = false
@@ -37,4 +40,6 @@ abstract class FitHubDatabase : RoomDatabase() {
     abstract fun workoutDao(): WorkoutDao
 
     abstract fun exerciseDao(): ExerciseDao
+
+    abstract fun workoutSplitDayExercisesDao(): WorkoutSplitDayExercisesDao
 }

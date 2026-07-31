@@ -12,10 +12,14 @@ object AppRoutes {
     const val SPLIT_ID_ARGUMENT = "splitId"
     const val EXERCISE_ID_ARGUMENT = "exerciseId"
     const val EDIT_EXERCISE_ROUTE = "editExercise"
+    const val SPLIT_DAY_ID_ARGUMENT = "splitDayId"
+    const val MANAGE_DAY_EXERCISES_ROUTE = "manage_day_exercises"
 
     const val MANAGE_SPLIT_DAYS_WITH_ARGUMENT_ROUTE = "$MANAGE_SPLIT_DAYS_ROUTE/{$SPLIT_ID_ARGUMENT}"
     const val EDIT_EXERCISE_WITH_ARGUMENT_ROUTE = "$EDIT_EXERCISE_ROUTE/{$EXERCISE_ID_ARGUMENT}"
+    const val MANAGE_DAY_EXERCISES_WITH_ARGUMENT_ROUTE = "$MANAGE_DAY_EXERCISES_ROUTE/{$SPLIT_DAY_ID_ARGUMENT}"
 
     fun manageSplitDaysRoute(splitId: Long): String = "$MANAGE_SPLIT_DAYS_ROUTE/$splitId"
     fun editExerciseRoute(exerciseId: Long) = "$EDIT_EXERCISE_ROUTE/$exerciseId"
+    fun manageDayExercisesRoute(splitDayId: Long): String = "$MANAGE_DAY_EXERCISES_ROUTE/$splitDayId"
 }
