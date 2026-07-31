@@ -71,12 +71,110 @@ class ExerciseViewModel @Inject constructor(
         }
     }
 
+    fun getAllExercises() {
+        viewModelScope.launch {
+            val exercisesList = exerciseService.getAllExercises()
+            _uiState.update {
+                it.copy(
+                    exercisesList = exercisesList
+                )
+            }
+        }
+    }
+
+    fun deleteExercise(exerciseId: Long) {
+        viewModelScope.launch {
+            _uiState.update {
+                it.copy(
+                    isLoading = true,
+                    errorMessage = null,
+                    successMessage = null
+                )
+            }
+
+            try {
+                exerciseService.deleteExercise(exerciseId)
+                val exercises = exerciseService.getAllExercises()
+
+                _uiState.update {
+                    it.copy(
+                        isLoading = false,
+                        exercisesList = exercises,
+                        successMessage = ViewModelSuccessMessages.EXERCISE_DELETED_SUCCESSFULLY
+                    )
+                }
+            } catch (ex: Exception) {
+                _uiState.update {
+                    it.copy(
+                        isLoading = false,
+                        errorMessage = ex.message ?: ViewModelErrorMessages.UNKNOWN_ERROR,
+                        successMessage = null
+                    )
+                }
+            }
+        }
+    }
+
+    fun getExerciseById(exerciseId: Long) {
+        viewModelScope.launch {
+            val exercise = exerciseService.getExerciseById(exerciseId)
+
+            _uiState.update {
+                it.copy(
+                    selectedExercise = exercise
+                )
+            }
+        }
+    }
+
+    fun updateExercise(
+        exerciseId: Long,
+        exerciseName: String,
+        muscleGroup: MuscleGroup,
+        exerciseDescription: String
+    ) {
+        viewModelScope.launch {
+            _uiState.update {
+                it.copy(
+                    isLoading = true,
+                    errorMessage = null,
+                    successMessage = null
+                )
+            }
+
+            try {
+                exerciseService.updateExercise(
+                    exerciseId = exerciseId,
+                    exerciseName = exerciseName,
+                    muscleGroup = muscleGroup,
+                    exerciseDescription = exerciseDescription
+                )
+
+                _uiState.update {
+                    it.copy(
+                        isLoading = false,
+                        successMessage = ViewModelSuccessMessages.EXERCISE_UPDATED_SUCCESSFULLY
+                    )
+                }
+            } catch (ex: Exception) {
+                _uiState.update {
+                    it.copy(
+                        isLoading = false,
+                        errorMessage = ex.message
+                            ?: ViewModelErrorMessages.UNKNOWN_ERROR
+                    )
+                }
+            }
+        }
+    }
+
     fun clearMessage() {
         _uiState.update {
             it.copy(
                 isLoading = false,
                 errorMessage = null,
-                successMessage = null
+                successMessage = null,
+                selectedExercise = null
             )
         }
     }

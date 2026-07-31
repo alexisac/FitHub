@@ -7,7 +7,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import com.example.fithub.screens.AddExerciseScreen
+import com.example.fithub.screens.AddEditExerciseScreen
 import com.example.fithub.screens.AddWeightScreen
 import com.example.fithub.screens.AddWorkoutDayScreen
 import com.example.fithub.screens.AddWorkoutSplitScreen
@@ -104,8 +104,7 @@ fun AppNavHost(
 
         composable(
             route = AppRoutes.MANAGE_SPLIT_DAYS_WITH_ARGUMENT_ROUTE,
-            arguments = listOf(
-                navArgument(AppRoutes.SPLIT_ID_ARGUMENT) {
+            arguments = listOf(navArgument(AppRoutes.SPLIT_ID_ARGUMENT) {
                     type = NavType.LongType
                 }
             )
@@ -131,6 +130,11 @@ fun AppNavHost(
                 goToAddExercise = {
                     navController.navigate(AppRoutes.ADD_EXERCISE_ROUTE)
                 },
+                goToEditExercise = { exerciseId ->
+                    navController.navigate(
+                        AppRoutes.editExerciseRoute(exerciseId)
+                    )
+                },
                 onBack = {
                     navController.popBackStack()
                 }
@@ -138,9 +142,31 @@ fun AppNavHost(
         }
 
         composable(AppRoutes.ADD_EXERCISE_ROUTE) {
-            AddExerciseScreen(
+            AddEditExerciseScreen(
                 exerciseViewModel = exerciseViewModel,
                 isDarkTheme = isDarkTheme,
+                onBack = {
+                    navController.popBackStack()
+                }
+            )
+        }
+
+        composable(
+            route = AppRoutes.EDIT_EXERCISE_WITH_ARGUMENT_ROUTE,
+            arguments = listOf(navArgument(AppRoutes.EXERCISE_ID_ARGUMENT) {
+                    type = NavType.LongType
+                }
+            )
+        ) { backStackEntry ->
+
+            val exerciseId = backStackEntry.arguments
+                ?.getLong(AppRoutes.EXERCISE_ID_ARGUMENT)
+                ?: return@composable
+
+            AddEditExerciseScreen(
+                exerciseViewModel = exerciseViewModel,
+                isDarkTheme = isDarkTheme,
+                exerciseId = exerciseId,
                 onBack = {
                     navController.popBackStack()
                 }

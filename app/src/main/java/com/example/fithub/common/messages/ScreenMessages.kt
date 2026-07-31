@@ -6,8 +6,10 @@ object ScreenMessages {
     const val ADD_DAY_BUTTON = "Add day"
     const val CREATE_EXERCISE_BUTTON = "Create exercise"
     const val CREATE_SPLIT_BUTTON = "Create split"
+    const val DELETE_EXERCISE_TITLE = "Delete exercise"
     const val MANAGE_EXERCISES_BUTTON = "Manage exercises"
     const val MANAGE_WORKOUT_BUTTON = "Manage workout"
+    const val UPDATE_EXERCISE_BUTTON = "Update exercise"
 
 
     // Content descriptions
@@ -16,6 +18,7 @@ object ScreenMessages {
     const val CALENDAR_DESCRIPTION = "Calendar"
     const val DARK_MODE_DESCRIPTION = "DarkMode"
     const val DELETE_DESCRIPTION = "Delete"
+    const val EDIT_DESCRIPTION = "Edit"
     const val ERROR_DESCRIPTION = "Error"
     const val DESCRIPTION_DESCRIPTION = "Exercise description"
     const val INFO_DESCRIPTION = "Info"
@@ -42,6 +45,7 @@ object ScreenMessages {
     const val DAY_NAME_TITLE = "Day name"
     const val DAY_TYPE_TITLE = "Day type"
     const val DAYS_IN_SPLIT_TITLE = "Days in split"
+    const val EDIT_EXERCISE_TITLE = "Edit exercise"
     const val ERROR_TITLE = "Error"
     const val EXERCISE_DESCRIPTION_TITLE = "Exercise description"
     const val EXERCISE_NAME_TITLE = "Exercise name"
@@ -65,6 +69,7 @@ object ScreenMessages {
     const val ADD_EXERCISE_SUBTITLE = "Create and save a new exercise."
     const val ADD_WORKOUT_SPLIT_SUBTITLE = "Create a new split and define your training days."
     const val DAYS_IN_SPLIT_SUBTITLE = "Add the days that make up this split."
+    const val EDIT_EXERCISE_SUBTITLE = "Edit and save modifications."
     const val MANAGE_EXERCISES_SUBTITLE = "View, update or delete your exercises."
     const val MANAGE_SPLIT_DETAILS_SUBTITLE = "Manage days and split settings."
     const val MUSCLE_GROUP_SUBTITLE = "Choose the primary muscle group."
@@ -98,5 +103,6 @@ object ScreenMessages {
     const val ACTIVATE_WORKOUT = "Activate workout split?"
     const val WEIGHT_TIP = "Tip: Weigh yourself at the same time each day for more accurate tracking."
     const val REORDER_DAYS_TIP = "Tip: You can reorder days later by dragging them."
+    fun deleteExerciseMessage(exerciseName: String): String = "Are you sure you want to delete \"$exerciseName\"?"
 
 }

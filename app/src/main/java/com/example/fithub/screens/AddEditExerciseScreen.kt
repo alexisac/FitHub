@@ -43,13 +43,15 @@ import com.example.fithub.ui.theme.AppColors
 import com.example.fithub.viewModels.ExerciseViewModel
 
 @Composable
-fun AddExerciseScreen(
+fun AddEditExerciseScreen(
     exerciseViewModel: ExerciseViewModel,
     isDarkTheme: Boolean,
+    exerciseId: Long? = null,
     onBack: () -> Unit
 ) {
     val uiState by exerciseViewModel.uiState.collectAsState()
     val colors = AppColors.colors(isDarkTheme)
+    val isEditMode = exerciseId != null
 
     var exerciseName by remember { mutableStateOf("") }
     var selectedMuscleGroup by remember { mutableStateOf(MuscleGroup.CHEST) }
@@ -62,6 +64,19 @@ fun AddExerciseScreen(
         }
     }
 
+    LaunchedEffect(exerciseId) {
+        if (exerciseId != null)
+            exerciseViewModel.getExerciseById(exerciseId)
+    }
+
+    LaunchedEffect(uiState.selectedExercise) {
+        uiState.selectedExercise?.let { exercise ->
+            exerciseName = exercise.name
+            selectedMuscleGroup = exercise.muscleGroup
+            exerciseDescription = exercise.description
+        }
+    }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -69,14 +84,25 @@ fun AddExerciseScreen(
             .padding(horizontal = 20.dp, vertical = 40.dp)
     ) {
         Header(
-            title = ScreenMessages.ADD_EXERCISE_TITLE,
-            subtitle = ScreenMessages.ADD_EXERCISE_SUBTITLE,
+            title = if (isEditMode) {
+                ScreenMessages.EDIT_EXERCISE_TITLE
+            } else {
+                ScreenMessages.ADD_EXERCISE_TITLE
+            },
+            subtitle = if (isEditMode) {
+                ScreenMessages.EDIT_EXERCISE_SUBTITLE
+            } else {
+                ScreenMessages.ADD_EXERCISE_SUBTITLE
+            },
             primaryTextColor = colors.primaryText,
             secondaryTextColor = colors.secondaryText,
             borderColor = colors.border,
             containerColor = colors.card,
             iconColor = colors.primary,
-            onBack = onBack
+            onBack = {
+                exerciseViewModel.clearMessage()
+                onBack()
+            }
         )
 
         Spacer(modifier = Modifier.height(24.dp))
@@ -136,15 +162,28 @@ fun AddExerciseScreen(
         Spacer(modifier = Modifier.height(24.dp))
 
         ActionButton(
-            text = ScreenMessages.CREATE_EXERCISE_BUTTON,
+            text = if (isEditMode) {
+                ScreenMessages.UPDATE_EXERCISE_BUTTON
+            } else {
+                ScreenMessages.CREATE_EXERCISE_BUTTON
+            },
             textColor = colors.onPrimary,
             containerColor = colors.primary,
             onClick = {
-                exerciseViewModel.addExercise(
-                    exerciseName = exerciseName,
-                    muscleGroup = selectedMuscleGroup,
-                    exerciseDescription = exerciseDescription
-                )
+                if (isEditMode) {
+                    exerciseViewModel.updateExercise(
+                        exerciseId = exerciseId,
+                        exerciseName = exerciseName,
+                        muscleGroup = selectedMuscleGroup,
+                        exerciseDescription = exerciseDescription
+                    )
+                } else {
+                    exerciseViewModel.addExercise(
+                        exerciseName = exerciseName,
+                        muscleGroup = selectedMuscleGroup,
+                        exerciseDescription = exerciseDescription
+                    )
+                }
             }
         )
 

@@ -39,4 +39,37 @@ class ExerciseService @Inject constructor(
 
     suspend fun getAllExercises(): List<Exercise> =
         exerciseRepository.getAll()
+
+    suspend fun deleteExercise(exerciseId: Long) =
+        exerciseRepository.deleteExercise(exerciseId)
+
+    suspend fun getExerciseById(exerciseId: Long): Exercise =
+        exerciseRepository.getExerciseById(exerciseId)
+
+    suspend fun updateExercise(
+        exerciseId: Long,
+        exerciseName: String,
+        muscleGroup: MuscleGroup,
+        exerciseDescription: String
+    ) {
+        if (exerciseName.isBlank()) {
+            throw ValidationException(ServiceMessages.EXERCISE_NAME_NOT_EMPTY)
+        }
+
+        if (exerciseName.trim().length !in 1..100) {
+            throw ValidationException(ServiceMessages.EXERCISE_NAME_LIMIT)
+        }
+
+        if (exerciseDescription.trim().length > 300) {
+            throw ValidationException(ServiceMessages.EXERCISE_DESCRIPTION_LIMIT)
+        }
+
+        exerciseRepository.updateExercise(
+            exerciseId,
+            exerciseName.trim(),
+            muscleGroup,
+            exerciseDescription.trim()
+        )
+    }
+
 }
