@@ -76,4 +76,6 @@ dependencies {
     implementation(libs.androidx.compose.material.icons.extended)
     // Reorderable tool
     implementation(libs.reorderable)
+    // Charts
+    implementation(libs.vico)
 }

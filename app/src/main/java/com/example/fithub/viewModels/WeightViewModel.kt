@@ -6,6 +6,7 @@ import com.example.fithub.common.Constants
 import com.example.fithub.common.exceptions.ValidationException
 import com.example.fithub.common.messages.ViewModelErrorMessages
 import com.example.fithub.common.messages.ViewModelSuccessMessages
+import com.example.fithub.models.WeightChartPoint
 import com.example.fithub.models.uiStates.WeightUiState
 import com.example.fithub.services.WeightHistoryService
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -14,7 +15,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import java.time.format.DateTimeFormatter
+import java.time.LocalDate
 import javax.inject.Inject
 
 @HiltViewModel
@@ -23,6 +24,10 @@ class WeightViewModel @Inject constructor(
 ): ViewModel(){
     private val _uiState = MutableStateFlow(WeightUiState())
     val uiState: StateFlow<WeightUiState> = _uiState.asStateFlow()
+
+    init {
+        getWeightChart()
+    }
 
     fun addWeight(
         weight: String,
@@ -82,37 +87,38 @@ class WeightViewModel @Inject constructor(
         }
     }
 
-    fun testDB(){
+    private fun getWeightChart() {
         viewModelScope.launch {
-            _uiState.update {
-                it.copy(
-                    isLoading = true,
-                    errorMessage = null
-                )
-            }
+            weightHistoryService.getWeightHistory().collect { history ->
+                val today = LocalDate.now()
+                val firstDay = today.minusDays(Constants.WEIGHT_CHART_DAYS)
 
-            try {
-                weightHistoryService.getWeightHistory().collect { weightHistory ->
-                    _uiState.update {
-                        it.copy(
-                            isLoading = false,
-                            message = buildString {
-                                appendLine("Number of records: ${weightHistory.size}")
-                                appendLine()
-                                weightHistory.forEach { record ->
-                                    appendLine("${record.id} - ${record.weight} kg - ${record.dateTime.format(
-                                        DateTimeFormatter.ofPattern(Constants.DATE_TIME_FORMATTER)
-                                    )}")
-                                }
-                            }
-                        )
+                val dailyAverageWeights = history
+                    .filter { record ->
+                        val recordDate = record.dateTime.toLocalDate()
+                        recordDate in firstDay..today
                     }
+                    .groupBy { record ->
+                        record.dateTime.toLocalDate()
+                    }
+                    .mapValues { (_, record) ->
+                        record
+                            .map { it.weight }
+                            .average()
+                    }
+
+                val chart = (0L..Constants.WEIGHT_CHART_DAYS).map { dayOffset ->
+                    val date = firstDay.plusDays(dayOffset)
+
+                    WeightChartPoint(
+                        date = date,
+                        weight = dailyAverageWeights[date]
+                    )
                 }
-            } catch (ex: Exception) {
+
                 _uiState.update {
                     it.copy(
-                        isLoading = false,
-                        errorMessage = ex.message ?: ViewModelErrorMessages.UNKNOWN_ERROR
+                        weightChart = chart
                     )
                 }
             }

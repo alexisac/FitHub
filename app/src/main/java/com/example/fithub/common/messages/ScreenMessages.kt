@@ -18,6 +18,7 @@ object ScreenMessages {
     const val BACK_DESCRIPTION = "Back"
     const val CALENDAR_DESCRIPTION = "Calendar"
     const val CLEAR_DESCRIPTION = "Clear"
+    const val CLOSE_DESCRIPTION = "Close"
     const val DARK_MODE_DESCRIPTION = "DarkMode"
     const val DELETE_DESCRIPTION = "Delete"
     const val EDIT_DESCRIPTION = "Edit"
@@ -26,6 +27,7 @@ object ScreenMessages {
     const val INFO_DESCRIPTION = "Info"
     const val LIGHT_MODE_DESCRIPTION = "LightMode"
     const val LIST_DESCRIPTION = "List"
+    const val MENU_DESCRIPTION = "Menu"
     const val REORDER_DESCRIPTION = "Reorder"
     const val REST_DAY_DESCRIPTION = "RestDay"
     const val SEARCH_DESCRIPTION = "Search"
@@ -44,6 +46,7 @@ object ScreenMessages {
     const val ADD_EXERCISE_TITLE = "Add exercise"
     const val ADD_WEIGHT_TITLE = "Add weight"
     const val ADD_WORKOUT_SPLIT_TITLE = "Add workout split"
+    const val DARK_THEME_TITLE = "Dark theme"
     const val DATE_TITLE = "Date"
     const val DATE_AND_TIME_TITLE = "Date and time"
     const val DAY_NAME_TITLE = "Day name"
@@ -57,6 +60,7 @@ object ScreenMessages {
     const val MANAGE_SPLIT_DETAILS_TITLE = "Manage split details"
     const val MANAGE_SPLIT_DAYS_TITLE = "Manage split days: "
     const val MANAGE_WORKOUT_SPLIT_TITLE = "Manage workout split"
+    const val MENU_TITLE = "Menu"
     const val MUSCLE_GROUP_TITLE = "Muscle group"
     const val REST_TITLE = "Rest"
     const val SPLIT_DETAILS_TITLE = "Split details"
@@ -66,6 +70,7 @@ object ScreenMessages {
     const val SUCCESS_TITLE = "Success"
     const val TIME_TITLE = "Time"
     const val WEIGHT_TITLE = "Weight"
+    const val WEIGHT_PROGRESS_TITLE = "Weight progress"
     const val WORKOUT_TITLE = "Workout"
 
 
@@ -81,6 +86,7 @@ object ScreenMessages {
     const val MUSCLE_GROUP_SUBTITLE = "Choose the primary muscle group."
     const val RECORD_WEIGHT_SUBTITLE = "Record your weight to track your progress."
     const val WORKOUT_SPLIT_SUBTITLE = "View, update or delete your workout splits."
+    fun weightProgressSubtitle(days: String): String = "Daily average for the last $days days"
 
 
     // Placeholders
@@ -111,6 +117,7 @@ object ScreenMessages {
     const val WEIGHT_TIP = "Tip: Weigh yourself at the same time each day for more accurate tracking."
     const val REORDER_DAYS_TIP = "Tip: You can reorder days later by dragging them."
     const val NO_EXERCISES_FOUND = "No exercises found."
+    const val NO_WEIGHT_RECORDS_AVAILABLE = "No weight records available."
     fun deleteExerciseMessage(exerciseName: String): String = "Are you sure you want to delete \"$exerciseName\"?"
 
 }
